@@ -1,0 +1,57 @@
+body {
+    font-family: "Poppins", sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    color: #000;
+}
+
+/* Login Page */
+.login-checkbox-label {
+    font-size: 15px !important;
+    font-weight: 500 !important;
+}
+
+.input-error {
+    border: 1px solid #FF3333 !important;
+    background-color: #ffe5e5 !important;
+}
+
+.icon-error {
+    color: #FF3333 !important;
+}
+
+.font-error {
+    color: #FF3333 !important;
+}
+
+.card-outline-error {
+    border-top: 3px solid #FF3333 !important;
+}
+
+/* shake-animation */
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    10%,
+    30%,
+    50%,
+    70%,
+    90% {
+        transform: translateX(-10px);
+    }
+
+    20%,
+    40%,
+    60%,
+    80% {
+        transform: translateX(10px);
+    }
+}
+
+.shake-animation {
+    animation: shake 0.82s cubic-bezier(.36, .07, .19, .97) both;
+}
