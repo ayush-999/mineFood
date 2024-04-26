@@ -44,12 +44,12 @@
 <!--=========================-->
 <script type="text/javascript">
     $(document).ready(function () {
-        $("#category").DataTable({
+        var table = $('#category').DataTable({
             "responsive": true,
             "lengthChange": false,
             "autoWidth": true,
             "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-        }).buttons().container().appendTo('#category_wrapper .col-md-6:eq(0)');
+        });
     });
 </script>
 </body>

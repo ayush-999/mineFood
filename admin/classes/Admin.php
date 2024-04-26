@@ -51,6 +51,34 @@ class Admin
             throw new Exception("Database error: " . $e->getMessage());
         }
     }
+
+    public function add_category($categoryName, $orderNumber, $status)
+    {
+        try {
+            // Check if the category already exists
+            $checkQuery = "CALL sp_checkCategoryExists(?)";
+            $checkStmt = $this->db->prepare($checkQuery);
+            $checkStmt->bindParam(1, $categoryName, PDO::PARAM_STR);
+            $checkStmt->execute();
+
+            if ($checkStmt->fetchColumn() > 0) {
+                $checkStmt->closeCursor();
+                return "Category already exists";
+            } else {
+                $checkStmt->closeCursor();
+                // Insert new category
+                $strQuery = "CALL sp_addCategory(?, ?, ?)";
+                $stmt = $this->db->prepare($strQuery);
+                $stmt->bindParam(1, $categoryName, PDO::PARAM_STR);
+                $stmt->bindParam(2, $orderNumber, PDO::PARAM_INT);
+                $stmt->bindParam(3, $status, PDO::PARAM_INT);
+                $stmt->execute();
+                return "Category added successfully";
+            }
+        } catch (PDOException $e) {
+            throw new Exception("Database error: " . $e->getMessage());
+        }
+    }
 }
 
 ?>

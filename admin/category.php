@@ -15,7 +15,8 @@ $get_categories = json_decode($category->get_all_categories(), true);
                     <h5 class="card-title">
                         <b><?php echo $pageSubTitle; ?></b>
                     </h5>
-                    <button class="btn btn-success btn-sm" type="submit"><i class="fas fa-plus mr-1"></i>Add</button>
+                    <button class="btn btn-success btn-sm" type="button" data-toggle="modal"
+                        data-target="#category-modal"><i class="fas fa-plus mr-1"></i>Add</button>
                 </div>
             </div>
             <!-- /.card-header -->
@@ -35,7 +36,7 @@ $get_categories = json_decode($category->get_all_categories(), true);
                         <?php foreach ($get_categories as $index => $category): ?>
                         <tr>
                             <td><?php echo $index + 1; ?></td>
-                            <td><?php echo htmlspecialchars($category['category']); ?></td>
+                            <td><?php echo htmlspecialchars($category['category_name']); ?></td>
                             <td><?php echo $category['order_number']; ?></td>
                             <td>
                                 <span
@@ -66,4 +67,5 @@ $get_categories = json_decode($category->get_all_categories(), true);
         </div>
     </div>
 </div>
+<?php include_once ('./modals/category-modal.php') ?>
 <?php include_once ('footer.php') ?>
