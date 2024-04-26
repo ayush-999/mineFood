@@ -1,71 +1,56 @@
+</div>
+<!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+<footer class="main-footer">
+    <strong>Copyright &copy;
+        <script type="text/javascript">
+            var year = new Date();
+            document.write(year.getFullYear());
+        </script>
+        <a href="https://github.com/ayush-999">Ayush ❤️</a>.
+    </strong> All rights
+    reserved.
+</footer>
+</div>
+<!-- ./wrapper -->
 <!-- jQuery -->
 <script src="assets/plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- DataTables  & Plugins -->
+<script src="assets/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="assets/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="assets/plugins/jszip/jszip.min.js"></script>
+<script src="assets/plugins/pdfmake/pdfmake.min.js"></script>
+<script src="assets/plugins/pdfmake/vfs_fonts.js"></script>
+<script src="assets/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 <!-- AdminLTE App -->
 <script src="assets/js/adminlte.min.js"></script>
+<!-- SweetAlert2 -->
+<script src="assets/plugins/sweetalert2/sweetalert2.min.js"></script>
 <!-- Toastr -->
 <script src="assets/plugins/toastr/toastr.min.js"></script>
-<!--  -->
-<script src="assets/js/main.js"></script>
-<script>
-$(document).ready(function() {
-    toastr.options = {
-        "closeButton": true,
-        "debug": false,
-        "newestOnTop": true,
-        "progressBar": true,
-        "positionClass": "toast-top-center",
-        "preventDuplicates": true,
-        "onclick": null,
-        "showDuration": "100", // default : 300
-        "hideDuration": "500", // default : 1000
-        "timeOut": "2000", // default : 5000
-        "extendedTimeOut": "500", // default : 1000
-        "showEasing": "swing",
-        "hideEasing": "linear",
-        "showMethod": "fadeIn",
-        "hideMethod": "fadeOut",
-        "onHidden": function() {
-            removeErrorClasses();
-        }
-    };
-
-    function removeErrorClasses() {
-        $('.input-error').removeClass('input-error');
-        $('.icon-error').removeClass('icon-error');
-        $('.font-error').removeClass('font-error');
-        $('.card-outline-error').removeClass('card-outline-error');
-        $('#signIn-button').removeClass('bg-gradient-danger').addClass('normal-btn');
-        $('.login-card').removeClass('shake-animation');
-    }
-
-    function applyErrorStyles() {
-        $('#signIn-button').removeClass('normal-btn').addClass('bg-gradient-danger');
-    }
-
-    var errorMessage = <?php echo json_encode($msg); ?>;
-    if (errorMessage) {
-        toastr.error(errorMessage);
-        applyErrorStyles();
-        $('.login-card').addClass('shake-animation');
-    }
-
-    // Function to check the input fields
-    function checkInputs() {
-        var userInput = $('input[name="userInput"]').val().trim();
-        var password = $('input[name="password"]').val().trim();
-
-        if (userInput !== '' && password !== '') {
-            $('#signIn-button').prop('disabled', false);
-        } else {
-            $('#signIn-button').prop('disabled', true);
-        }
-    }
-
-    // Call checkInputs on input change
-    $('input[name="userInput"], input[name="password"]').on('keyup', checkInputs);
-})
+<!--========================= Pages JS =========================-->
+<script src="assets/js/pages/category.js"></script>
+<!--=========================-->
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#category").DataTable({
+            "responsive": true,
+            "lengthChange": false,
+            "autoWidth": true,
+            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        }).buttons().container().appendTo('#category_wrapper .col-md-6:eq(0)');
+    });
 </script>
 </body>
 

@@ -1,0 +1,43 @@
+# .gitignore for PHP projects using Visual Studio Code
+
+# Ignore Composer files
+vendor
+/vendor/
+/composer.lock
+
+# Ignore specific configuration files that may contain sensitive information
+/config/*.php
+
+# Ignore environment files
+/.env
+/.env.local
+
+# Ignore user-specific files for VS Code
+.vscode
+.vscode/
+.vscode/*
+
+# Ignore typical files that should not be committed
+/node_modules/
+/thumbs.db
+.DS_Store
+
+# Ignore PHP bytecode
+*.phar
+*.phps
+*.phpc
+
+# Ignore typical cache and log files
+/cache/
+/logs/
+*.log
+
+# Ignore export files
+/export/
+
+# Backup and swap files
+*~
+*.bak
+*.swp
+*.tmp
+

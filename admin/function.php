@@ -11,4 +11,16 @@ function preArr($arr)
     print_r($arr);
 }
 
+function redirect($link)
+{
+    ?>
+    <script>
+        window.location.href = '<?php echo $link; ?>';
+    </script>
+    <?php
+    die();
+
+}
+
+
 ?>

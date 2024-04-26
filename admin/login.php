@@ -1,9 +1,26 @@
 <?php
-$pageTitle = "Login - Mine Food";
-require_once ('header.php');
-require_once ('classes/User.php');
+session_start();
+include_once ('config/database.php');
+include_once ('function.php');
+include_once ('default-setup.php');
 
-$user = new User($conn);
+include_once ('classes/Admin.php');
+
+if (isset($_SESSION['IS_LOGIN'])) {
+    redirect('index.php');
+}
+
+if (isset($pageSettings[$currentScript])) {
+    $pageTitle = $pageSettings[$currentScript]['title'];
+    $pageSubTitle = $pageSettings[$currentScript]['sub-title'];
+    $breadcrumbs = $pageSettings[$currentScript]['breadcrumbs'];
+} else {
+    $pageTitle = "mine food";
+    $breadcrumbs = [];
+}
+
+$user = new Admin($conn);
+
 $msg = "";
 $inputErrorClass = "";
 $iconErrorClass = "";
@@ -14,9 +31,10 @@ if (isset($_POST['submit'])) {
     $username = $_POST['userInput'];
     // $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
     $password = $_POST['password'];
-    $result = $user->login($username, $password);
+    $result = $user->admin_login($username, $password);
     if ($result) {
-        echo "Login successful!";
+        $_SESSION['IS_LOGIN'] = 'yes';
+        redirect('index.php');
     } else {
         $msg = "Invalid login credentials! Please try again.";
         $inputErrorClass = "input-error";
@@ -26,54 +44,150 @@ if (isset($_POST['submit'])) {
     }
 }
 ?>
-<div class="login-box">
-    <div class="card card-outline card-primary login-card <?php echo $cardErrorClass; ?>">
-        <div class="card-header text-center">
-            <a href="" class="h1 <?php echo $textErrorClass; ?>"><b>mine</b>food.</a>
-        </div>
-        <div class="card-body">
-            <p class="login-box-msg <?php echo $textErrorClass; ?>">Sign in to start your session</p>
+<!DOCTYPE html>
+<html lang="en">
 
-            <form action="" method="post">
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control <?php echo $inputErrorClass; ?>" name="userInput"
-                        placeholder="Email" required>
-                    <div class="input-group-append">
-                        <div class="input-group-text <?php echo $inputErrorClass; ?>">
-                            <span class="fas fa-envelope <?php echo $iconErrorClass; ?>"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="input-group mb-3">
-                    <input type="password" class="form-control <?php echo $inputErrorClass; ?>" name="password"
-                        id="password-field" placeholder="Password" required>
-                    <div class="input-group-append">
-                        <div class="input-group-text <?php echo $inputErrorClass; ?>">
-                            <span id="password-icon" class="fas fa-lock <?php echo $iconErrorClass; ?>"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12 mb-2">
-                        <!-- <button type="submit" class="btn btn-primary btn-block">Sign In</button> -->
-                        <input type="submit" class="btn bg-gradient-primary btn-block normal-btn" id="signIn-button"
-                            name="submit" value="Sign In" disabled>
-                    </div>
-                </div>
-            </form>
-            <!-- <div class="social-auth-links text-center mt-2 mb-3">
-                <a href="#" class="btn btn-block btn-danger">
-                    <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
-                </a>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Login to access your personal dashboard and manage your preferences.">
+    <meta name="keywords" content="login, user login, secure login, dashboard access">
+    <meta name="author" content="Ayush">
+    <meta name="robots" content="index, follow">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title><?php echo $pageTitle; ?></title>
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Google Font: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+    <link rel="shortcut icon" href="assets/img/favicon.ico" type="image/x-icon">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="assets/plugins/fontawesome-free/css/all.min.css">
+    <!-- icheck bootstrap -->
+    <link rel="stylesheet" href="assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="assets/css/adminlte.min.css">
+    <!-- Toastr -->
+    <link rel="stylesheet" href="assets/plugins/toastr/toastr.min.css">
+    <!-- custom style -->
+    <link rel="stylesheet" href="assets/css/custom.css">
+</head>
+
+<body class="hold-transition login-page">
+    <div class="login-box">
+        <div class="card card-outline card-primary login-card <?php echo $cardErrorClass; ?>">
+            <div class="card-header text-center">
+                <a href="" class="h1 <?php echo $textErrorClass; ?>"><b>mine</b>food.</a>
             </div>
-            -->
-            <p class="mb-2">
-                <a href="/" class="<?php echo $textErrorClass; ?>">I forgot my password</a>
-            </p>
-            <!-- <p class="mb-0">
-                <a href="/" class="text-center">Register a new membership</a>
-            </p> -->
+            <div class="card-body">
+                <p class="login-box-msg <?php echo $textErrorClass; ?>">Sign in to start your session</p>
+
+                <form action="" method="post">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control <?php echo $inputErrorClass; ?>" name="userInput"
+                            placeholder="Enter email" required>
+                        <div class="input-group-append">
+                            <div class="input-group-text <?php echo $inputErrorClass; ?>">
+                                <span class="fas fa-envelope fs-14 <?php echo $iconErrorClass; ?>"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="password" class="form-control <?php echo $inputErrorClass; ?>" name="password"
+                            id="password-field" placeholder="Enter Password" required>
+                        <div class="input-group-append">
+                            <div class="input-group-text <?php echo $inputErrorClass; ?>">
+                                <span id="password-icon" class="fas fa-lock <?php echo $iconErrorClass; ?>"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 mb-2">
+                            <input type="submit" class="btn bg-gradient-primary btn-block normal-btn" id="signIn-button"
+                                name="submit" value="Sign In" disabled>
+                        </div>
+                    </div>
+                </form>
+                <p class="mb-2">
+                    <a href="/" class="<?php echo $textErrorClass; ?>">I forgot my password</a>
+                </p>
+            </div>
         </div>
     </div>
-</div>
-<?php require_once ('footer.php') ?>
+    <!-- jQuery -->
+    <script src="assets/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="assets/js/adminlte.min.js"></script>
+    <!-- Toastr -->
+    <script src="assets/plugins/toastr/toastr.min.js"></script>
+    <!--  -->
+    <script src="assets/js/pages/login.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": true,
+                "progressBar": true,
+                "positionClass": "toast-top-center",
+                "preventDuplicates": true,
+                "onclick": null,
+                "showDuration": "100", // default : 300
+                "hideDuration": "500", // default : 1000
+                "timeOut": "2000", // default : 5000
+                "extendedTimeOut": "500", // default : 1000
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut",
+                "onHidden": function () {
+                    removeErrorClasses();
+                }
+            };
+
+            function removeErrorClasses() {
+                $('.input-error').removeClass('input-error');
+                $('.icon-error').removeClass('icon-error');
+                $('.font-error').removeClass('font-error');
+                $('.card-outline-error').removeClass('card-outline-error');
+                $('#signIn-button').removeClass('bg-gradient-danger').addClass('normal-btn');
+                $('.login-card').removeClass('shake-animation');
+            }
+
+            function applyErrorStyles() {
+                $('#signIn-button').removeClass('normal-btn').addClass('bg-gradient-danger');
+            }
+
+            var errorMessage = <?php echo json_encode($msg); ?>;
+            if (errorMessage) {
+                toastr.error(errorMessage);
+                applyErrorStyles();
+                $('.login-card').addClass('shake-animation');
+            }
+
+            // Function to check the input fields
+            function checkInputs() {
+                var userInput = $('input[name="userInput"]').val().trim();
+                var password = $('input[name="password"]').val().trim();
+
+                if (userInput !== '' && password !== '') {
+                    $('#signIn-button').prop('disabled', false);
+                } else {
+                    $('#signIn-button').prop('disabled', true);
+                }
+            }
+
+            // Call checkInputs on input change
+            $('input[name="userInput"], input[name="password"]').on('keyup', checkInputs);
+        })
+    </script>
+</body>
+
+</html>

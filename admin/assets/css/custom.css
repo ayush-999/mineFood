@@ -5,27 +5,33 @@ body {
     color: #000;
 }
 
-/* Login Page */
+.fs-14 {
+    font-size: 14px;
+}
+
+/******************************** 
+Login Page 
+********************************/
 .login-checkbox-label {
     font-size: 15px !important;
     font-weight: 500 !important;
 }
 
 .input-error {
-    border: 1px solid #FF3333 !important;
+    border: 1px solid #dc3545 !important;
     background-color: #ffe5e5 !important;
 }
 
 .icon-error {
-    color: #FF3333 !important;
+    color: #dc3545 !important;
 }
 
 .font-error {
-    color: #FF3333 !important;
+    color: #dc3545 !important;
 }
 
 .card-outline-error {
-    border-top: 3px solid #FF3333 !important;
+    border-top: 3px solid #dc3545 !important;
 }
 
 /* shake-animation */
@@ -54,4 +60,14 @@ body {
 
 .shake-animation {
     animation: shake 0.82s cubic-bezier(.36, .07, .19, .97) both;
+}
+
+/******************************** 
+Home 
+********************************/
+
+.navUserImg {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
 }
