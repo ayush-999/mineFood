@@ -3,10 +3,33 @@ include_once ('header.php');
 include_once ('classes/Admin.php');
 
 $category = new Admin($conn);
+$msg = '';
 
 $get_categories = json_decode($category->get_all_categories(), true);
 
+if (isset($_POST['submit'])) {
+    $categoryName = $_POST['categoryName'];
+    $orderNumber = $_POST['orderNumber'];
+    $status = $_POST['categoryStatus'];
+
+    $existingCategory = $category->add_category($categoryName, $orderNumber, $status);
+
+    if ($existingCategory == "Category already exists") {
+        $_SESSION['message'] = 'Category already exists';
+    } else {
+        $_SESSION['message'] = 'Category added successfully';
+    }
+    header("Location: category.php");
+    exit;
+}
+
+// Check for session message and clear it
+if (isset($_SESSION['message'])) {
+    $msg = $_SESSION['message'];
+    unset($_SESSION['message']); // Clear the message so it doesn't persist on refresh
+}
 ?>
+
 <div class="row">
     <div class="col-12">
         <div class="card">
@@ -68,4 +91,35 @@ $get_categories = json_decode($category->get_all_categories(), true);
     </div>
 </div>
 <?php include_once ('./modals/category-modal.php') ?>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": true,
+        "progressBar": true,
+        "positionClass": "toast-top-center",
+        "preventDuplicates": true,
+        "onclick": null,
+        "showDuration": "100", // default : 300
+        "hideDuration": "500", // default : 1000
+        "timeOut": "2000", // default : 5000
+        "extendedTimeOut": "500", // default : 1000
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut",
+    };
+    let message = <?php echo json_encode($msg); ?>;
+    if (message) {
+        if (message == "Category already exists") {
+            toastr.error(message);
+        } else if (message == "Category added successfully") {
+            toastr.success(message);
+        }
+    }
+});
+</script>
+
 <?php include_once ('footer.php') ?>

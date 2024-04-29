@@ -13,12 +13,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Attempt to add the category
     $result = $admin->add_category($categoryName, $orderNumber, $status);
-
-    if ($result === "Category added successfully") {
-        echo json_encode(array("success" => true, "message" => $result));
-    } else {
-        echo json_encode(array("success" => false, "message" => $result));
-    }
+    echo json_encode($result);
+    exit;
+    // if ($result === "Category added successfully") {
+    //     echo json_encode(array("success" => true, "message" => $result));
+    // } else {
+    //     echo json_encode(array("success" => false, "message" => $result));
+    // }
 } else {
     // Not a POST request
     header('HTTP/1.1 405 Method Not Allowed');

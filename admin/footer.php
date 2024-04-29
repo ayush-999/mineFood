@@ -16,8 +16,7 @@
 </footer>
 </div>
 <!-- ./wrapper -->
-<!-- jQuery -->
-<script src="assets/plugins/jquery/jquery.min.js"></script>
+
 <!-- Bootstrap 4 -->
 <script src="assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- DataTables  & Plugins -->
@@ -35,23 +34,8 @@
 <script src="assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 <!-- AdminLTE App -->
 <script src="assets/js/adminlte.min.js"></script>
-<!-- SweetAlert2 -->
-<script src="assets/plugins/sweetalert2/sweetalert2.min.js"></script>
-<!-- Toastr -->
-<script src="assets/plugins/toastr/toastr.min.js"></script>
 <!--========================= Pages JS =========================-->
 <script src="assets/js/pages/category.js"></script>
-<!--=========================-->
-<script type="text/javascript">
-    $(document).ready(function () {
-        var table = $('#category').DataTable({
-            "responsive": true,
-            "lengthChange": false,
-            "autoWidth": true,
-            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-        });
-    });
-</script>
 </body>
 
 </html>

@@ -1,4 +1,10 @@
 $(document).ready(function () {
+   var table = $('#category').DataTable({
+      responsive: true,
+      lengthChange: false,
+      autoWidth: true,
+   });
+
    $('.delete-category').click(function () {
       var categoryId = $(this).data('id');
       var categoryName = $(this)
@@ -55,48 +61,5 @@ $(document).ready(function () {
             });
          }
       });
-   });
-
-   $('#addCategoryForm').submit(function (event) {
-      event.preventDefault();
-      var categoryName = $('#categoryName').val();
-      var orderNumber = $('#orderNumber').val();
-      var status = $('#categoryStatus').val();
-
-      console.log(categoryName, orderNumber, status);
-      // Perform client-side validation
-      if (categoryName && orderNumber && status) {
-         $.ajax({
-            url: './ajax/add_category.php',
-            type: 'POST',
-            data: {
-               categoryName: categoryName,
-               orderNumber: orderNumber,
-               categoryStatus: status,
-            },
-            success: function (response) {
-               Swal.fire(
-                  'Success!',
-                  'Category added successfully',
-                  'success'
-               ).then((result) => {
-                  if (result.isConfirmed) {
-                     $('#category-modal').modal('hide');
-                     location.reload(); // Reload to update the category list
-                  }
-               });
-            },
-            error: function () {
-               Swal.fire('Failed!', 'Unable to add category.', 'error');
-            },
-         });
-      } else {
-         // Alert the user that all fields are required
-         Swal.fire(
-            'Warning!',
-            'Please fill all the fields before submitting.',
-            'warning'
-         );
-      }
    });
 });
