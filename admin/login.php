@@ -87,10 +87,10 @@ if (isset($_POST['submit'])) {
             <div class="card-body">
                 <p class="login-box-msg <?php echo $textErrorClass; ?>">Sign in to start your session</p>
 
-                <form action="" method="post">
+                <form action="" method="post" id="loginForm">
                     <div class="input-group mb-3">
                         <input type="text" class="form-control <?php echo $inputErrorClass; ?>" name="userInput"
-                            placeholder="Enter email" required>
+                            placeholder="Enter username" required>
                         <div class="input-group-append">
                             <div class="input-group-text <?php echo $inputErrorClass; ?>">
                                 <span class="fas fa-envelope fs-14 <?php echo $iconErrorClass; ?>"></span>
@@ -99,7 +99,7 @@ if (isset($_POST['submit'])) {
                     </div>
                     <div class="input-group mb-3">
                         <input type="password" class="form-control <?php echo $inputErrorClass; ?>" name="password"
-                            id="password-field" placeholder="Enter Password" required>
+                            id="password-field" placeholder="Enter password" required>
                         <div class="input-group-append">
                             <div class="input-group-text <?php echo $inputErrorClass; ?>">
                                 <span id="password-icon" class="fas fa-lock <?php echo $iconErrorClass; ?>"></span>
@@ -121,6 +121,7 @@ if (isset($_POST['submit'])) {
     </div>
     <!-- jQuery -->
     <script src="assets/plugins/jquery/jquery.min.js"></script>
+    <script src="assets/plugins/jquery-validation/jquery.validate.min.js"></script>
     <!-- Bootstrap 4 -->
     <script src="assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- AdminLTE App -->
@@ -130,63 +131,89 @@ if (isset($_POST['submit'])) {
     <!--  -->
     <script src="assets/js/pages/login.js"></script>
     <script type="text/javascript">
-        $(document).ready(function () {
-            toastr.options = {
-                "closeButton": true,
-                "debug": false,
-                "newestOnTop": true,
-                "progressBar": true,
-                "positionClass": "toast-top-center",
-                "preventDuplicates": true,
-                "onclick": null,
-                "showDuration": "100", // default : 300
-                "hideDuration": "500", // default : 1000
-                "timeOut": "2000", // default : 5000
-                "extendedTimeOut": "500", // default : 1000
-                "showEasing": "swing",
-                "hideEasing": "linear",
-                "showMethod": "fadeIn",
-                "hideMethod": "fadeOut",
-                "onHidden": function () {
-                    removeErrorClasses();
-                }
-            };
-
-            function removeErrorClasses() {
-                $('.input-error').removeClass('input-error');
-                $('.icon-error').removeClass('icon-error');
-                $('.font-error').removeClass('font-error');
-                $('.card-outline-error').removeClass('card-outline-error');
-                $('#signIn-button').removeClass('bg-gradient-danger').addClass('normal-btn');
-                $('.login-card').removeClass('shake-animation');
+    $(document).ready(function() {
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": true,
+            "progressBar": true,
+            "positionClass": "toast-top-center",
+            "preventDuplicates": true,
+            "onclick": null,
+            "showDuration": "100", // default : 300
+            "hideDuration": "500", // default : 1000
+            "timeOut": "2000", // default : 5000
+            "extendedTimeOut": "500", // default : 1000
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut",
+            "onHidden": function() {
+                removeErrorClasses();
             }
+        };
 
-            function applyErrorStyles() {
-                $('#signIn-button').removeClass('normal-btn').addClass('bg-gradient-danger');
+        function removeErrorClasses() {
+            $('.input-error').removeClass('input-error');
+            $('.icon-error').removeClass('icon-error');
+            $('.font-error').removeClass('font-error');
+            $('.card-outline-error').removeClass('card-outline-error');
+            $('#signIn-button').removeClass('bg-gradient-danger').addClass('normal-btn');
+            $('.login-card').removeClass('shake-animation');
+        }
+
+        function applyErrorStyles() {
+            $('#signIn-button').removeClass('normal-btn').addClass('bg-gradient-danger');
+        }
+
+        var errorMessage = <?php echo json_encode($msg); ?>;
+        if (errorMessage) {
+            toastr.error(errorMessage);
+            applyErrorStyles();
+            $('.login-card').addClass('shake-animation');
+        }
+
+        // Function to check the input fields
+        function checkInputs() {
+            var userInput = $('input[name="userInput"]').val().trim();
+            var password = $('input[name="password"]').val().trim();
+
+            if (userInput !== '' && password !== '') {
+                $('#signIn-button').prop('disabled', false);
+            } else {
+                $('#signIn-button').prop('disabled', true);
             }
+        }
 
-            var errorMessage = <?php echo json_encode($msg); ?>;
-            if (errorMessage) {
-                toastr.error(errorMessage);
-                applyErrorStyles();
-                $('.login-card').addClass('shake-animation');
+        // Call checkInputs on input change
+        $('input[name="userInput"], input[name="password"]').on('keyup', checkInputs);
+
+        $('#loginForm').validate({
+            rules: {
+                password: {
+                    required: true,
+                    minlength: 5
+                },
+            },
+            messages: {
+                password: {
+                    required: "Please provide a password",
+                    minlength: "Your password must be at least 5 characters long"
+                },
+            },
+            errorElement: 'span',
+            errorPlacement: function(error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.input-group').append(error);
+            },
+            highlight: function(element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function(element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
             }
-
-            // Function to check the input fields
-            function checkInputs() {
-                var userInput = $('input[name="userInput"]').val().trim();
-                var password = $('input[name="password"]').val().trim();
-
-                if (userInput !== '' && password !== '') {
-                    $('#signIn-button').prop('disabled', false);
-                } else {
-                    $('#signIn-button').prop('disabled', true);
-                }
-            }
-
-            // Call checkInputs on input change
-            $('input[name="userInput"], input[name="password"]').on('keyup', checkInputs);
-        })
+        });
+    })
     </script>
 </body>
 

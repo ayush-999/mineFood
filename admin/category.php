@@ -55,7 +55,7 @@ if (isset($_SESSION['message'])) {
                     <thead>
                         <tr>
                             <th style="width: 10px">S.No.</th>
-                            <th>Category</th>
+                            <th>Category Name</th>
                             <th>Order Number</th>
                             <th>Status</th>
                             <th>Action</th>
@@ -124,9 +124,9 @@ $(document).ready(function() {
     };
     let message = <?php echo json_encode($msg); ?>;
     if (message) {
-        if (message == "Category already exists") {
+        if (message === "Category already exists" || message === "Category name already exists") {
             toastr.error(message);
-        } else if (message == "Category added successfully" || message == "Category updated successfully") {
+        } else if (message === "Category added successfully" || message === "Category updated successfully") {
             toastr.success(message);
         }
     }

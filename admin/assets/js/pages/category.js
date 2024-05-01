@@ -62,4 +62,41 @@ $(document).ready(function () {
          }
       });
    });
+
+   $('#categoryForm').validate({
+      rules: {
+         categoryName: {
+            required: true,
+         },
+         orderNumber: {
+            required: true,
+            digits: true,
+         },
+         categoryStatus: {
+            required: true,
+         },
+      },
+      messages: {
+         categoryName: {
+            required: 'Please enter category name',
+         },
+         orderNumber: {
+            required: 'Please enter category order number',
+         },
+         categoryStatus: {
+            required: 'Please select status',
+         },
+      },
+      errorElement: 'span',
+      errorPlacement: function (error, element) {
+         error.addClass('invalid-feedback');
+         element.closest('.form-group').append(error);
+      },
+      highlight: function (element, errorClass, validClass) {
+         $(element).addClass('is-invalid');
+      },
+      unhighlight: function (element, errorClass, validClass) {
+         $(element).removeClass('is-invalid');
+      },
+   });
 });

@@ -7,8 +7,8 @@
 <footer class="main-footer">
     <strong>Copyright &copy;
         <script type="text/javascript">
-            var year = new Date();
-            document.write(year.getFullYear());
+        var year = new Date();
+        document.write(year.getFullYear());
         </script>
         <a href="https://github.com/ayush-999">Ayush ❤️</a>.
     </strong> All rights
@@ -19,6 +19,7 @@
 
 <!-- Bootstrap 4 -->
 <script src="assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="assets/plugins/jquery-validation/jquery.validate.min.js"></script>
 <!-- DataTables  & Plugins -->
 <script src="assets/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>

@@ -100,7 +100,7 @@ class Admin
 
                 if ($checkStmt->fetchColumn() > 0) {
                     $checkStmt->closeCursor();
-                    return "Category already exists";
+                    return "Category name already exists";
                 }
                 $checkStmt->closeCursor(); // Close the cursor
             }
