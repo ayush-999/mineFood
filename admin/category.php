@@ -7,22 +7,6 @@ $msg = '';
 
 $get_categories = json_decode($category->get_all_categories(), true);
 
-// if (isset($_POST['submit'])) {
-//     $categoryName = $_POST['categoryName'];
-//     $orderNumber = $_POST['orderNumber'];
-//     $status = $_POST['categoryStatus'];
-
-//     $existingCategory = $category->add_category($categoryName, $orderNumber, $status);
-
-//     if ($existingCategory == "Category already exists") {
-//         $_SESSION['message'] = 'Category already exists';
-//     } else {
-//         $_SESSION['message'] = 'Category added successfully';
-//     }
-//     header("Location: category.php");
-//     exit;
-// }
-
 if (isset($_POST['submitAction'])) {
     $action = $_POST['submitAction'];
     $categoryName = $_POST['categoryName'];
@@ -161,13 +145,11 @@ $(document).ready(function() {
         var categoryName = $(this).data('name');
         var orderNumber = $(this).data('order');
         var status = $(this).data('status');
-
         $('#submitAction').val('update');
         $('#categoryId').val(categoryId);
         $('#categoryName').val(categoryName);
         $('#orderNumber').val(orderNumber);
         $('#categoryStatus').val(status);
-
         $('#category-modal').modal('show');
     });
 });

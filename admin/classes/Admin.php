@@ -83,6 +83,28 @@ class Admin
     public function update_category($categoryId, $categoryName, $orderNumber, $status)
     {
         try {
+            $currentNameQuery = "SELECT category_name FROM category WHERE id = ?";
+            $currentNameStmt = $this->db->prepare($currentNameQuery);
+            $currentNameStmt->bindParam(1, $categoryId, PDO::PARAM_INT);
+            $currentNameStmt->execute();
+            $currentName = $currentNameStmt->fetchColumn();
+            $currentNameStmt->closeCursor(); // Close the cursor
+
+            // Check if the name has been changed
+            if ($categoryName != $currentName) {
+                // If the name has been changed, check if the new name already exists
+                $checkQuery = "CALL sp_checkCategoryExists(?)";
+                $checkStmt = $this->db->prepare($checkQuery);
+                $checkStmt->bindParam(1, $categoryName, PDO::PARAM_STR);
+                $checkStmt->execute();
+
+                if ($checkStmt->fetchColumn() > 0) {
+                    $checkStmt->closeCursor();
+                    return "Category already exists";
+                }
+                $checkStmt->closeCursor(); // Close the cursor
+            }
+
             $strQuery = "CALL sp_updateCategory(?, ?, ?, ?)";
             $stmt = $this->db->prepare($strQuery);
             $stmt->bindParam(1, $categoryId, PDO::PARAM_INT);
