@@ -7,21 +7,44 @@ $msg = '';
 
 $get_categories = json_decode($category->get_all_categories(), true);
 
-if (isset($_POST['submit'])) {
+// if (isset($_POST['submit'])) {
+//     $categoryName = $_POST['categoryName'];
+//     $orderNumber = $_POST['orderNumber'];
+//     $status = $_POST['categoryStatus'];
+
+//     $existingCategory = $category->add_category($categoryName, $orderNumber, $status);
+
+//     if ($existingCategory == "Category already exists") {
+//         $_SESSION['message'] = 'Category already exists';
+//     } else {
+//         $_SESSION['message'] = 'Category added successfully';
+//     }
+//     header("Location: category.php");
+//     exit;
+// }
+
+if (isset($_POST['submitAction'])) {
+    $action = $_POST['submitAction'];
     $categoryName = $_POST['categoryName'];
     $orderNumber = $_POST['orderNumber'];
     $status = $_POST['categoryStatus'];
 
-    $existingCategory = $category->add_category($categoryName, $orderNumber, $status);
-
-    if ($existingCategory == "Category already exists") {
-        $_SESSION['message'] = 'Category already exists';
-    } else {
-        $_SESSION['message'] = 'Category added successfully';
+    if ($action == 'add') {
+        $result = $category->add_category($categoryName, $orderNumber, $status);
+        if ($result == "Category already exists") {
+            $_SESSION['message'] = 'Category already exists';
+        } else {
+            $_SESSION['message'] = 'Category added successfully';
+        }
+    } else if ($action == 'update') {
+        $categoryId = $_POST['categoryId']; // Make sure this input is included in the form for updates
+        $result = $category->update_category($categoryId, $categoryName, $orderNumber, $status);
+        $_SESSION['message'] = $result;
     }
     header("Location: category.php");
     exit;
 }
+
 
 // Check for session message and clear it
 if (isset($_SESSION['message'])) {
@@ -38,7 +61,7 @@ if (isset($_SESSION['message'])) {
                     <h5 class="card-title">
                         <b><?php echo $pageSubTitle; ?></b>
                     </h5>
-                    <button class="btn btn-success btn-sm" type="button" data-toggle="modal"
+                    <button class="btn btn-success btn-sm add-btn" type="button" data-toggle="modal"
                         data-target="#category-modal"><i class="fas fa-plus mr-1"></i>Add</button>
                 </div>
             </div>
@@ -68,7 +91,11 @@ if (isset($_SESSION['message'])) {
                                 </span>
                             </td>
                             <td>
-                                <button class="btn btn-success btn-xs mr-2" type="button">
+                                <button class="btn btn-success btn-xs mr-2 edit-btn" type="button" data-toggle="modal"
+                                    data-target="#category-modal" data-id="<?php echo $category['id']; ?>"
+                                    data-name="<?php echo htmlspecialchars($category['category_name']); ?>"
+                                    data-order="<?php echo $category['order_number']; ?>"
+                                    data-status="<?php echo $category['status']; ?>">
                                     <i class="fas fa-edit mr-1"></i>Edit
                                 </button>
                                 <button class="btn btn-danger btn-xs delete-category"
@@ -115,10 +142,34 @@ $(document).ready(function() {
     if (message) {
         if (message == "Category already exists") {
             toastr.error(message);
-        } else if (message == "Category added successfully") {
+        } else if (message == "Category added successfully" || message == "Category updated successfully") {
             toastr.success(message);
         }
     }
+
+    $('.add-btn').on('click', function() {
+        $('#submitAction').val('add');
+        $('#categoryId').val(''); // Clear in case of previously set
+        $('#categoryName').val('');
+        $('#orderNumber').val('');
+        $('#categoryStatus').val('');
+        $('#category-modal').modal('show');
+    });
+
+    $('.edit-btn').on('click', function() {
+        var categoryId = $(this).data('id');
+        var categoryName = $(this).data('name');
+        var orderNumber = $(this).data('order');
+        var status = $(this).data('status');
+
+        $('#submitAction').val('update');
+        $('#categoryId').val(categoryId);
+        $('#categoryName').val(categoryName);
+        $('#orderNumber').val(orderNumber);
+        $('#categoryStatus').val(status);
+
+        $('#category-modal').modal('show');
+    });
 });
 </script>
 

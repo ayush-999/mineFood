@@ -79,6 +79,23 @@ class Admin
             throw new Exception("Database error: " . $e->getMessage());
         }
     }
+
+    public function update_category($categoryId, $categoryName, $orderNumber, $status)
+    {
+        try {
+            $strQuery = "CALL sp_updateCategory(?, ?, ?, ?)";
+            $stmt = $this->db->prepare($strQuery);
+            $stmt->bindParam(1, $categoryId, PDO::PARAM_INT);
+            $stmt->bindParam(2, $categoryName, PDO::PARAM_STR);
+            $stmt->bindParam(3, $orderNumber, PDO::PARAM_INT);
+            $stmt->bindParam(4, $status, PDO::PARAM_INT);
+            $stmt->execute();
+            return "Category updated successfully";
+        } catch (PDOException $e) {
+            throw new Exception("Database error: " . $e->getMessage());
+        }
+    }
+
 }
 
 ?>
