@@ -77,9 +77,6 @@ if (isset($pageSettings[$currentScript])) {
                 <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
-                <li class="nav-item d-none d-sm-inline-block">
-                    <a href="#" class="nav-link">Home</a>
-                </li>
             </ul>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
@@ -145,16 +142,16 @@ if (isset($pageSettings[$currentScript])) {
                                 foreach ($breadcrumbs as $index => $breadcrumb):
                                     $isActive = ($index == $totalBreadcrumbs - 1); // Check if it is the last breadcrumb
                                     ?>
-                                    <li class="breadcrumb-item <?php if ($isActive)
+                                <li class="breadcrumb-item <?php if ($isActive)
                                         echo 'active'; ?>" aria-current="page">
-                                        <?php if (!$isActive): ?>
-                                            <a href="<?php echo $breadcrumb['link']; ?>">
-                                                <?php echo $breadcrumb['title']; ?>
-                                            </a>
-                                        <?php else: ?>
-                                            <?php echo $breadcrumb['title']; // No link for active breadcrumb ?>
-                                        <?php endif; ?>
-                                    </li>
+                                    <?php if (!$isActive): ?>
+                                    <a href="<?php echo $breadcrumb['link']; ?>">
+                                        <?php echo $breadcrumb['title']; ?>
+                                    </a>
+                                    <?php else: ?>
+                                    <?php echo $breadcrumb['title']; // No link for active breadcrumb ?>
+                                    <?php endif; ?>
+                                </li>
                                 <?php endforeach; ?>
                             </ol>
                         </div>

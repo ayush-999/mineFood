@@ -12,9 +12,10 @@ if (isset($_POST['submitAction'])) {
     $categoryName = $_POST['categoryName'];
     $orderNumber = $_POST['orderNumber'];
     $status = $_POST['categoryStatus'];
+    $added_on = date('Y-m-d h:i:s');
 
     if ($action == 'add') {
-        $result = $category->add_category($categoryName, $orderNumber, $status);
+        $result = $category->add_category($categoryName, $orderNumber, $status, $added_on);
         if ($result == "Category already exists") {
             $_SESSION['message'] = 'Category already exists';
         } else {
@@ -22,7 +23,7 @@ if (isset($_POST['submitAction'])) {
         }
     } else if ($action == 'update') {
         $categoryId = $_POST['categoryId']; // Make sure this input is included in the form for updates
-        $result = $category->update_category($categoryId, $categoryName, $orderNumber, $status);
+        $result = $category->update_category($categoryId, $categoryName, $orderNumber, $status, $added_on);
         $_SESSION['message'] = $result;
     }
     header("Location: category.php");

@@ -10,7 +10,7 @@
             <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" id="categoryForm">
                 <div class="modal-body">
                     <input type="hidden" id="categoryId" name="categoryId" value="">
-                    <input type="hidden" name="submitAction" id="submitAction" value="">
+                    <input type="hidden" id="submitAction" name="submitAction" value="">
                     <div class="form-group">
                         <label for="categoryName">Category Name</label>
                         <input type="text" class="form-control" id="categoryName" name="categoryName"

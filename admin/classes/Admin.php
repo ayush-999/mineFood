@@ -52,7 +52,7 @@ class Admin
         }
     }
 
-    public function add_category($categoryName, $orderNumber, $status)
+    public function add_category($categoryName, $orderNumber, $status, $added_on)
     {
         try {
             // Check if the category already exists
@@ -67,11 +67,12 @@ class Admin
             } else {
                 $checkStmt->closeCursor();
                 // Insert new category
-                $strQuery = "CALL sp_addCategory(?, ?, ?)";
+                $strQuery = "CALL sp_addCategory(?, ?, ?, ?)";
                 $stmt = $this->db->prepare($strQuery);
                 $stmt->bindParam(1, $categoryName, PDO::PARAM_STR);
                 $stmt->bindParam(2, $orderNumber, PDO::PARAM_INT);
                 $stmt->bindParam(3, $status, PDO::PARAM_INT);
+                $stmt->bindParam(4, $added_on, PDO::PARAM_STR);
                 $stmt->execute();
                 return "Category added successfully";
             }
@@ -80,7 +81,7 @@ class Admin
         }
     }
 
-    public function update_category($categoryId, $categoryName, $orderNumber, $status)
+    public function update_category($categoryId, $categoryName, $orderNumber, $status, $added_on)
     {
         try {
             $currentNameQuery = "SELECT category_name FROM category WHERE id = ?";
@@ -105,12 +106,13 @@ class Admin
                 $checkStmt->closeCursor(); // Close the cursor
             }
 
-            $strQuery = "CALL sp_updateCategory(?, ?, ?, ?)";
+            $strQuery = "CALL sp_updateCategory(?, ?, ?, ?, ?)";
             $stmt = $this->db->prepare($strQuery);
             $stmt->bindParam(1, $categoryId, PDO::PARAM_INT);
             $stmt->bindParam(2, $categoryName, PDO::PARAM_STR);
             $stmt->bindParam(3, $orderNumber, PDO::PARAM_INT);
             $stmt->bindParam(4, $status, PDO::PARAM_INT);
+            $stmt->bindParam(5, $added_on, PDO::PARAM_STR);
             $stmt->execute();
             return "Category updated successfully";
         } catch (PDOException $e) {

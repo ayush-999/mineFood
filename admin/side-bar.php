@@ -33,6 +33,15 @@
                         </p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="site-settings.php"
+                        class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'site-settings.php' ? 'active' : '' ?>">
+                        <i class="nav-icon fas fa-cogs"></i>
+                        <p>
+                            Site settings
+                        </p>
+                    </a>
+                </li>
             </ul>
         </nav>
     </div>

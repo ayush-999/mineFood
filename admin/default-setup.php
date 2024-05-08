@@ -21,6 +21,14 @@ $pageSettings = [
             ['title' => 'Home', 'link' => 'index.php'],
             ['title' => 'Category', 'link' => 'category.php'],
         ]
+    ],
+    'site-settings.php' => [
+        'title' => 'Site Setting',
+        'sub-title' => 'Site Setting',
+        'breadcrumbs' => [
+            ['title' => 'Home', 'link' => 'index.php'],
+            ['title' => 'Site Setting', 'link' => 'site-settings.php'],
+        ]
     ]
 ];
 
