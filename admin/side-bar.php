@@ -1,5 +1,8 @@
+<?php
+    $adminDetails = json_decode($admin->getAdminDetails(), true);
+?>
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <a href="#" class="brand-link">
+    <a href="index.php" class="brand-link">
         <img src="assets/img/logo-icon.png" alt="mine food" class="brand-image" style="opacity: .8">
         <span class="brand-text font-weight-light h4"><b>mine</b>food.</span>
     </a>
@@ -7,10 +10,13 @@
     <div class="sidebar">
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="assets/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                <img src="assets/img/no-img.png" class="img-circle sidebar-img" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">Alexander Pierce</a>
+                <a href="profile.php"
+                    class="d-block <?= basename($_SERVER['PHP_SELF']) == 'profile.php' ? 'active' : '' ?>">
+                    <?php echo $adminDetails[0]['name']; ?>
+                </a>
             </div>
         </div>
         <nav class="mt-2">
@@ -30,6 +36,15 @@
                         <i class="nav-icon fas fa-list-ul"></i>
                         <p>
                             Category
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="user.php"
+                        class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'user.php' ? 'active' : '' ?>">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>
+                            Users
                         </p>
                     </a>
                 </li>

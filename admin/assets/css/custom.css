@@ -80,3 +80,12 @@ Home
     background-position: center center;
     background-repeat: no-repeat;
 }
+
+.sidebar-img {
+    width: 35px !important;
+    height: 35px !important;
+    object-fit: cover;
+    border-radius: 50%;
+    background-position: center center;
+    background-repeat: no-repeat;
+}

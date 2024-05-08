@@ -4,11 +4,13 @@ session_start();
 include_once ('config/database.php');
 include_once ('function.php');
 include_once ('default-setup.php');
-
+include_once ('classes/Admin.php');
 
 if (!isset($_SESSION['IS_LOGIN'])) {
     redirect('login.php');
 }
+
+$admin = new Admin($conn);
 
 if (isset($pageSettings[$currentScript])) {
     $pageTitle = $pageSettings[$currentScript]['title'];
@@ -110,7 +112,7 @@ if (isset($pageSettings[$currentScript])) {
                         <img src="assets/img/user2-160x160.jpg" class="navUserImg" alt="User Image">
                     </a>
                     <div class="dropdown-menu dropdown-menu-right pt-1 pb-1 border-0 shadow-sm">
-                        <a href="#" class="dropdown-item">
+                        <a href="profile.php" class="dropdown-item">
                             <i class="fas fa-user mr-2"></i> Profile
                         </a>
                         <a href="logout.php" class="dropdown-item text-danger">

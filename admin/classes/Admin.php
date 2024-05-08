@@ -8,22 +8,9 @@ class Admin
         $this->db = $dbConnection;
     }
 
-    public function admin_login($username, $password)
-    {
-        try {
-            $strQuery = "CALL sp_userLogin(?, ?)";
-            $stmt = $this->db->prepare($strQuery);
-            $stmt->bindParam(1, $username, PDO::PARAM_STR);
-            $stmt->bindParam(2, $password, PDO::PARAM_STR);
-            $stmt->execute();
-            return $stmt->fetch(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            throw new Exception("Database error: " . $e->getMessage());
-        } catch (Exception $e) {
-            throw new Exception("Error: " . $e->getMessage());
-        }
-    }
+    /****************** Category function start ******************/
 
+     // TODO: JSON conversion needs work across categories functions
     public function get_all_categories()
     {
         try {
@@ -120,6 +107,43 @@ class Admin
         }
     }
 
+    /****************** Category function end ******************/
+
+    /****************** Admin function start ******************/
+
+    public function admin_login($username, $password)
+    {
+        try {
+            $strQuery = "CALL sp_userLogin(?, ?)";
+            $stmt = $this->db->prepare($strQuery);
+            $stmt->bindParam(1, $username, PDO::PARAM_STR);
+            $stmt->bindParam(2, $password, PDO::PARAM_STR);
+            $stmt->execute();
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            throw new Exception("Database error: " . $e->getMessage());
+        } catch (Exception $e) {
+            throw new Exception("Error: " . $e->getMessage());
+        }
+    }
+
+    public function updateAdmin($adminId, $username, $password, $email) {
+        // Similar to update_category, handle update logic here
+    }
+
+    public function getAdminDetails() {
+        try {
+            $strQuery = "CALL sp_getAdminDetails()";
+            $stmt = $this->db->prepare($strQuery);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return json_encode($result);
+        } catch (PDOException $e) {
+            throw new Exception("Database error: " . $e->getMessage());
+        } catch (Exception $e) {
+            throw new Exception("Error: " . $e->getMessage());
+        }
+    }
 }
 
 ?>

@@ -1,11 +1,8 @@
 <?php
 include_once ('header.php');
-include_once ('classes/Admin.php');
 
-$category = new Admin($conn);
 $msg = '';
-
-$get_categories = json_decode($category->get_all_categories(), true);
+$get_categories = json_decode($admin->get_all_categories(), true);
 
 if (isset($_POST['submitAction'])) {
     $action = $_POST['submitAction'];
@@ -15,7 +12,7 @@ if (isset($_POST['submitAction'])) {
     $added_on = date('Y-m-d h:i:s');
 
     if ($action == 'add') {
-        $result = $category->add_category($categoryName, $orderNumber, $status, $added_on);
+        $result = $admin->add_category($categoryName, $orderNumber, $status, $added_on);
         if ($result == "Category already exists") {
             $_SESSION['message'] = 'Category already exists';
         } else {
@@ -23,7 +20,7 @@ if (isset($_POST['submitAction'])) {
         }
     } else if ($action == 'update') {
         $categoryId = $_POST['categoryId']; // Make sure this input is included in the form for updates
-        $result = $category->update_category($categoryId, $categoryName, $orderNumber, $status, $added_on);
+        $result = $admin->update_category($categoryId, $categoryName, $orderNumber, $status, $added_on);
         $_SESSION['message'] = $result;
     }
     header("Location: category.php");

@@ -22,12 +22,28 @@ $pageSettings = [
             ['title' => 'Category', 'link' => 'category.php'],
         ]
     ],
+    'user.php' => [
+        'title' => 'Users',
+        'sub-title' => 'Users Master',
+        'breadcrumbs' => [
+            ['title' => 'Home', 'link' => 'index.php'],
+            ['title' => 'Users', 'link' => 'user.php'],
+        ]
+    ],
     'site-settings.php' => [
         'title' => 'Site Setting',
         'sub-title' => 'Site Setting',
         'breadcrumbs' => [
             ['title' => 'Home', 'link' => 'index.php'],
             ['title' => 'Site Setting', 'link' => 'site-settings.php'],
+        ]
+    ],
+    'profile.php' => [
+        'title' => 'Profile',
+        'sub-title' => 'Profile Setting',
+        'breadcrumbs' => [
+            ['title' => 'Home', 'link' => 'index.php'],
+            ['title' => 'Profile Setting', 'link' => 'profile.php'],
         ]
     ]
 ];
