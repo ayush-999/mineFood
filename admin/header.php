@@ -20,6 +20,12 @@ if (isset($pageSettings[$currentScript])) {
     $pageTitle = "mine food";
     $breadcrumbs = [];
 }
+
+$adminDetails = json_decode($admin->getAdminDetails(), true);
+
+$profileImg = $adminDetails['admin_img'] ?? '';
+$imagePath = $profileImg ? 'uploads/admin/profile-pic/' . $profileImg : 'assets/img/avatar6.png';
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -63,10 +69,8 @@ if (isset($pageSettings[$currentScript])) {
     <!-- SweetAlert2 -->
     <link rel="stylesheet" href="assets/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
     <script src="assets/plugins/sweetalert2/sweetalert2.min.js"></script>
-
-    <!-- SweetAlert2 -->
-
-    <!-- Toastr -->
+    <!-- Img preview -->
+    <script src="assets/plugins/imagePreview/imoViewer.js"></script>
 
 
 </head>
@@ -109,7 +113,7 @@ if (isset($pageSettings[$currentScript])) {
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link" data-toggle="dropdown" href="#">
-                        <img src="assets/img/user2-160x160.jpg" class="navUserImg" alt="User Image">
+                        <img src="<?php echo $imagePath; ?>" class="navUserImg" alt="User Image">
                     </a>
                     <div class="dropdown-menu dropdown-menu-right pt-1 pb-1 border-0 shadow-sm">
                         <a href="profile.php" class="dropdown-item">

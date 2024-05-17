@@ -1,6 +1,3 @@
-<?php
-    $adminDetails = json_decode($admin->getAdminDetails(), true);
-?>
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <a href="index.php" class="brand-link">
         <img src="assets/img/logo-icon.png" alt="mine food" class="brand-image" style="opacity: .8">
@@ -10,12 +7,12 @@
     <div class="sidebar">
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="assets/img/no-img.png" class="img-circle sidebar-img" alt="User Image">
+                <img src="<?php echo $imagePath; ?>" class="img-circle sidebar-img" alt="User Image">
             </div>
             <div class="info">
                 <a href="profile.php"
                     class="d-block <?= basename($_SERVER['PHP_SELF']) == 'profile.php' ? 'active' : '' ?>">
-                    <?php echo $adminDetails[0]['name']; ?>
+                    <?php echo $adminDetails['name']; ?>
                 </a>
             </div>
         </div>

@@ -107,13 +107,11 @@ class Admin
         }
     }
 
-    /****************** Category function end ******************/
-
     /****************** Admin function start ******************/
 
     public function admin_login($username, $password)
     {
-        try {
+        try {   
             $strQuery = "CALL sp_userLogin(?, ?)";
             $stmt = $this->db->prepare($strQuery);
             $stmt->bindParam(1, $username, PDO::PARAM_STR);
@@ -127,8 +125,30 @@ class Admin
         }
     }
 
-    public function updateAdmin($adminId, $username, $password, $email) {
-        // Similar to update_category, handle update logic here
+    public function updateAdmin($profileId, $profileName, $profileUsername, $profileEmail, $profilePassword, $profileAddress, $profileMobile, $added_on, $profileImg) {
+        try {
+            $strQuery = "CALL sp_updateAdmin(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $stmt = $this->db->prepare($strQuery);
+            $stmt->bindParam(1, $profileId, PDO::PARAM_INT);
+            $stmt->bindParam(2, $profileName, PDO::PARAM_STR);
+            $stmt->bindParam(3, $profileUsername, PDO::PARAM_STR);
+            $stmt->bindParam(4, $profilePassword, PDO::PARAM_STR);
+            $stmt->bindParam(5, $profileEmail, PDO::PARAM_STR);
+            $stmt->bindParam(6, $profileMobile, PDO::PARAM_STR);
+            $stmt->bindParam(7, $added_on, PDO::PARAM_STR);
+            $stmt->bindParam(8, $profileAddress, PDO::PARAM_STR);
+            $stmt->bindParam(9, $profileImg, PDO::PARAM_STR);
+            $stmt->execute();
+            $result = $stmt->rowCount();
+            if ($result > 0) {
+                return json_encode(["message" => "Profile updated successfully"]);
+            } else {
+                return json_encode(["message" => "Profile not updated"]);
+            }
+            // return "Profile updated successfully";
+        } catch (PDOException $e) {
+            throw new Exception("Database error: " . $e->getMessage());
+        }
     }
 
     public function getAdminDetails() {
@@ -136,7 +156,7 @@ class Admin
             $strQuery = "CALL sp_getAdminDetails()";
             $stmt = $this->db->prepare($strQuery);
             $stmt->execute();
-            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
             return json_encode($result);
         } catch (PDOException $e) {
             throw new Exception("Database error: " . $e->getMessage());

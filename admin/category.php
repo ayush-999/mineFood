@@ -44,7 +44,7 @@ if (isset($_SESSION['message'])) {
                         <b><?php echo $pageSubTitle; ?></b>
                     </h5>
                     <button class="btn btn-success btn-sm add-btn" type="button" data-toggle="modal"
-                        data-target="#category-modal"><i class="fas fa-plus mr-1"></i>Add</button>
+                        data-target="#category-modal">Add</button>
                 </div>
             </div>
             <!-- /.card-header -->
