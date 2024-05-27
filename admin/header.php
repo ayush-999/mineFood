@@ -72,6 +72,10 @@ $imagePath = $profileImg ? 'uploads/admin/profile-pic/' . $profileImg : 'assets/
     <!-- Img preview -->
     <script src="assets/plugins/imagePreview/imoViewer.js"></script>
 
+    <!-- intlTelInput -->
+    <link rel="stylesheet" href="assets/plugins/intlTelInput/css/intlTelInput.min.css">
+    <script src="assets/plugins/intlTelInput/js/intlTelInputWithUtils.min.js"></script>
+
 
 </head>
 

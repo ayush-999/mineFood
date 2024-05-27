@@ -42,9 +42,9 @@
                             <input type="email" class="form-control" id="email" name="email"
                                 placeholder="Enter email address" value="" required>
                         </div>
-                        <div class="col-md-6 form-group">
+                        <div class="col-md-6 form-group tel-wrapper">
                             <label for="mobile">Mobile</label>
-                            <input type="text" class="form-control" id="mobile" name="mobile"
+                            <input type="tel" class="form-control" id="mobile" name="mobile"
                                 placeholder="Enter mobile number" value="" required>
                         </div>
                     </div>
@@ -74,3 +74,17 @@
         </div>
     </div>
 </div>
+
+<script>
+const input = document.querySelector("#mobile");
+window.intlTelInput(input, {
+    initialCountry: "auto",
+    geoIpLookup: callback => {
+        fetch("https://ipapi.co/json")
+            .then(res => res.json())
+            .then(data => callback(data.country_code))
+            .catch(() => callback("us"));
+    },
+    separateDialCode: true,
+});
+</script>

@@ -186,3 +186,8 @@ Profile
     font-weight: 400;
     font-size: 14px;
 }
+
+.tel-wrapper {
+    display: flex;
+    flex-direction: column;
+}
