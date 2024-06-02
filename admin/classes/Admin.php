@@ -164,6 +164,9 @@ class Admin
             throw new Exception("Error: " . $e->getMessage());
         }
     }
+
+    /****************** User function start ******************/
+
 }
 
 ?>

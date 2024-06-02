@@ -74,8 +74,11 @@ if (isset($_POST['submit'])) {
     <link rel="stylesheet" href="assets/css/adminlte.min.css">
     <!-- Toastr -->
     <link rel="stylesheet" href="assets/plugins/toastr/toastr.min.css">
-    <!-- custom style -->
-    <link rel="stylesheet" href="assets/css/custom.css">
+    <!-- common style -->
+    <link rel="stylesheet" href="assets/css/common.css">
+    <script src="assets/js/common.js"></script>
+    <!--========================= Pages JS =========================-->
+    <script src="assets/js/pages/login.js"></script>
 </head>
 
 <body class="hold-transition login-page">
@@ -128,8 +131,6 @@ if (isset($_POST['submit'])) {
     <script src="assets/js/adminlte.min.js"></script>
     <!-- Toastr -->
     <script src="assets/plugins/toastr/toastr.min.js"></script>
-    <!--  -->
-    <script src="assets/js/pages/login.js"></script>
     <script type="text/javascript">
     $(document).ready(function() {
         toastr.options = {

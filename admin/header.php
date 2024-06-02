@@ -59,8 +59,8 @@ $imagePath = $profileImg ? 'uploads/admin/profile-pic/' . $profileImg : 'assets/
     <link rel="stylesheet" href="assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
     <link rel="stylesheet" href="assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
-    <!-- custom style -->
-    <link rel="stylesheet" href="assets/css/custom.css">
+    <!-- common style -->
+    <link rel="stylesheet" href="assets/css/common.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="assets/css/adminlte.min.css">
     <!-- Toastr -->
@@ -76,7 +76,10 @@ $imagePath = $profileImg ? 'uploads/admin/profile-pic/' . $profileImg : 'assets/
     <link rel="stylesheet" href="assets/plugins/intlTelInput/css/intlTelInput.min.css">
     <script src="assets/plugins/intlTelInput/js/intlTelInputWithUtils.min.js"></script>
 
-
+    <!--========================= Pages JS =========================-->
+    <script src="assets/js/common.js"></script>
+    <script src="assets/js/pages/category.js"></script>
+    <script src="assets/js/pages/profile.js"></script>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -141,7 +144,7 @@ $imagePath = $profileImg ? 'uploads/admin/profile-pic/' . $profileImg : 'assets/
             <!-- Content Header (Page header) -->
             <section class="content-header">
                 <div class="container-fluid">
-                    <div class="row mb-2">
+                    <div class="row">
                         <div class="col-sm-6">
 
                         </div>
