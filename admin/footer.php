@@ -5,14 +5,14 @@
 </div>
 <!-- /.content-wrapper -->
 <footer class="main-footer">
-    <strong>Copyright &copy;
+    <small>Copyright &copy;
         <script type="text/javascript">
         var year = new Date();
         document.write(year.getFullYear());
         </script>
         <a href="https://github.com/ayush-999">Ayush ❤️</a>.
-    </strong> All rights
-    reserved.
+        All rights reserved.
+    </small>
 </footer>
 </div>
 <!-- ./wrapper -->

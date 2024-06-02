@@ -20,7 +20,7 @@ $(document).ready(function () {
          },
          mobile: {
             required: true,
-            maxlength: 13,
+            maxlength: 15,
          },
          address: {
             required: true,

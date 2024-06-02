@@ -171,6 +171,24 @@ if (isset($_SESSION['message'])) {
 
 <script type="text/javascript">
 $(document).ready(function() {
+    const input = document.querySelector("#mobile");
+    const iti = window.intlTelInput(input, {
+        initialCountry: "auto",
+        geoIpLookup: callback => {
+            fetch("https://ipapi.co/json")
+                .then(res => res.json())
+                .then(data => callback(data.country_code))
+                .catch(() => callback("us"));
+        },
+        separateDialCode: true,
+    });
+
+    // Handle form submission
+    document.getElementById('profileForm').addEventListener('submit', function(event) {
+        const formattedNumber = iti.getNumber();
+        input.value = formattedNumber; // Update the input with the formatted number
+    });
+
     $('.add-btn').on('click', function() {
         var profileId = $(this).data('id');
         var name = $(this).data('name');
@@ -185,9 +203,11 @@ $(document).ready(function() {
         $('#fullName').val(name);
         $('#username').val(username);
         $('#email').val(email);
-        $('#mobile').val(mobile);
         $('#password').val(password);
         $('#address').val(address);
+        // Set the phone number
+        iti.setNumber(mobile);
+
         $('#profile-modal').modal('show');
     });
 
@@ -225,14 +245,6 @@ $(document).ready(function() {
     $('#profileImg').imoViewer({
         'preview': '#image-preview',
     })
-
-    // $('#profileImg').on('change', function() {
-    //     var reader = new FileReader();
-    //     reader.onload = function(e) {
-    //         $('#image-preview').attr('src', e.target.result);
-    //     }
-    //     reader.readAsDataURL(this.files[0]);
-    // });
 });
 </script>
 
