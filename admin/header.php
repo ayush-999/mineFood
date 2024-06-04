@@ -79,6 +79,7 @@ $imagePath = $profileImg ? 'uploads/admin/profile-pic/' . $profileImg : 'assets/
     <!--========================= Pages JS =========================-->
     <script src="assets/js/common.js"></script>
     <script src="assets/js/pages/category.js"></script>
+    <script src="assets/js/pages/user.js"></script>
     <script src="assets/js/pages/profile.js"></script>
 </head>
 

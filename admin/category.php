@@ -34,7 +34,6 @@ if (isset($_SESSION['message'])) {
     unset($_SESSION['message']); // Clear the message so it doesn't persist on refresh
 }
 ?>
-
 <div class="row">
     <div class="col-12">
         <div class="card">
@@ -78,11 +77,11 @@ if (isset($_SESSION['message'])) {
                                     data-name="<?php echo htmlspecialchars($category['category_name']); ?>"
                                     data-order="<?php echo $category['order_number']; ?>"
                                     data-status="<?php echo $category['status']; ?>">
-                                    <i class="fas fa-edit mr-1"></i>Edit
+                                    Edit
                                 </button>
                                 <button class="btn btn-danger btn-xs delete-category"
                                     data-id="<?php echo $category['id']; ?>" type="button">
-                                    <i class="fas fa-trash-alt mr-1"></i> Delete
+                                    Delete
                                 </button>
                             </td>
                         </tr>
@@ -130,6 +129,8 @@ $(document).ready(function() {
     }
 
     $('.add-btn').on('click', function() {
+        $('#category-modal .modal-title').text('Add Category');
+        $('#category-modal .btn-block').text('Submit');
         $('#submitAction').val('add');
         $('#categoryId').val(''); // Clear in case of previously set
         $('#categoryName').val('');
@@ -139,6 +140,8 @@ $(document).ready(function() {
     });
 
     $('.edit-btn').on('click', function() {
+        $('#category-modal .modal-title').text('Edit Category');
+        $('#category-modal .btn-block').text('Update');
         var categoryId = $(this).data('id');
         var categoryName = $(this).data('name');
         var orderNumber = $(this).data('order');

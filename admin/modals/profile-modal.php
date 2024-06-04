@@ -41,6 +41,7 @@
                                 placeholder="Enter email address" value="" required>
                         </div>
                         <div class="col-md-6 form-group mb-0 tel-wrapper">
+                            <!-- TODO Profile initialCountry not working properly need to look -->
                             <label for="mobile">Mobile</label>
                             <input type="tel" class="form-control" id="mobile" name="mobile"
                                 placeholder="Enter mobile number" value="" required>

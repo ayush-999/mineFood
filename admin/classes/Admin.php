@@ -166,7 +166,102 @@ class Admin
     }
 
     /****************** User function start ******************/
+    public function get_all_users()
+    {
+        try {
+            $strQuery = "CALL sp_getAllUsers()";
+            $stmt = $this->db->prepare($strQuery);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return json_encode($result);
+        } catch (PDOException $e) {
+            throw new Exception("Database error: " . $e->getMessage());
+        } catch (Exception $e) {
+            throw new Exception("Error: " . $e->getMessage());
+        }
+    }
 
+    public function delete_user($userId)
+    {
+        try {
+            $strQuery = "CALL sp_deleteUser(?)";
+            $stmt = $this->db->prepare($strQuery);
+            $stmt->bindParam(1, $userId, PDO::PARAM_INT);
+            $stmt->execute();
+            return true;
+        } catch (PDOException $e) {
+            throw new Exception("Database error: " . $e->getMessage());
+        }
+    }
+
+    public function add_user($userName, $userMobile, $userEmail, $status, $added_on)
+    {
+        try {
+            // Check if the user already exists
+            $checkQuery = "CALL sp_checkUserExists(?)";
+            $checkStmt = $this->db->prepare($checkQuery);
+            $checkStmt->bindParam(1, $userName, PDO::PARAM_STR);
+            $checkStmt->execute();
+
+            if ($checkStmt->fetchColumn() > 0) {
+                $checkStmt->closeCursor();
+                return "User already exists";
+            } else {
+                $checkStmt->closeCursor();
+                // Insert new user
+                $strQuery = "CALL sp_addUser(?, ?, ?, ?, ?)";
+                $stmt = $this->db->prepare($strQuery);
+                $stmt->bindParam(1, $userName, PDO::PARAM_STR);
+                $stmt->bindParam(2, $userMobile, PDO::PARAM_STR);
+                $stmt->bindParam(3, $userEmail, PDO::PARAM_STR);
+                $stmt->bindParam(4, $status, PDO::PARAM_INT);
+                $stmt->bindParam(5, $added_on, PDO::PARAM_STR);
+                $stmt->execute();
+                return "User added successfully";
+            }
+        } catch (PDOException $e) {
+            throw new Exception("Database error: " . $e->getMessage());
+        }
+    }
+
+    public function update_user($userId, $userName, $userMobile, $userEmail, $status, $added_on){
+        try {
+            $currentNameQuery = "SELECT name FROM user WHERE id = ?";
+            $currentNameStmt = $this->db->prepare($currentNameQuery);
+            $currentNameStmt->bindParam(1, $userId, PDO::PARAM_INT);
+            $currentNameStmt->execute();
+            $currentName = $currentNameStmt->fetchColumn();
+            $currentNameStmt->closeCursor(); // Close the cursor
+
+            // Check if the name has been changed
+            if ($userName != $currentName) {
+                // If the name has been changed, check if the new name already exists
+                $checkQuery = "CALL sp_checkUserExists(?)";
+                $checkStmt = $this->db->prepare($checkQuery);
+                $checkStmt->bindParam(1, $userName, PDO::PARAM_STR);
+                $checkStmt->execute();
+
+                if ($checkStmt->fetchColumn() > 0) {
+                    $checkStmt->closeCursor();
+                    return "User name already exists";
+                }
+                $checkStmt->closeCursor(); // Close the cursor
+            }
+
+            $strQuery = "CALL sp_updateUser(?, ?, ?, ?, ?, ?)";
+            $stmt = $this->db->prepare($strQuery);
+            $stmt->bindParam(1, $userId, PDO::PARAM_INT);
+            $stmt->bindParam(2, $userName, PDO::PARAM_STR);
+            $stmt->bindParam(3, $userMobile, PDO::PARAM_STR);
+            $stmt->bindParam(4, $userEmail, PDO::PARAM_STR);
+            $stmt->bindParam(5, $status, PDO::PARAM_INT);
+            $stmt->bindParam(6, $added_on, PDO::PARAM_STR);
+            $stmt->execute();
+            return "User updated successfully";
+        } catch (PDOException $e) {
+            throw new Exception("Database error: " . $e->getMessage());
+        }
+    }
 }
 
 ?>

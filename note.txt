@@ -4,5 +4,9 @@ jQuery Validation Plugin : https://jqueryvalidation.org/files/demo/
 
 follow this :- https://intl-tel-input.com/examples/country-sync.html / https://github.com/jackocnr/intl-tel-input/blob/master/README.md
 
+tippyjs: https://atomiks.github.io/tippyjs/
 
-Watch time video part 3 time 00:00 https://www.youtube.com/watch?v=qEgVPZaYkEg&list=PLWCLxMult9xeARrYUNDyt599W4bE9mSOQ&index=3
+simpletip: https://craigsworks.com/projects/simpletip/#
+
+
+Watch time video part 3 time 03:30 https://www.youtube.com/watch?v=qEgVPZaYkEg&list=PLWCLxMult9xeARrYUNDyt599W4bE9mSOQ&index=3
