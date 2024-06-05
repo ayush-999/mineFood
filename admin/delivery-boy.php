@@ -2,29 +2,29 @@
 include_once ('header.php');
 
 $msg = '';
-$get_users = json_decode($admin->get_all_users(), true);
+$get_delivery_boy = json_decode($admin->get_all_delivery_boy(), true);
 
 if (isset($_POST['submitAction'])) {
     $action = $_POST['submitAction'];
-    $userName = $_POST['userName'];
-    $userMobile = $_POST['userMobile'];
-    $userEmail = $_POST['userEmail'];
-    $status = $_POST['userStatus'];
+    $deliveryBoyName = $_POST['deliveryBoyName'];
+    $deliveryBoyMobile = $_POST['deliveryBoyMobile'];
+    $deliveryBoyEmail = $_POST['deliveryBoyEmail'];
+    $status = $_POST['deliveryBoyStatus'];
     $added_on = date('Y-m-d h:i:s');
 
     if ($action == 'add') {
-        $result = $admin->add_user($userName, $userMobile, $userEmail, $status, $added_on);
-        if ($result == "User already exists") {
-            $_SESSION['message'] = 'User already exists';
+        $result = $admin->add_deliveryBoy($deliveryBoyName, $deliveryBoyMobile, $deliveryBoyEmail, $status, $added_on);
+        if ($result == "Delivery boy already exists") {
+            $_SESSION['message'] = 'Delivery boy already exists';
         } else {
-            $_SESSION['message'] = 'User added successfully';
+            $_SESSION['message'] = 'Delivery boy added successfully';
         }
     } else if ($action == 'update') {
-        $userId = $_POST['userId'];
-        $result = $admin->update_user($userId, $userName, $userMobile, $userEmail, $status, $added_on);
+        $deliveryBoyId = $_POST['deliveryBoyId'];
+        $result = $admin->update_deliveryBoy($deliveryBoyId, $deliveryBoyName, $deliveryBoyMobile, $deliveryBoyEmail, $status, $added_on);
         $_SESSION['message'] = $result;
     }
-    header("Location: user.php");
+    header("Location: delivery-boy.php");
     exit;
 }
 
@@ -43,14 +43,14 @@ if (isset($_SESSION['message'])) {
                         <b><?php echo $pageSubTitle; ?></b>
                     </h5>
                     <button class="btn btn-success btn-sm add-btn" type="button" data-toggle="modal"
-                        data-target="#user-modal">
+                        data-target="#delivery-boy-modal">
                         <i class="fa-regular fa-plus mr-1"></i>Add
                     </button>
                 </div>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-                <table id="user" class="table table-bordered table-striped table-hover text-nowrap">
+                <table id="deliveryBoy" class="table table-bordered table-striped table-hover text-nowrap">
                     <thead>
                         <tr>
                             <th style="width: 10px">S.No.</th>
@@ -64,45 +64,45 @@ if (isset($_SESSION['message'])) {
                         </tr>
                     </thead>
                     <tbody>
-                        <?php if (!empty($get_users)): ?>
-                        <?php foreach ($get_users as $index => $users): ?>
+                        <?php if (!empty($get_delivery_boy)): ?>
+                        <?php foreach ($get_delivery_boy as $index => $delivery_boy): ?>
                         <tr>
                             <td><?php echo $index + 1; ?></td>
-                            <td><?php echo htmlspecialchars($users['name']); ?></td>
-                            <td><?php echo htmlspecialchars($users['mobile']); ?></td>
-                            <td><?php echo htmlspecialchars($users['email']); ?></td>
+                            <td><?php echo htmlspecialchars($delivery_boy['name']); ?></td>
+                            <td><?php echo htmlspecialchars($delivery_boy['mobile']); ?></td>
+                            <td><?php echo htmlspecialchars($delivery_boy['email']); ?></td>
                             <td>
                                 <span
-                                    class="badge <?php echo $users['email_verify'] == 0 ? 'bg-secondary' : 'bg-primary'; ?>">
-                                    <?php echo $users['email_verify'] == 0 ? 'Pending' : 'Verified'; ?>
+                                    class="badge <?php echo $delivery_boy['email_verify'] == 0 ? 'bg-secondary' : 'bg-primary'; ?>">
+                                    <?php echo $delivery_boy['email_verify'] == 0 ? 'Pending' : 'Verified'; ?>
                                 </span>
                             </td>
                             <td>
                                 <span
-                                    class="badge <?php echo $users['status'] == 0 ? 'bg-danger' : ($users['status'] == 1 ? 'bg-success' : 'bg-warning'); ?>">
+                                    class="badge <?php echo $delivery_boy['status'] == 0 ? 'bg-danger' : ($delivery_boy['status'] == 1 ? 'bg-success' : 'bg-warning'); ?>">
                                     <?php 
-                                        echo $users['status'] == 0 ? 'Inactive' : 
-                                            ($users['status'] == 1 ? 'Active' : 'Blocked');
+                                        echo $delivery_boy['status'] == 0 ? 'Inactive' : 
+                                            ($delivery_boy['status'] == 1 ? 'Active' : 'Blocked');
                                     ?>
                                 </span>
                             </td>
                             <td>
                                 <?php
-                                    $date = new DateTime($users['added_on']);
+                                    $date = new DateTime($delivery_boy['added_on']);
                                     echo $date->format('d-m-Y');
                                 ?>
                             </td>
                             <td>
                                 <button class="btn btn-success btn-xs mr-2 edit-btn" type="button" data-toggle="modal"
-                                    data-target="#user-modal" data-id="<?php echo $users['id']; ?>"
-                                    data-name="<?php echo htmlspecialchars($users['name']); ?>"
-                                    data-email="<?php echo htmlspecialchars($users['email']); ?>"
-                                    data-mobile="<?php echo htmlspecialchars($users['mobile']); ?>"
-                                    data-status="<?php echo $users['status']; ?>">
+                                    data-target="#delivery-boy-modal" data-id="<?php echo $delivery_boy['id']; ?>"
+                                    data-name="<?php echo htmlspecialchars($delivery_boy['name']); ?>"
+                                    data-email="<?php echo htmlspecialchars($delivery_boy['email']); ?>"
+                                    data-mobile="<?php echo htmlspecialchars($delivery_boy['mobile']); ?>"
+                                    data-status="<?php echo $delivery_boy['status']; ?>">
                                     <i class="fa-regular fa-pen-to-square mr-1"></i>Edit
                                 </button>
-                                <button class="btn btn-danger btn-xs delete-user" data-id="<?php echo $users['id']; ?>"
-                                    type="button">
+                                <button class="btn btn-danger btn-xs delete-deliveryBoy"
+                                    data-id="<?php echo $delivery_boy['id']; ?>" type="button">
                                     <i class="fa-regular fa-trash mr-1"></i>Delete
                                 </button>
                             </td>
@@ -110,7 +110,7 @@ if (isset($_SESSION['message'])) {
                         <?php endforeach; ?>
                         <?php else: ?>
                         <tr>
-                            <td colspan="7" style="text-align:center;">No user found</td>
+                            <td colspan="7" style="text-align:center;">No Delivery Boy found</td>
                         </tr>
                         <?php endif; ?>
                     </tbody>
@@ -119,12 +119,12 @@ if (isset($_SESSION['message'])) {
         </div>
     </div>
 </div>
-<?php include_once ('./modals/user-modal.php') ?>
+<?php include_once ('./modals/delivery-boy-modal.php') ?>
 
 <script type="text/javascript">
 $(document).ready(function() {
 
-    const input = document.querySelector("#userMobile");
+    const input = document.querySelector("#deliveryBoyMobile");
     const iti = window.intlTelInput(input, {
         initialCountry: "auto",
         geoIpLookup: callback => {
@@ -137,38 +137,38 @@ $(document).ready(function() {
     });
 
     // Handle form submission
-    document.getElementById('userForm').addEventListener('submit', function(event) {
+    document.getElementById('deliveryBoyForm').addEventListener('submit', function(event) {
         const formattedNumber = iti.getNumber();
         input.value = formattedNumber; // Update the input with the formatted number
     });
 
     $('.add-btn').on('click', function() {
-        $('#user-modal .modal-title').text('Add User');
-        $('#user-modal .btn-block').text('Submit');
+        $('#delivery-boy-modal .modal-title').text('Add Delivery Boy');
+        $('#delivery-boy-modal .btn-block').text('Submit');
         $('#submitAction').val('add');
-        $('#userId').val('');
-        $('#userName').val('');
-        $('#userMobile').val('');
-        $('#userEmail').val('');
-        $('#userStatus').val('');
-        $('#user-modal').modal('show');
+        $('#deliveryBoyId').val('');
+        $('#deliveryBoyName').val('');
+        $('#deliveryBoyMobile').val('');
+        $('#deliveryBoyEmail').val('');
+        $('#deliveryBoyStatus').val('');
+        $('#delivery-boy-modal').modal('show');
     });
 
     $('.edit-btn').on('click', function() {
-        $('#user-modal .modal-title').text('Edit User');
-        $('#user-modal .btn-block').text('Update');
-        var userId = $(this).data('id');
-        var userName = $(this).data('name');
-        var userMobile = $(this).data('mobile');
-        var userEmail = $(this).data('email');
+        $('#delivery-boy-modal .modal-title').text('Edit Delivery Boy');
+        $('#delivery-boy-modal .btn-block').text('Update');
+        var deliveryBoyId = $(this).data('id');
+        var deliveryBoyName = $(this).data('name');
+        var deliveryBoyMobile = $(this).data('mobile');
+        var deliveryBoyEmail = $(this).data('email');
         var status = $(this).data('status');
         $('#submitAction').val('update');
-        $('#userId').val(userId);
-        $('#userName').val(userName);
-        $('#userEmail').val(userEmail);
-        $('#userStatus').val(status);
-        iti.setNumber(userMobile);
-        $('#user-modal').modal('show');
+        $('#deliveryBoyId').val(deliveryBoyId);
+        $('#deliveryBoyName').val(deliveryBoyName);
+        $('#deliveryBoyEmail').val(deliveryBoyEmail);
+        $('#deliveryBoyStatus').val(status);
+        iti.setNumber(deliveryBoyMobile);
+        $('#delivery-boy-modal').modal('show');
     });
 
     toastr.options = {
@@ -190,9 +190,10 @@ $(document).ready(function() {
     };
     let message = <?php echo json_encode($msg); ?>;
     if (message) {
-        if (message === "User already exists" || message === "User name already exists") {
+        if (message === "Delivery boy already exists" || message === "Delivery boy name already exists") {
             toastr.error(message);
-        } else if (message === "User added successfully" || message === "User updated successfully") {
+        } else if (message === "Delivery boy added successfully" || message ===
+            "Delivery boy updated successfully") {
             toastr.success(message);
         }
     }

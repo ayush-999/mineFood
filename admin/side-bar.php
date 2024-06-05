@@ -46,6 +46,15 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="delivery-boy.php"
+                        class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'delivery-boy.php' ? 'active' : '' ?>">
+                        <i class="nav-icon fa-solid fa-person-carry-box"></i>
+                        <p>
+                            Delivery Boy
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="site-settings.php"
                         class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'site-settings.php' ? 'active' : '' ?>">
                         <i class="nav-icon fas fa-cogs"></i>

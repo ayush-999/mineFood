@@ -43,7 +43,7 @@ if (isset($_SESSION['message'])) {
                         <b><?php echo $pageSubTitle; ?></b>
                     </h5>
                     <button class="btn btn-success btn-sm add-btn" type="button" data-toggle="modal"
-                        data-target="#category-modal">Add</button>
+                        data-target="#category-modal"><i class="fa-regular fa-plus mr-1"></i>Add</button>
                 </div>
             </div>
             <!-- /.card-header -->
@@ -77,11 +77,11 @@ if (isset($_SESSION['message'])) {
                                     data-name="<?php echo htmlspecialchars($category['category_name']); ?>"
                                     data-order="<?php echo $category['order_number']; ?>"
                                     data-status="<?php echo $category['status']; ?>">
-                                    Edit
+                                    <i class="fa-regular fa-pen-to-square mr-1"></i>Edit
                                 </button>
                                 <button class="btn btn-danger btn-xs delete-category"
                                     data-id="<?php echo $category['id']; ?>" type="button">
-                                    Delete
+                                    <i class="fa-regular fa-trash mr-1"></i>Delete
                                 </button>
                             </td>
                         </tr>

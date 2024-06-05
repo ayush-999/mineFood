@@ -67,7 +67,7 @@ if (isset($_POST['submit'])) {
         rel="stylesheet">
     <link rel="shortcut icon" href="assets/img/favicon.ico" type="image/x-icon">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="assets/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="assets/plugins/fontawesome/css/all.min.css">
     <!-- icheck bootstrap -->
     <link rel="stylesheet" href="assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
     <!-- Theme style -->
@@ -77,8 +77,6 @@ if (isset($_POST['submit'])) {
     <!-- common style -->
     <link rel="stylesheet" href="assets/css/common.css">
     <script src="assets/js/common.js"></script>
-    <!--========================= Pages JS =========================-->
-    <script src="assets/js/pages/login.js"></script>
 </head>
 
 <body class="hold-transition login-page">
@@ -131,6 +129,8 @@ if (isset($_POST['submit'])) {
     <script src="assets/js/adminlte.min.js"></script>
     <!-- Toastr -->
     <script src="assets/plugins/toastr/toastr.min.js"></script>
+    <!--========================= Pages JS =========================-->
+    <script src="assets/js/pages/login.js"></script>
     <script type="text/javascript">
     $(document).ready(function() {
         toastr.options = {

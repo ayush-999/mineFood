@@ -155,7 +155,7 @@ if (isset($_SESSION['message'])) {
                                         data-mobile="<?php echo $adminDetails['mobile_no']; ?>"
                                         data-password="<?php echo $adminDetails['password']; ?>"
                                         data-address="<?php echo $adminDetails['address']; ?>">
-                                        <i class="fas fa-edit fs-12 mr-1"></i>Edit
+                                        <i class="fa-regular fa-pen-to-square fs-14 mr-1"></i>Edit
                                     </button>
                                 </div>
                             </div>

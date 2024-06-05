@@ -262,6 +262,104 @@ class Admin
             throw new Exception("Database error: " . $e->getMessage());
         }
     }
+
+    /****************** Delivery Boy function start ******************/
+    public function get_all_delivery_boy()
+    {
+        try {
+            $strQuery = "CALL sp_getAllDeliveryBoy()";
+            $stmt = $this->db->prepare($strQuery);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return json_encode($result);
+        } catch (PDOException $e) {
+            throw new Exception("Database error: " . $e->getMessage());
+        } catch (Exception $e) {
+            throw new Exception("Error: " . $e->getMessage());
+        }
+    }
+
+    public function delete_deliveryBoy($deliveryBoyId)
+    {
+        try {
+            $strQuery = "CALL sp_deleteDeliveryBoy(?)";
+            $stmt = $this->db->prepare($strQuery);
+            $stmt->bindParam(1, $deliveryBoyId, PDO::PARAM_INT);
+            $stmt->execute();
+            return true;
+        } catch (PDOException $e) {
+            throw new Exception("Database error: " . $e->getMessage());
+        }
+    }
+
+    public function add_deliveryBoy($deliveryBoyName, $deliveryBoyMobile, $deliveryBoyEmail, $status, $added_on)
+    {
+        try {
+            // Check if the Delivery Boy already exists
+            $checkQuery = "CALL sp_checkDeliveryBoyExists(?)";
+            $checkStmt = $this->db->prepare($checkQuery);
+            $checkStmt->bindParam(1, $deliveryBoyName, PDO::PARAM_STR);
+            $checkStmt->execute();
+
+            if ($checkStmt->fetchColumn() > 0) {
+                $checkStmt->closeCursor();
+                return "Delivery boy already exists";
+            } else {
+                $checkStmt->closeCursor();
+                // Insert new Delivery Boy
+                $strQuery = "CALL sp_addDeliveryBoy(?, ?, ?, ?, ?)";
+                $stmt = $this->db->prepare($strQuery);
+                $stmt->bindParam(1, $deliveryBoyName, PDO::PARAM_STR);
+                $stmt->bindParam(2, $deliveryBoyMobile, PDO::PARAM_STR);
+                $stmt->bindParam(3, $deliveryBoyEmail, PDO::PARAM_STR);
+                $stmt->bindParam(4, $status, PDO::PARAM_INT);
+                $stmt->bindParam(5, $added_on, PDO::PARAM_STR);
+                $stmt->execute();
+                return "Delivery boy added successfully";
+            }
+        } catch (PDOException $e) {
+            throw new Exception("Database error: " . $e->getMessage());
+        }
+    }
+
+    public function update_deliveryBoy($deliveryBoyId, $deliveryBoyName, $deliveryBoyMobile, $deliveryBoyEmail, $status, $added_on){
+        try {
+            $currentNameQuery = "SELECT name FROM delivery_boy WHERE id = ?";
+            $currentNameStmt = $this->db->prepare($currentNameQuery);
+            $currentNameStmt->bindParam(1, $deliveryBoyId, PDO::PARAM_INT);
+            $currentNameStmt->execute();
+            $currentName = $currentNameStmt->fetchColumn();
+            $currentNameStmt->closeCursor(); // Close the cursor
+
+            // Check if the name has been changed
+            if ($deliveryBoyName != $currentName) {
+                // If the name has been changed, check if the new name already exists
+                $checkQuery = "CALL sp_checkDeliveryBoyExists(?)";
+                $checkStmt = $this->db->prepare($checkQuery);
+                $checkStmt->bindParam(1, $deliveryBoyName, PDO::PARAM_STR);
+                $checkStmt->execute();
+
+                if ($checkStmt->fetchColumn() > 0) {
+                    $checkStmt->closeCursor();
+                    return "Delivery boy name already exists";
+                }
+                $checkStmt->closeCursor(); // Close the cursor
+            }
+
+            $strQuery = "CALL sp_updateDeliveryBoy(?, ?, ?, ?, ?, ?)";
+            $stmt = $this->db->prepare($strQuery);
+            $stmt->bindParam(1, $deliveryBoyId, PDO::PARAM_INT);
+            $stmt->bindParam(2, $deliveryBoyName, PDO::PARAM_STR);
+            $stmt->bindParam(3, $deliveryBoyMobile, PDO::PARAM_STR);
+            $stmt->bindParam(4, $deliveryBoyEmail, PDO::PARAM_STR);
+            $stmt->bindParam(5, $status, PDO::PARAM_INT);
+            $stmt->bindParam(6, $added_on, PDO::PARAM_STR);
+            $stmt->execute();
+            return "Delivery boy updated successfully";
+        } catch (PDOException $e) {
+            throw new Exception("Database error: " . $e->getMessage());
+        }
+    }
 }
 
 ?>

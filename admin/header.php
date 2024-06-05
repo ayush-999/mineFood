@@ -52,7 +52,7 @@ $imagePath = $profileImg ? 'uploads/admin/profile-pic/' . $profileImg : 'assets/
     <!-- jQuery -->
     <script src="assets/plugins/jquery/jquery.min.js"></script>
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="assets/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="assets/plugins/fontawesome/css/all.min.css">
     <!-- icheck bootstrap -->
     <link rel="stylesheet" href="assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
     <!-- DataTables -->
@@ -81,6 +81,7 @@ $imagePath = $profileImg ? 'uploads/admin/profile-pic/' . $profileImg : 'assets/
     <script src="assets/js/pages/category.js"></script>
     <script src="assets/js/pages/user.js"></script>
     <script src="assets/js/pages/profile.js"></script>
+    <script src="assets/js/pages/deliveryBoy.js"></script>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">

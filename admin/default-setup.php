@@ -45,6 +45,14 @@ $pageSettings = [
             ['title' => 'Home', 'link' => 'index.php'],
             ['title' => 'Profile Setting', 'link' => 'profile.php'],
         ]
+    ],
+    'delivery-boy.php' => [
+        'title' => 'Delivery Boy',
+        'sub-title' => 'Delivery Boy',
+        'breadcrumbs' => [
+            ['title' => 'Home', 'link' => 'index.php'],
+            ['title' => 'Delivery Boy', 'link' => 'delivery-boy.php'],
+        ]
     ]
 ];
 
