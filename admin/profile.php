@@ -147,7 +147,7 @@ if (isset($_SESSION['message'])) {
                             <hr>
                             <div class="row align-items-center justify-content-center">
                                 <div class="col-sm-6">
-                                    <button class="btn btn-success btn-block add-btn" type="button" data-toggle="modal"
+                                    <button class="btn btn-success btn-block edit-btn" type="button" data-toggle="modal"
                                         data-target="#profile-modal" data-id="<?php echo $adminDetails['id']; ?>"
                                         data-name="<?php echo $adminDetails['name']; ?>"
                                         data-username="<?php echo $adminDetails['username']; ?>"
@@ -189,7 +189,7 @@ $(document).ready(function() {
         input.value = formattedNumber; // Update the input with the formatted number
     });
 
-    $('.add-btn').on('click', function() {
+    $('.edit-btn').on('click', function() {
         var profileId = $(this).data('id');
         var name = $(this).data('name');
         var username = $(this).data('username');

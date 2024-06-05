@@ -57,7 +57,7 @@ if (isset($_SESSION['message'])) {
                             <th>Email</th>
                             <th>Verified</th>
                             <th>Status</th>
-                            <th>Add Date</th>
+                            <th>Register Date</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -140,6 +140,35 @@ $(document).ready(function() {
         input.value = formattedNumber; // Update the input with the formatted number
     });
 
+    $('.add-btn').on('click', function() {
+        $('#user-modal .modal-title').text('Add User');
+        $('#user-modal .btn-block').text('Submit');
+        $('#submitAction').val('add');
+        $('#userId').val('');
+        $('#userName').val('');
+        $('#userMobile').val('');
+        $('#userEmail').val('');
+        $('#userStatus').val('');
+        $('#user-modal').modal('show');
+    });
+
+    $('.edit-btn').on('click', function() {
+        $('#user-modal .modal-title').text('Edit User');
+        $('#user-modal .btn-block').text('Update');
+        var userId = $(this).data('id');
+        var userName = $(this).data('name');
+        var userMobile = $(this).data('mobile');
+        var userEmail = $(this).data('email');
+        var status = $(this).data('status');
+        $('#submitAction').val('update');
+        $('#userId').val(userId);
+        $('#userName').val(userName);
+        $('#userEmail').val(userEmail);
+        $('#userStatus').val(status);
+        iti.setNumber(userMobile);
+        $('#user-modal').modal('show');
+    });
+
     toastr.options = {
         "closeButton": true,
         "debug": false,
@@ -165,35 +194,6 @@ $(document).ready(function() {
             toastr.success(message);
         }
     }
-
-    $('.add-btn').on('click', function() {
-        $('#user-modal .modal-title').text('Add User');
-        $('#user-modal .btn-block').text('Submit');
-        $('#submitAction').val('add');
-        $('#userId').val('');
-        $('#userName').val('');
-        $('#userMobile').val('');
-        $('#userEmail').val('');
-        $('#userStatus').val('');
-        $('#user-modal').modal('show');
-    });
-
-    $('.edit-btn').on('click', function() {
-        $('#user-modal .modal-title').text('Edit User');
-        $('#user-modal .btn-block').text('Update');
-        var userId = $(this).data('id');
-        var userName = $(this).data('name');
-        var userMobile = $(this).data('mobile');
-        var userEmail = $(this).data('email');
-        var status = $(this).data('status');
-        $('#submitAction').val('update');
-        $('#userId').val(userId);
-        $('#userName').val(userName);
-        $('#userMobile').val(userMobile);
-        $('#userEmail').val(userEmail);
-        $('#userStatus').val(status);
-        $('#user-modal').modal('show');
-    });
 });
 </script>
 
