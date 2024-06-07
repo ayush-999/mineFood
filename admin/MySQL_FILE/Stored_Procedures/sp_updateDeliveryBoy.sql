@@ -3,7 +3,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_updateDeliveryBoy`(
 	IN `deliveryBoyId` INT,
     IN `deliveryBoyName` VARCHAR(50),
     IN `deliveryBoyMobile` VARCHAR(15),
-    IN `deliveryBoyEmail` VARCHAR(15),
+    IN `deliveryBoyEmail` VARCHAR(50),
     IN `status` INT,
 	IN `addedOn` datetime
 )
