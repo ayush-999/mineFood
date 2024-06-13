@@ -41,3 +41,5 @@ vendor
 *.swp
 *.tmp
 
+note.txt
+sample.sql

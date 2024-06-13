@@ -14,11 +14,7 @@ if (isset($_POST['submitAction'])) {
 
     if ($action == 'add') {
         $result = $admin->add_deliveryBoy($deliveryBoyName, $deliveryBoyMobile, $deliveryBoyEmail, $status, $added_on);
-        if ($result == "Delivery boy already exists") {
-            $_SESSION['message'] = 'Delivery boy already exists';
-        } else {
-            $_SESSION['message'] = 'Delivery boy added successfully';
-        }
+        $_SESSION['message'] = $result;
     } else if ($action == 'update') {
         $deliveryBoyId = $_POST['deliveryBoyId'];
         $result = $admin->update_deliveryBoy($deliveryBoyId, $deliveryBoyName, $deliveryBoyMobile, $deliveryBoyEmail, $status, $added_on);
@@ -190,7 +186,7 @@ $(document).ready(function() {
     };
     let message = <?php echo json_encode($msg); ?>;
     if (message) {
-        if (message === "Delivery boy already exists" || message === "Delivery boy name already exists") {
+        if (message === "Delivery boy with this mobile or email already exists") {
             toastr.error(message);
         } else if (message === "Delivery boy added successfully" || message ===
             "Delivery boy updated successfully") {
