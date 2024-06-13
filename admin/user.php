@@ -38,7 +38,7 @@ if (isset($_SESSION['message'])) {
                     <h5 class="card-title">
                         <b><?php echo $pageSubTitle; ?></b>
                     </h5>
-                    <button class="btn btn-success btn-sm add-btn" type="button" data-toggle="modal"
+                    <button class="btn bg-gradient-success btn-sm add-btn" type="button" data-toggle="modal"
                         data-target="#user-modal">
                         <i class="fa-regular fa-plus mr-1"></i>Add
                     </button>
@@ -69,13 +69,13 @@ if (isset($_SESSION['message'])) {
                             <td><?php echo htmlspecialchars($users['email']); ?></td>
                             <td>
                                 <span
-                                    class="badge <?php echo $users['email_verify'] == 0 ? 'bg-secondary' : 'bg-primary'; ?>">
+                                    class="badge <?php echo $users['email_verify'] == 0 ? 'bg-gradient-secondary' : 'bg-gradient-primary'; ?> font-weight-normal">
                                     <?php echo $users['email_verify'] == 0 ? 'Pending' : 'Verified'; ?>
                                 </span>
                             </td>
                             <td>
                                 <span
-                                    class="badge <?php echo $users['status'] == 0 ? 'bg-danger' : ($users['status'] == 1 ? 'bg-success' : 'bg-warning'); ?>">
+                                    class="badge <?php echo $users['status'] == 0 ? 'bg-gradient-danger' : ($users['status'] == 1 ? 'bg-gradient-success' : 'bg-gradient-warning'); ?> font-weight-normal">
                                     <?php 
                                         echo $users['status'] == 0 ? 'Inactive' : 
                                             ($users['status'] == 1 ? 'Active' : 'Blocked');
@@ -89,16 +89,16 @@ if (isset($_SESSION['message'])) {
                                 ?>
                             </td>
                             <td>
-                                <button class="btn btn-success btn-xs mr-2 edit-btn" type="button" data-toggle="modal"
-                                    data-target="#user-modal" data-id="<?php echo $users['id']; ?>"
+                                <button class="btn bg-gradient-success btn-xs mr-2 edit-btn" type="button"
+                                    data-toggle="modal" data-target="#user-modal" data-id="<?php echo $users['id']; ?>"
                                     data-name="<?php echo htmlspecialchars($users['name']); ?>"
                                     data-email="<?php echo htmlspecialchars($users['email']); ?>"
                                     data-mobile="<?php echo htmlspecialchars($users['mobile']); ?>"
                                     data-status="<?php echo $users['status']; ?>">
                                     <i class="fa-regular fa-pen-to-square mr-1"></i>Edit
                                 </button>
-                                <button class="btn btn-danger btn-xs delete-user" data-id="<?php echo $users['id']; ?>"
-                                    type="button">
+                                <button class="btn bg-gradient-danger btn-xs delete-user"
+                                    data-id="<?php echo $users['id']; ?>" type="button">
                                     <i class="fa-regular fa-trash mr-1"></i>Delete
                                 </button>
                             </td>

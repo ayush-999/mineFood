@@ -42,7 +42,7 @@ if (isset($_SESSION['message'])) {
                     <h5 class="card-title">
                         <b><?php echo $pageSubTitle; ?></b>
                     </h5>
-                    <button class="btn btn-success btn-sm add-btn" type="button" data-toggle="modal"
+                    <button class="btn bg-gradient-success btn-sm add-btn" type="button" data-toggle="modal"
                         data-target="#category-modal"><i class="fa-regular fa-plus mr-1"></i>Add</button>
                 </div>
             </div>
@@ -67,19 +67,20 @@ if (isset($_SESSION['message'])) {
                             <td><?php echo $category['order_number']; ?></td>
                             <td>
                                 <span
-                                    class="badge <?php echo $category['status'] == 0 ? 'bg-danger' : 'bg-success'; ?>">
+                                    class="badge <?php echo $category['status'] == 0 ? 'bg-gradient-danger' : 'bg-gradient-success'; ?> font-weight-normal">
                                     <?php echo $category['status'] == 0 ? 'Inactive' : 'Active'; ?>
                                 </span>
                             </td>
                             <td>
-                                <button class="btn btn-success btn-xs mr-2 edit-btn" type="button" data-toggle="modal"
-                                    data-target="#category-modal" data-id="<?php echo $category['id']; ?>"
+                                <button class="btn bg-gradient-success btn-xs mr-2 edit-btn" type="button"
+                                    data-toggle="modal" data-target="#category-modal"
+                                    data-id="<?php echo $category['id']; ?>"
                                     data-name="<?php echo htmlspecialchars($category['category_name']); ?>"
                                     data-order="<?php echo $category['order_number']; ?>"
                                     data-status="<?php echo $category['status']; ?>">
                                     <i class="fa-regular fa-pen-to-square mr-1"></i>Edit
                                 </button>
-                                <button class="btn btn-danger btn-xs delete-category"
+                                <button class="btn bg-gradient-danger btn-xs delete-category"
                                     data-id="<?php echo $category['id']; ?>" type="button">
                                     <i class="fa-regular fa-trash mr-1"></i>Delete
                                 </button>

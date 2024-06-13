@@ -36,7 +36,7 @@
                             <option value="2">Blocked</option>
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-success btn-block">Submit</button>
+                    <button type="submit" class="btn bg-gradient-success btn-block">Submit</button>
                 </div>
             </form>
         </div>

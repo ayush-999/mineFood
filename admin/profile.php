@@ -147,8 +147,9 @@ if (isset($_SESSION['message'])) {
                             <hr>
                             <div class="row align-items-center justify-content-center">
                                 <div class="col-sm-6">
-                                    <button class="btn btn-success btn-block edit-btn" type="button" data-toggle="modal"
-                                        data-target="#profile-modal" data-id="<?php echo $adminDetails['id']; ?>"
+                                    <button class="btn bg-gradient-success btn-block edit-btn" type="button"
+                                        data-toggle="modal" data-target="#profile-modal"
+                                        data-id="<?php echo $adminDetails['id']; ?>"
                                         data-name="<?php echo $adminDetails['name']; ?>"
                                         data-username="<?php echo $adminDetails['username']; ?>"
                                         data-email="<?php echo $adminDetails['email']; ?>"

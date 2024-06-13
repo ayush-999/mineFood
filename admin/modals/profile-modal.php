@@ -70,7 +70,7 @@
                             <textarea class="form-control" id="address" name="address" rows="3"></textarea>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-success btn-block">Update</button>
+                    <button type="submit" class="btn bg-gradient-success btn-block">Update</button>
                 </div>
             </form>
         </div>

@@ -29,7 +29,7 @@
                             <option value="1">Active</option>
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-success btn-block">Submit</button>
+                    <button type="submit" class="btn bg-gradient-success btn-block">Submit</button>
                 </div>
             </form>
         </div>
