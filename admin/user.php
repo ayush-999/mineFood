@@ -14,11 +14,7 @@ if (isset($_POST['submitAction'])) {
 
     if ($action == 'add') {
         $result = $admin->add_user($userName, $userMobile, $userEmail, $status, $added_on);
-        if ($result == "User already exists") {
-            $_SESSION['message'] = 'User already exists';
-        } else {
-            $_SESSION['message'] = 'User added successfully';
-        }
+        $_SESSION['message'] = $result;
     } else if ($action == 'update') {
         $userId = $_POST['userId'];
         $result = $admin->update_user($userId, $userName, $userMobile, $userEmail, $status, $added_on);
@@ -190,7 +186,7 @@ $(document).ready(function() {
     };
     let message = <?php echo json_encode($msg); ?>;
     if (message) {
-        if (message === "User already exists" || message === "User name already exists") {
+        if (message === "User with this mobile or email already exists") {
             toastr.error(message);
         } else if (message === "User added successfully" || message === "User updated successfully") {
             toastr.success(message);

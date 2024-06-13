@@ -71,6 +71,7 @@ $(document).ready(function () {
          deliveryBoyMobile: {
             required: true,
             maxlength: 15,
+            minlength: 10,
          },
          deliveryBoyEmail: {
             required: true,
@@ -81,16 +82,16 @@ $(document).ready(function () {
          },
       },
       messages: {
-         userName: {
+         deliveryBoyName: {
             required: 'Please enter full name',
          },
-         userMobile: {
+         deliveryBoyMobile: {
             required: 'Please enter mobile number',
          },
-         userEmail: {
+         deliveryBoyEmail: {
             required: 'Please enter email',
          },
-         userStatus: {
+         deliveryBoyStatus: {
             required: 'Please select status',
          },
       },

@@ -62,7 +62,7 @@ $imagePath = $profileImg ? 'uploads/admin/profile-pic/' . $profileImg : 'assets/
     <!-- common style -->
     <link rel="stylesheet" href="assets/css/common.css">
     <!-- Theme style -->
-    <link rel="stylesheet" href="assets/css/adminlte.min.css">
+    <link rel="stylesheet" href="assets/css/adminlte.css">
     <!-- Toastr -->
     <link rel="stylesheet" href="assets/plugins/toastr/toastr.min.css">
     <script src="assets/plugins/toastr/toastr.min.js"></script>
