@@ -67,28 +67,28 @@ if (isset($_SESSION['message'])) {
                             <td><?php echo htmlspecialchars($users['name']); ?></td>
                             <td><?php echo htmlspecialchars($users['mobile']); ?></td>
                             <td><?php echo htmlspecialchars($users['email']); ?></td>
-                            <td>
+                            <td class="text-center">
                                 <span
-                                    class="badge <?php echo $users['email_verify'] == 0 ? 'bg-gradient-secondary' : 'bg-gradient-primary'; ?> font-weight-normal">
+                                    class="<?php echo $users['email_verify'] == 0 ? 'pending-badge' : 'verified-badge'; ?>">
                                     <?php echo $users['email_verify'] == 0 ? 'Pending' : 'Verified'; ?>
                                 </span>
                             </td>
-                            <td>
+                            <td class="text-center">
                                 <span
-                                    class="badge <?php echo $users['status'] == 0 ? 'bg-gradient-danger' : ($users['status'] == 1 ? 'bg-gradient-success' : 'bg-gradient-warning'); ?> font-weight-normal">
+                                    class="<?php echo $users['status'] == 0 ? 'inactive-badge' : ($users['status'] == 1 ? 'active-badge' : 'blocked-badge'); ?>">
                                     <?php 
                                         echo $users['status'] == 0 ? 'Inactive' : 
                                             ($users['status'] == 1 ? 'Active' : 'Blocked');
                                     ?>
                                 </span>
                             </td>
-                            <td>
+                            <td class="text-center">
                                 <?php
                                     $date = new DateTime($users['added_on']);
                                     echo $date->format('d-m-Y');
                                 ?>
                             </td>
-                            <td>
+                            <td class="text-center">
                                 <button class="btn bg-gradient-success btn-xs mr-2 edit-btn" type="button"
                                     data-toggle="modal" data-target="#user-modal" data-id="<?php echo $users['id']; ?>"
                                     data-name="<?php echo htmlspecialchars($users['name']); ?>"

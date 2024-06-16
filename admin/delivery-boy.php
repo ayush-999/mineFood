@@ -67,28 +67,28 @@ if (isset($_SESSION['message'])) {
                             <td><?php echo htmlspecialchars($delivery_boy['name']); ?></td>
                             <td><?php echo htmlspecialchars($delivery_boy['mobile']); ?></td>
                             <td><?php echo htmlspecialchars($delivery_boy['email']); ?></td>
-                            <td>
+                            <td class="text-center">
                                 <span
-                                    class="badge <?php echo $delivery_boy['email_verify'] == 0 ? 'bg-gradient-secondary' : 'bg-gradient-primary'; ?> font-weight-normal">
+                                    class="<?php echo $delivery_boy['email_verify'] == 0 ? 'pending-badge' : 'verified-badge'; ?>">
                                     <?php echo $delivery_boy['email_verify'] == 0 ? 'Pending' : 'Verified'; ?>
                                 </span>
                             </td>
-                            <td>
+                            <td class="text-center">
                                 <span
-                                    class="badge <?php echo $delivery_boy['status'] == 0 ? 'bg-gradient-danger' : ($delivery_boy['status'] == 1 ? 'bg-gradient-success' : 'bg-gradient-warning'); ?> font-weight-normal">
+                                    class="<?php echo $delivery_boy['status'] == 0 ? 'inactive-badge' : ($delivery_boy['status'] == 1 ? 'active-badge' : 'blocked-badge'); ?>">
                                     <?php 
                                         echo $delivery_boy['status'] == 0 ? 'Inactive' : 
                                             ($delivery_boy['status'] == 1 ? 'Active' : 'Blocked');
                                     ?>
                                 </span>
                             </td>
-                            <td>
+                            <td class="text-center">
                                 <?php
                                     $date = new DateTime($delivery_boy['added_on']);
                                     echo $date->format('d-m-Y');
                                 ?>
                             </td>
-                            <td>
+                            <td class="text-center">
                                 <button class="btn bg-gradient-success btn-xs mr-2 edit-btn" type="button"
                                     data-toggle="modal" data-target="#delivery-boy-modal"
                                     data-id="<?php echo $delivery_boy['id']; ?>"
