@@ -59,6 +59,11 @@ $imagePath = $profileImg ? 'uploads/admin/profile-pic/' . $profileImg : 'assets/
     <link rel="stylesheet" href="assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
     <link rel="stylesheet" href="assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="assets/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+    <!-- Bootstrap Color Picker -->
+    <link rel="stylesheet" href="assets/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css">
     <!-- common style -->
     <link rel="stylesheet" href="assets/css/common.css">
     <!-- Theme style -->
@@ -71,7 +76,6 @@ $imagePath = $profileImg ? 'uploads/admin/profile-pic/' . $profileImg : 'assets/
     <script src="assets/plugins/sweetalert2/sweetalert2.min.js"></script>
     <!-- Img preview -->
     <script src="assets/plugins/imagePreview/imoViewer.js"></script>
-
     <!-- intlTelInput -->
     <link rel="stylesheet" href="assets/plugins/intlTelInput/css/intlTelInput.min.css">
     <script src="assets/plugins/intlTelInput/js/intlTelInputWithUtils.min.js"></script>
@@ -82,6 +86,7 @@ $imagePath = $profileImg ? 'uploads/admin/profile-pic/' . $profileImg : 'assets/
     <script src="assets/js/pages/user.js"></script>
     <script src="assets/js/pages/profile.js"></script>
     <script src="assets/js/pages/deliveryBoy.js"></script>
+    <script src="assets/js/pages/couponCode.js"></script>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">

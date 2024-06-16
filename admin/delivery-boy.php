@@ -139,6 +139,11 @@ $(document).ready(function() {
         input.value = formattedNumber; // Update the input with the formatted number
     });
 
+    //Initialize Select2 Elements
+    $('#deliveryBoyStatus').select2({
+        theme: 'bootstrap4'
+    });
+
     $('.add-btn').on('click', function() {
         $('#delivery-boy-modal .modal-title').text('Add Delivery Boy');
         $('#delivery-boy-modal .btn-block').text('Submit');
@@ -147,7 +152,7 @@ $(document).ready(function() {
         $('#deliveryBoyName').val('');
         $('#deliveryBoyMobile').val('');
         $('#deliveryBoyEmail').val('');
-        $('#deliveryBoyStatus').val('');
+        $('#deliveryBoyStatus').val('').trigger('change');
         $('#delivery-boy-modal').modal('show');
     });
 
@@ -163,7 +168,7 @@ $(document).ready(function() {
         $('#deliveryBoyId').val(deliveryBoyId);
         $('#deliveryBoyName').val(deliveryBoyName);
         $('#deliveryBoyEmail').val(deliveryBoyEmail);
-        $('#deliveryBoyStatus').val(status);
+        $('#deliveryBoyStatus').val(status).trigger('change');
         iti.setNumber(deliveryBoyMobile);
         $('#delivery-boy-modal').modal('show');
     });

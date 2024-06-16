@@ -103,6 +103,12 @@ if (isset($_SESSION['message'])) {
 
 <script type="text/javascript">
 $(document).ready(function() {
+
+    //Initialize Select2 Elements
+    $('#categoryStatus').select2({
+        theme: 'bootstrap4'
+    });
+
     toastr.options = {
         "closeButton": true,
         "debug": false,
@@ -136,7 +142,7 @@ $(document).ready(function() {
         $('#categoryId').val(''); // Clear in case of previously set
         $('#categoryName').val('');
         $('#orderNumber').val('');
-        $('#categoryStatus').val('');
+        $('#categoryStatus').val('').trigger('change');
         $('#category-modal').modal('show');
     });
 
@@ -151,7 +157,7 @@ $(document).ready(function() {
         $('#categoryId').val(categoryId);
         $('#categoryName').val(categoryName);
         $('#orderNumber').val(orderNumber);
-        $('#categoryStatus').val(status);
+        $('#categoryStatus').val(status).trigger('change');
         $('#category-modal').modal('show');
     });
 });

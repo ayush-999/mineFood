@@ -138,6 +138,11 @@ $(document).ready(function() {
         input.value = formattedNumber; // Update the input with the formatted number
     });
 
+    //Initialize Select2 Elements
+    $('#userStatus').select2({
+        theme: 'bootstrap4'
+    });
+
     $('.add-btn').on('click', function() {
         $('#user-modal .modal-title').text('Add User');
         $('#user-modal .btn-block').text('Submit');
@@ -146,7 +151,7 @@ $(document).ready(function() {
         $('#userName').val('');
         $('#userMobile').val('');
         $('#userEmail').val('');
-        $('#userStatus').val('');
+        $('#userStatus').val('').trigger('change');
         $('#user-modal').modal('show');
     });
 
@@ -162,7 +167,7 @@ $(document).ready(function() {
         $('#userId').val(userId);
         $('#userName').val(userName);
         $('#userEmail').val(userEmail);
-        $('#userStatus').val(status);
+        $('#userStatus').val(status).trigger('change');
         iti.setNumber(userMobile);
         $('#user-modal').modal('show');
     });

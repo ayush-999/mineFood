@@ -308,6 +308,35 @@ class Admin
         }
     }
 
+    /****************** Coupon Code function start ******************/
+    public function get_all_couponList()
+    {
+        try {
+            $strQuery = "CALL sp_getAllCouponCode()";
+            $stmt = $this->db->prepare($strQuery);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return json_encode($result);
+        } catch (PDOException $e) {
+            throw new Exception("Database error: " . $e->getMessage());
+        } catch (Exception $e) {
+            throw new Exception("Error: " . $e->getMessage());
+        }
+    }
+
+    public function delete_couponCode($couponCodeId)
+    {
+        try {
+            $strQuery = "CALL sp_deleteCouponCode(?)";
+            $stmt = $this->db->prepare($strQuery);
+            $stmt->bindParam(1, $couponCodeId, PDO::PARAM_INT);
+            $stmt->execute();
+            return true;
+        } catch (PDOException $e) {
+            throw new Exception("Database error: " . $e->getMessage());
+        }
+    }
+
 }
 
 ?>
