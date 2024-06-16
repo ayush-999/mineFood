@@ -65,13 +65,13 @@ if (isset($_SESSION['message'])) {
                             <td><?php echo $index + 1; ?></td>
                             <td><?php echo htmlspecialchars($category['category_name']); ?></td>
                             <td><?php echo $category['order_number']; ?></td>
-                            <td>
+                            <td class="text-center">
                                 <span
-                                    class="badge <?php echo $category['status'] == 0 ? 'bg-gradient-danger' : 'bg-gradient-success'; ?> font-weight-normal">
+                                    class="<?php echo $category['status'] == 0 ? 'inactive-badge' : 'active-badge'; ?>">
                                     <?php echo $category['status'] == 0 ? 'Inactive' : 'Active'; ?>
                                 </span>
                             </td>
-                            <td>
+                            <td class="text-center">
                                 <button class="btn bg-gradient-success btn-xs mr-2 edit-btn" type="button"
                                     data-toggle="modal" data-target="#category-modal"
                                     data-id="<?php echo $category['id']; ?>"

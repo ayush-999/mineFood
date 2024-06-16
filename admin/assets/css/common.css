@@ -6,6 +6,10 @@ body {
     background-color: #F4F6F9;
 }
 
+/******************************** 
+Template customize 
+********************************/
+
 :focus-visible {
     outline: none;
 }
@@ -29,6 +33,121 @@ body {
     color: #16181b !important;
     text-decoration: none;
     background-color: #f8f9fa !important;
+}
+
+.pending-badge::before {
+    font-family: "Font Awesome 6 Pro";
+    content: '\f017';
+    text-align: center;
+    padding-right: 2px;
+}
+
+.pending-badge {
+    background: rgba(220, 53, 69, 0.2);
+    color: #c42231;
+    border: 1px dashed #c42231;
+    border-radius: 0.25rem;
+    font-weight: 500;
+    display: inline-block;
+    padding: 0.50em 0.75em;
+    font-size: 12px;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.verified-badge::before {
+    font-family: "Font Awesome 6 Pro";
+    content: '\f336';
+    text-align: center;
+    padding-right: 2px;
+}
+
+.verified-badge {
+    background: rgba(0, 123, 255, 0.2);
+    color: #007bff;
+    border: 1px dashed #007bff;
+    border-radius: 0.25rem;
+    font-weight: 500;
+    display: inline-block;
+    padding: 0.50em 0.828em;
+    font-size: 12px;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.active-badge::before {
+    font-family: "Font Awesome 6 Pro";
+    content: '\f058';
+    text-align: center;
+    padding-right: 2px;
+}
+
+.active-badge {
+    background: rgba(40, 167, 69, 0.2);
+    color: #28a745;
+    border: 1px dashed #28a745;
+    border-radius: 0.25rem;
+    font-weight: 500;
+    display: inline-block;
+    padding: 0.50em 1.255em;
+    font-size: 12px;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.blocked-badge::before {
+    font-family: "Font Awesome 6 Pro";
+    content: '\f05e';
+    text-align: center;
+    padding-right: 2px;
+}
+
+.blocked-badge {
+    background: rgba(108, 117, 125, 0.2);
+    color: #6c757d;
+    border: 1px dashed #6c757d;
+    border-radius: 0.25rem;
+    font-weight: 500;
+    display: inline-block;
+    padding: 0.50em 0.828em;
+    font-size: 12px;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.inactive-badge::before {
+    font-family: "Font Awesome 6 Pro";
+    content: '\f057';
+    text-align: center;
+    padding-right: 2px;
+}
+
+.inactive-badge {
+    background: rgba(255, 193, 7, 0.2);
+    color: #b38600;
+    border: 1px dashed #b38600;
+    border-radius: 0.25rem;
+    font-weight: 500;
+    display: inline-block;
+    padding: 0.50em 0.83em;
+    font-size: 12px;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 /******************************** 
