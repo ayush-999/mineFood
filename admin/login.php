@@ -124,7 +124,8 @@ if (isset($_POST['submit'])) {
     <script src="assets/plugins/jquery/jquery.min.js"></script>
     <script src="assets/plugins/jquery-validation/jquery.validate.min.js"></script>
     <!-- Bootstrap 4 -->
-    <script src="assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/plugins/bootstrap/popper.min.js"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
     <!-- AdminLTE App -->
     <script src="assets/js/adminlte.min.js"></script>
     <!-- Toastr -->

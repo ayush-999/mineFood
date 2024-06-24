@@ -150,6 +150,58 @@ Template customize
     transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
+.coupon-outer {
+    position: relative;
+    border-radius: 0.25rem;
+    padding: 0.15em;
+    cursor: pointer;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.coupon-outer:hover {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.coupon-inner {
+    width: 100%;
+    display: inline-block;
+    border: 1px dashed rgba(255, 255, 255, 1);
+    border-radius: 0.25rem;
+    font-weight: 600;
+    padding: 0.50em 1.2em;
+    font-size: 14px;
+    line-height: 1;
+    white-space: nowrap;
+    vertical-align: baseline;
+}
+
+.coupon-outer::before {
+    position: absolute;
+    content: '';
+    text-align: center;
+    padding-right: 2px;
+    top: 10px;
+    right: -3px;
+    width: 9px;
+    height: 14px;
+    background: #fff;
+    border-radius: 100px 0 0 100px;
+}
+
+.coupon-outer::after {
+    position: absolute;
+    content: '';
+    text-align: center;
+    padding-right: 2px;
+    top: 10px;
+    left: -3px;
+    width: 9px;
+    height: 14px;
+    background: #fff;
+    border-radius: 0 100px 100px 0;
+}
+
 /******************************** 
 Login Page 
 ********************************/
@@ -242,8 +294,8 @@ Profile
 
 .profile-wrapper {
     border: 1px dashed #C0C6CB;
-    padding: 15px 10px;
-    border-radius: 8px;
+    padding: 20px;
+    border-radius: 18px;
 }
 
 .mainProfileImg {

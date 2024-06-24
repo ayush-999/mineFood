@@ -53,6 +53,14 @@ $pageSettings = [
             ['title' => 'Home', 'link' => 'index.php'],
             ['title' => 'Delivery Boy', 'link' => 'delivery-boy.php'],
         ]
+    ],
+    'coupon-code.php' => [
+        'title' => 'Coupon Code',
+        'sub-title' => 'Coupon Code',
+        'breadcrumbs' => [
+            ['title' => 'Home', 'link' => 'index.php'],
+            ['title' => 'Coupon Code', 'link' => 'coupon-code.php'],
+        ]
     ]
 ];
 

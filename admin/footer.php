@@ -18,6 +18,7 @@
 <!-- ./wrapper -->
 
 <!-- Bootstrap 4 -->
+<script src="assets/plugins/bootstrap/popper.min.js"></script>
 <script src="assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="assets/plugins/jquery-validation/jquery.validate.min.js"></script>
 <!-- DataTables  & Plugins -->
@@ -33,6 +34,12 @@
 <script src="assets/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
 <script src="assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
 <script src="assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+<!-- Select2 -->
+<script src="assets/plugins/select2/js/select2.full.min.js"></script>
+<!-- bootstrap color picker -->
+<script src="assets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+<!-- tippy -->
+<script src="assets/plugins/tippy/tippy-bundle.umd.min.js"></script>
 <!-- AdminLTE App -->
 <script src="assets/js/adminlte.min.js"></script>
 </body>

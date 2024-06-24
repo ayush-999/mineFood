@@ -89,17 +89,18 @@ if (isset($_SESSION['message'])) {
                                 ?>
                             </td>
                             <td class="text-center">
-                                <button class="btn bg-gradient-success btn-xs mr-2 edit-btn" type="button"
-                                    data-toggle="modal" data-target="#user-modal" data-id="<?php echo $users['id']; ?>"
+                                <button class="btn bg-gradient-success btn-sm rounded-circle mr-1 edit-btn"
+                                    type="button" data-toggle="modal" data-target="#user-modal"
+                                    data-id="<?php echo $users['id']; ?>"
                                     data-name="<?php echo htmlspecialchars($users['name']); ?>"
                                     data-email="<?php echo htmlspecialchars($users['email']); ?>"
                                     data-mobile="<?php echo htmlspecialchars($users['mobile']); ?>"
                                     data-status="<?php echo $users['status']; ?>">
-                                    <i class="fa-regular fa-pen-to-square mr-1"></i>Edit
+                                    <i class="fa-regular fa-pen-to-square"></i>
                                 </button>
-                                <button class="btn bg-gradient-danger btn-xs delete-user"
+                                <button class="btn bg-gradient-danger btn-sm rounded-circle delete-user"
                                     data-id="<?php echo $users['id']; ?>" type="button">
-                                    <i class="fa-regular fa-trash mr-1"></i>Delete
+                                    <i class="fa-regular fa-trash"></i>
                                 </button>
                             </td>
                         </tr>
@@ -138,6 +139,11 @@ $(document).ready(function() {
         input.value = formattedNumber; // Update the input with the formatted number
     });
 
+    //Initialize Select2 Elements
+    $('#userStatus').select2({
+        theme: 'bootstrap4'
+    });
+
     $('.add-btn').on('click', function() {
         $('#user-modal .modal-title').text('Add User');
         $('#user-modal .btn-block').text('Submit');
@@ -146,7 +152,7 @@ $(document).ready(function() {
         $('#userName').val('');
         $('#userMobile').val('');
         $('#userEmail').val('');
-        $('#userStatus').val('');
+        $('#userStatus').val('').trigger('change');
         $('#user-modal').modal('show');
     });
 
@@ -162,7 +168,7 @@ $(document).ready(function() {
         $('#userId').val(userId);
         $('#userName').val(userName);
         $('#userEmail').val(userEmail);
-        $('#userStatus').val(status);
+        $('#userStatus').val(status).trigger('change');
         iti.setNumber(userMobile);
         $('#user-modal').modal('show');
     });
