@@ -57,7 +57,8 @@
                 <li class="nav-item">
                     <a href="coupon-code.php"
                         class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'coupon-code.php' ? 'active' : '' ?>">
-                        <i class="nav-icon fa-solid fa-tags"></i>
+
+                        <i class="nav-icon fa-solid fa-badge-percent"></i>
                         <p>
                             Coupon Code
                         </p>

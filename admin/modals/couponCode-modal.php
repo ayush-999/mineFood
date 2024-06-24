@@ -11,21 +11,45 @@
                 <div class="modal-body">
                     <input type="hidden" id="couponCodeId" name="couponCodeId" value="">
                     <input type="hidden" id="submitAction" name="submitAction" value="">
-                    <div class="form-group">
-                        <label for="couponCodeName">Coupon Name</label>
-                        <input type="text" class="form-control" id="couponCodeName" name="couponCodeName"
-                            placeholder="Enter coupon name" value="" required>
+                    <div class="row mb-3">
+                        <div class="col-md-12 form-group mb-0">
+                            <label for="couponCodeName">Coupon Code</label>
+                            <input type="text" class="form-control" id="couponCodeName" name="couponCodeName"
+                                placeholder="Enter coupon code" value="">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="couponCodeStatus">Status</label>
-                        <select class="form-control" name="couponCodeStatus" id="couponCodeStatus">
-                            <option value="">Select Status</option>
-                            <option value="0">Inactive</option>
-                            <option value="1">Active</option>
-                        </select>
+                    <div class="row mb-3">
+                        <div class="col-md-6 form-group mb-0">
+                            <label for="couponCodeCartValue">Cart Value</label>
+                            <input type="text" class="form-control" id="couponCodeCartValue" name="couponCodeCartValue"
+                                placeholder="Enter cart value" value="">
+                        </div>
+                        <div class="col-md-6 form-group mb-0">
+                            <label for="couponCodeMinCartValue">Minimum Cart Value</label>
+                            <input type="text" class="form-control" id="couponCodeMinCartValue"
+                                name="couponCodeMinCartValue" placeholder="Enter min cart value" value="">
+                        </div>
                     </div>
-                    <!-- Color Picker -->
-                    <div class="row mb-2">
+                    <div class="row mb-3">
+                        <div class="col-md-6 form-group mb-0">
+                            <label for="couponCodeStatus">Status</label>
+                            <select class="form-control" name="couponCodeStatus" id="couponCodeStatus">
+                                <option value="">Select Status</option>
+                                <option value="0">Inactive</option>
+                                <option value="1">Active</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 form-group mb-0">
+                            <label for="couponCodeType">Coupon Type</label>
+                            <select class="form-control" name="couponCodeType" id="couponCodeType">
+                                <option value="">Select Type</option>
+                                <option value="P">Percentage</option>
+                                <option value="F">Flat</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <!-- Color Picker -->
                         <div class="col-md-6 form-group mb-0">
                             <label for="couponCodeBgColor">Background Color</label>
                             <div class="input-group bgColorPicker">
@@ -35,7 +59,6 @@
                                     <span class="input-group-text"><i class="fas fa-circle"></i></span>
                                 </div>
                             </div>
-                            <!-- /.input group -->
                         </div>
                         <div class="col-md-6 form-group mb-0">
                             <label for="couponCodeTxtColor">Text Color</label>
@@ -46,10 +69,26 @@
                                     <span class="input-group-text"><i class="fas fa-circle"></i></span>
                                 </div>
                             </div>
-                            <!-- /.input group -->
                         </div>
                     </div>
-                    <button type="submit" class="btn bg-gradient-success btn-block">Submit</button>
+                    <!-- Date Picker -->
+                    <div class="row mb-3">
+                        <div class="col-md-6 form-group mb-0">
+                            <label for="couponCodeStartDate">Start Date</label>
+                            <input type="date" class="form-control" id="couponCodeStartDate" name="couponCodeStartDate"
+                                value="">
+                        </div>
+                        <div class="col-md-6 form-group mb-0">
+                            <label for="couponCodeEndDate">End Date</label>
+                            <input type="date" class="form-control" id="couponCodeEndDate" name="couponCodeEndDate"
+                                value="">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 form-group mb-0">
+                            <button type="submit" class="btn bg-gradient-success btn-block">Submit</button>
+                        </div>
+                    </div>
                 </div>
             </form>
         </div>

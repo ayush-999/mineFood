@@ -89,18 +89,18 @@ if (isset($_SESSION['message'])) {
                                 ?>
                             </td>
                             <td class="text-center">
-                                <button class="btn bg-gradient-success btn-xs mr-2 edit-btn" type="button"
-                                    data-toggle="modal" data-target="#delivery-boy-modal"
+                                <button class="btn bg-gradient-success btn-sm rounded-circle mr-1 edit-btn"
+                                    type="button" data-toggle="modal" data-target="#delivery-boy-modal"
                                     data-id="<?php echo $delivery_boy['id']; ?>"
                                     data-name="<?php echo htmlspecialchars($delivery_boy['name']); ?>"
                                     data-email="<?php echo htmlspecialchars($delivery_boy['email']); ?>"
                                     data-mobile="<?php echo htmlspecialchars($delivery_boy['mobile']); ?>"
                                     data-status="<?php echo $delivery_boy['status']; ?>">
-                                    <i class="fa-regular fa-pen-to-square mr-1"></i>Edit
+                                    <i class="fa-regular fa-pen-to-square"></i>
                                 </button>
-                                <button class="btn bg-gradient-danger btn-xs delete-deliveryBoy"
+                                <button class="btn bg-gradient-danger btn-sm rounded-circle delete-deliveryBoy"
                                     data-id="<?php echo $delivery_boy['id']; ?>" type="button">
-                                    <i class="fa-regular fa-trash mr-1"></i>Delete
+                                    <i class="fa-regular fa-trash"></i>
                                 </button>
                             </td>
                         </tr>

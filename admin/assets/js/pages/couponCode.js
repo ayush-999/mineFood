@@ -67,6 +67,8 @@ $(document).ready(function () {
       rules: {
          couponCodeName: {
             required: true,
+            maxlength: 10,
+            minlength: 5,
          },
          couponCodeStatus: {
             required: true,

@@ -72,17 +72,17 @@ if (isset($_SESSION['message'])) {
                                 </span>
                             </td>
                             <td class="text-center">
-                                <button class="btn bg-gradient-success btn-xs mr-2 edit-btn" type="button"
-                                    data-toggle="modal" data-target="#category-modal"
+                                <button class="btn bg-gradient-success btn-sm rounded-circle mr-1 edit-btn"
+                                    type="button" data-toggle="modal" data-target="#category-modal"
                                     data-id="<?php echo $category['id']; ?>"
                                     data-name="<?php echo htmlspecialchars($category['category_name']); ?>"
                                     data-order="<?php echo $category['order_number']; ?>"
                                     data-status="<?php echo $category['status']; ?>">
-                                    <i class="fa-regular fa-pen-to-square mr-1"></i>Edit
+                                    <i class="fa-regular fa-pen-to-square"></i>
                                 </button>
-                                <button class="btn bg-gradient-danger btn-xs delete-category"
+                                <button class="btn bg-gradient-danger btn-sm rounded-circle delete-category"
                                     data-id="<?php echo $category['id']; ?>" type="button">
-                                    <i class="fa-regular fa-trash mr-1"></i>Delete
+                                    <i class="fa-regular fa-trash"></i>
                                 </button>
                             </td>
                         </tr>
