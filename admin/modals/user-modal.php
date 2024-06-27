@@ -14,18 +14,18 @@
                     <div class="form-group">
                         <label for="userName">Full Name</label>
                         <input type="text" class="form-control" id="userName" name="userName"
-                            placeholder="Enter user full name" value="" required>
+                               placeholder="Enter user full name" value="" required>
                     </div>
                     <div class="form-group tel-wrapper">
                         <!-- TODO User initialCountry not working properly need to look -->
                         <label for="userMobile">Mobile</label>
                         <input type="tel" class="form-control" id="userMobile" name="userMobile"
-                            placeholder="Enter user mobile number" value="" required>
+                               placeholder="Enter user mobile number" value="" required>
                     </div>
                     <div class="form-group">
                         <label for="userEmail">Email</label>
                         <input type="tel" class="form-control" id="userEmail" name="userEmail"
-                            placeholder="Enter user email" value="" required>
+                               placeholder="Enter user email" value="" required>
                     </div>
                     <div class="form-group">
                         <label for="userStatus">Status</label>

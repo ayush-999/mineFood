@@ -1,4 +1,5 @@
 <?php
+
 class Admin
 {
     protected PDO $db;
@@ -9,11 +10,11 @@ class Admin
     }
 
     /****************** Category function start *****************/
-     /**
+    /**
      * @throws Exception
      */
 
-     // TODO: JSON conversion needs work across categories functions
+    // TODO: JSON conversion needs work across categories functions
     public function get_all_categories(): bool|string
     {
         try {
@@ -126,7 +127,7 @@ class Admin
 
     public function admin_login($username, $password)
     {
-        try {   
+        try {
             $strQuery = "CALL sp_userLogin(?, ?)";
             $stmt = $this->db->prepare($strQuery);
             $stmt->bindParam(1, $username, PDO::PARAM_STR);
@@ -189,7 +190,7 @@ class Admin
     }
 
     /****************** User function start *****************/
-     /**
+    /**
      * @throws Exception
      */
     public function get_all_users(): bool|string
@@ -239,7 +240,7 @@ class Admin
             $stmt->bindParam(5, $added_on, PDO::PARAM_STR);
             $stmt->execute();
             return "User added successfully";
-        
+
         } catch (PDOException $e) {
             if ($e->errorInfo[0] === '45000') {
                 return $e->errorInfo[2]; // Custom error message from stored procedure
@@ -251,7 +252,8 @@ class Admin
     /**
      * @throws Exception
      */
-    public function update_user($userId, $userName, $userMobile, $userEmail, $status, $added_on){
+    public function update_user($userId, $userName, $userMobile, $userEmail, $status, $added_on)
+    {
         try {
             $strQuery = "CALL sp_updateUser(?, ?, ?, ?, ?, ?)";
             $stmt = $this->db->prepare($strQuery);

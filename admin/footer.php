@@ -7,8 +7,8 @@
 <footer class="main-footer">
     <small>Copyright &copy;
         <script type="text/javascript">
-        var year = new Date();
-        document.write(year.getFullYear());
+            let year = new Date();
+            document.write(year.getFullYear());
         </script>
         <a href="https://github.com/ayush-999">Ayush ❤️</a>.
         All rights reserved.

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jun 16, 2024 at 10:13 PM
+-- Generation Time: Jun 24, 2024 at 02:34 PM
 -- Server version: 8.3.0
 -- PHP Version: 8.2.18
 
@@ -29,6 +29,18 @@ DROP PROCEDURE IF EXISTS `sp_addCategory`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_addCategory` (IN `categoryName` VARCHAR(255), IN `orderNumber` INT, IN `status` INT, IN `addedOn` DATETIME)   BEGIN
 	INSERT INTO category (category_name, order_number, status, added_on)
      VALUES (categoryName, orderNumber, status, addedOn);
+END$$
+
+DROP PROCEDURE IF EXISTS `sp_addCouponCode`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_addCouponCode` (IN `couponCodeName` VARCHAR(10), IN `couponType` ENUM('P','F'), IN `couponValue` INT, IN `cartMinValue` INT, IN `expDate` DATE, IN `startDate` DATE, IN `status` INT, IN `bgColor` VARCHAR(50), IN `txtColor` VARCHAR(50), IN `addedOn` DATETIME)   BEGIN
+    -- Check for existing Coupon code by coupon_code
+    IF (SELECT COUNT(*) FROM coupon_code WHERE coupon_name = couponCodeName) > 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Coupon already exists';
+    ELSE
+        -- Insert new Coupon code
+        INSERT INTO coupon_code (coupon_name, coupon_type, coupon_value, cart_min_value, started_on, expired_on, status, bg_color, txt_color, added_on)
+        VALUES (couponCodeName, couponType, couponValue, cartMinValue, startDate, expDate, status, bgColor, txtColor, addedOn);
+    END IF;
 END$$
 
 DROP PROCEDURE IF EXISTS `sp_addDeliveryBoy`$$
@@ -132,6 +144,27 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_updateCategory` (IN `categoryId`
 	UPDATE category
     SET category_name = categoryName, order_number = orderNumber, status = status, added_on = addedOn
     WHERE id = categoryId;
+END$$
+
+DROP PROCEDURE IF EXISTS `sp_updateCouponCode`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_updateCouponCode` (IN `couponCodeId` INT, IN `couponCodeName` VARCHAR(10), IN `couponType` ENUM('P','F'), IN `couponValue` INT, IN `cartMinValue` INT, IN `startDate` DATE, IN `expDate` DATE, IN `status` INT, IN `bgColor` VARCHAR(50), IN `txtColor` VARCHAR(50))   BEGIN
+    -- Check for existing coupon_code by coupon_name, excluding current record
+    IF (SELECT COUNT(*) FROM coupon_code WHERE (coupon_name = couponCodeName) AND id != couponCodeId) > 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Coupon already exists';
+    ELSE
+        -- Update coupon_code
+        UPDATE coupon_code
+        SET coupon_name = couponCodeName, 
+        coupon_type = couponType, 
+        coupon_value = couponValue, 
+        cart_min_value = cartMinValue, 
+        started_on = startDate, 
+        expired_on = expDate, 
+        status = status, 
+        bg_color = bgColor, 
+        txt_color = txtColor
+        WHERE id = couponCodeId;
+    END IF;
 END$$
 
 DROP PROCEDURE IF EXISTS `sp_updateDeliveryBoy`$$
@@ -246,8 +279,7 @@ CREATE TABLE IF NOT EXISTS `category` (
 
 INSERT INTO `category` (`id`, `category_name`, `order_number`, `status`, `added_on`) VALUES
 (1, 'Chaat & Snacks', 2, 0, '2024-06-16 09:17:38'),
-(3, 'South Indian', 3, 1, '2020-06-16 12:06:59'),
-(5, 'Murg', 1, 1, '2024-06-16 09:17:34');
+(5, 'Murg', 1, 0, '2024-06-23 02:15:04');
 
 -- --------------------------------------------------------
 
@@ -283,24 +315,25 @@ INSERT INTO `contact_us` (`id`, `name`, `email`, `mobile`, `subject`, `message`,
 DROP TABLE IF EXISTS `coupon_code`;
 CREATE TABLE IF NOT EXISTS `coupon_code` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `coupon_code` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `coupon_name` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `coupon_type` enum('P','F') NOT NULL,
   `coupon_value` int NOT NULL,
   `cart_min_value` int NOT NULL,
+  `started_on` date NOT NULL,
   `expired_on` date NOT NULL,
   `status` int NOT NULL,
-  `bg-color` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'rgba(255, 176, 29, 1)',
-  `txt-color` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'rgba(184, 65, 0, 1)',
+  `bg_color` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'rgba(255, 176, 29, 1)',
+  `txt_color` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'rgba(184, 65, 0, 1)',
   `added_on` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `coupon_code`
 --
 
-INSERT INTO `coupon_code` (`id`, `coupon_code`, `coupon_type`, `coupon_value`, `cart_min_value`, `expired_on`, `status`, `bg-color`, `txt-color`, `added_on`) VALUES
-(1, 'FIRST50', 'P', 10, 50, '2020-08-20', 1, '#28a745', '#0f3e1a', '2020-06-20 05:31:03');
+INSERT INTO `coupon_code` (`id`, `coupon_name`, `coupon_type`, `coupon_value`, `cart_min_value`, `started_on`, `expired_on`, `status`, `bg_color`, `txt_color`, `added_on`) VALUES
+(6, 'WELCOME50', 'P', 50, 100, '2024-06-18', '2024-06-21', 1, 'rgb(234, 199, 0)', 'rgba(208, 148, 3, 0.94)', '2024-06-24 09:35:41');
 
 -- --------------------------------------------------------
 
@@ -328,7 +361,7 @@ CREATE TABLE IF NOT EXISTS `delivery_boy` (
 INSERT INTO `delivery_boy` (`id`, `name`, `mobile`, `email`, `password`, `status`, `email_verify`, `added_on`) VALUES
 (5, 'Ayush', '+919993832158', 'ayush@gmail.com', '', 1, 0, '2024-06-16 09:20:37'),
 (11, 'Rajesh', '+911234567890', 'ashish@gmail.com', '', 2, 1, '2024-06-16 07:51:46'),
-(12, 'ram gupta', '+919876543210', 'ram@gmail.com', '', 0, 0, '2024-06-16 07:47:21');
+(12, 'ram', '+919876543210', 'ram@gmail.com', '', 0, 0, '2024-06-24 10:32:53');
 
 -- --------------------------------------------------------
 
@@ -575,8 +608,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 --
 
 INSERT INTO `user` (`id`, `name`, `email`, `mobile`, `password`, `status`, `email_verify`, `rand_str`, `referral_code`, `from_referral_code`, `added_on`) VALUES
-(6, 'Ayush Chaturvedi', 'ayush@gmail.com', '+919993832158', '', 2, 0, '', '', '', '2024-06-16 09:19:04'),
-(9, 'Ashish', 'ashish@gmail.com', '+911234567890', '', 0, 0, '', '', '', '2024-06-16 09:19:26');
+(6, 'Ayush Chaturvedi', 'ayush@gmail.com', '+919993832158', '', 2, 0, '', '', '', '2024-06-16 09:19:04');
 
 -- --------------------------------------------------------
 

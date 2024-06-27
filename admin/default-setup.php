@@ -48,7 +48,7 @@ $pageSettings = [
     ],
     'delivery-boy.php' => [
         'title' => 'Delivery Boy',
-        'sub-title' => 'Delivery Boy',
+        'sub-title' => 'Delivery Boy Master',
         'breadcrumbs' => [
             ['title' => 'Home', 'link' => 'index.php'],
             ['title' => 'Delivery Boy', 'link' => 'delivery-boy.php'],
@@ -56,10 +56,18 @@ $pageSettings = [
     ],
     'coupon-code.php' => [
         'title' => 'Coupon Code',
-        'sub-title' => 'Coupon Code',
+        'sub-title' => 'Coupon Code Master',
         'breadcrumbs' => [
             ['title' => 'Home', 'link' => 'index.php'],
             ['title' => 'Coupon Code', 'link' => 'coupon-code.php'],
+        ]
+    ],
+    'dish.php' => [
+        'title' => 'Dish',
+        'sub-title' => 'Dish Master',
+        'breadcrumbs' => [
+            ['title' => 'Home', 'link' => 'index.php'],
+            ['title' => 'Dish', 'link' => 'dish.php'],
         ]
     ]
 ];
