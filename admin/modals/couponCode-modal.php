@@ -15,19 +15,19 @@
                         <div class="col-md-12 form-group mb-0">
                             <label for="couponCodeName">Coupon Code</label>
                             <input type="text" class="form-control" id="couponCodeName" name="couponCodeName"
-                                placeholder="Enter coupon code" value="">
+                                   placeholder="Enter coupon code" value="">
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6 form-group mb-0">
                             <label for="couponCodeCartValue">Cart Value</label>
                             <input type="text" class="form-control" id="couponCodeCartValue" name="couponCodeCartValue"
-                                placeholder="Enter cart value" value="">
+                                   placeholder="Enter cart value" value="">
                         </div>
                         <div class="col-md-6 form-group mb-0">
                             <label for="couponCodeMinCartValue">Minimum Cart Value</label>
                             <input type="text" class="form-control" id="couponCodeMinCartValue"
-                                name="couponCodeMinCartValue" placeholder="Enter min cart value" value="">
+                                   name="couponCodeMinCartValue" placeholder="Enter min cart value" value="">
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -44,7 +44,7 @@
                             <select class="form-control" name="couponCodeType" id="couponCodeType">
                                 <option value="">Select Type</option>
                                 <option value="P">Percentage</option>
-                                <option value="F">Flat</option>
+                                <option value="F">Fixed</option>
                             </select>
                         </div>
                     </div>
@@ -54,7 +54,7 @@
                             <label for="couponCodeBgColor">Background Color</label>
                             <div class="input-group bgColorPicker">
                                 <input type="text" class="form-control" name="couponCodeBgColor" id="couponCodeBgColor"
-                                    value="">
+                                       value="">
                                 <div class="input-group-append">
                                     <span class="input-group-text"><i class="fas fa-circle"></i></span>
                                 </div>
@@ -64,7 +64,7 @@
                             <label for="couponCodeTxtColor">Text Color</label>
                             <div class="input-group txtColorPicker">
                                 <input type="text" class="form-control" name="couponCodeTxtColor"
-                                    id="couponCodeTxtColor" value="">
+                                       id="couponCodeTxtColor" value="">
                                 <div class="input-group-append">
                                     <span class="input-group-text"><i class="fas fa-circle"></i></span>
                                 </div>
@@ -76,12 +76,12 @@
                         <div class="col-md-6 form-group mb-0">
                             <label for="couponCodeStartDate">Start Date</label>
                             <input type="date" class="form-control" id="couponCodeStartDate" name="couponCodeStartDate"
-                                value="">
+                                   value="">
                         </div>
                         <div class="col-md-6 form-group mb-0">
                             <label for="couponCodeEndDate">End Date</label>
                             <input type="date" class="form-control" id="couponCodeEndDate" name="couponCodeEndDate"
-                                value="">
+                                   value="">
                         </div>
                     </div>
                     <div class="row">

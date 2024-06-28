@@ -14,12 +14,12 @@
                     <div class="form-group">
                         <label for="categoryName">Category Name</label>
                         <input type="text" class="form-control" id="categoryName" name="categoryName"
-                            placeholder="Enter category name" value="" required>
+                               placeholder="Enter category name" value="" required>
                     </div>
                     <div class="form-group">
                         <label for="orderNumber">Order Number</label>
                         <input type="number" class="form-control" id="orderNumber" name="orderNumber"
-                            placeholder="Enter order number" value="" required>
+                               placeholder="Enter order number" value="" required>
                     </div>
                     <div class="form-group">
                         <label for="categoryStatus">Category Status</label>

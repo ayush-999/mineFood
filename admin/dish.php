@@ -15,6 +15,10 @@ include_once('header.php');
                                 ?>
                             </b>
                         </h5>
+                        <button class="btn bg-gradient-success btn-sm rounded-circle add-btn" type="button"
+                                data-toggle="modal" data-target="#dish-modal">
+                            <i class="fa-regular fa-plus"></i>
+                        </button>
                     </div>
                 </div>
                 <!-- /.card-header -->
