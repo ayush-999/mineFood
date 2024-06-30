@@ -180,7 +180,7 @@ if (isset($_SESSION['message'])) {
                             <?php endforeach; ?>
                         <?php else: ?>
                             <tr>
-                                <td colspan="7" style="text-align:center;">No Coupon found</td>
+                                <td colspan="9" style="text-align:center;">No Coupon found</td>
                             </tr>
                         <?php endif; ?>
                         </tbody>

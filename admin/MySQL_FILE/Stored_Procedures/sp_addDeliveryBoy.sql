@@ -1,8 +1,8 @@
 DROP PROCEDURE IF EXISTS `sp_addDeliveryBoy`;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_addDeliveryBoy`(
-    IN `deliveryBoyName` VARCHAR(50),
+    IN `deliveryBoyName` VARCHAR(255),
     IN `deliveryBoyMobile` VARCHAR(15),
-    IN `deliveryBoyEmail` VARCHAR(50),
+    IN `deliveryBoyEmail` VARCHAR(255),
     IN `status` INT,
     IN `addedOn` DATETIME
 )

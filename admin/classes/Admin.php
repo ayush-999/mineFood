@@ -292,6 +292,10 @@ class Admin
             $stmt = $this->db->prepare($strQuery);
             $stmt->execute();
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($result as &$delivery_boy) {
+                $delivery_boy['name'] = decryptData($delivery_boy['name']);
+                $delivery_boy['email'] = decryptData($delivery_boy['email']);
+            }
             return json_encode($result);
         } catch (PDOException $e) {
             throw new Exception("Database error: " . $e->getMessage());
@@ -322,6 +326,8 @@ class Admin
     public function add_deliveryBoy($deliveryBoyName, $deliveryBoyMobile, $deliveryBoyEmail, $status, $added_on)
     {
         try {
+            $deliveryBoyName = encryptData($deliveryBoyName);
+            $deliveryBoyEmail = encryptData($deliveryBoyEmail);
             // Insert new Delivery Boy
             $strQuery = "CALL sp_addDeliveryBoy(?, ?, ?, ?, ?)";
             $stmt = $this->db->prepare($strQuery);
@@ -346,6 +352,8 @@ class Admin
     public function update_deliveryBoy($deliveryBoyId, $deliveryBoyName, $deliveryBoyMobile, $deliveryBoyEmail, $status, $added_on)
     {
         try {
+            $deliveryBoyName = encryptData($deliveryBoyName);
+            $deliveryBoyEmail = encryptData($deliveryBoyEmail);
             // Update Delivery Boy
             $strQuery = "CALL sp_updateDeliveryBoy(?, ?, ?, ?, ?, ?)";
             $stmt = $this->db->prepare($strQuery);
