@@ -124,7 +124,7 @@ if (isset($_SESSION['message'])) {
                             <?php endforeach; ?>
                         <?php else: ?>
                             <tr>
-                                <td colspan="7" style="text-align:center;">No user found</td>
+                                <td colspan="8" style="text-align:center;">No user found</td>
                             </tr>
                         <?php endif; ?>
                         </tbody>

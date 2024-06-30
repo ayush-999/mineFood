@@ -2,7 +2,7 @@ DROP PROCEDURE IF EXISTS `sp_updateUser`;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_updateUser`(
 	IN `userId` INT,
     IN `userName` VARCHAR(255),
-    IN `userMobile` VARCHAR(255),
+    IN `userMobile` VARCHAR(15),
     IN `userEmail` VARCHAR(255),
     IN `status` INT,
 	IN `addedOn` datetime

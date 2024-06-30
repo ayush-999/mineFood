@@ -122,7 +122,7 @@ if (isset($_SESSION['message'])) {
                             <?php endforeach; ?>
                         <?php else: ?>
                             <tr>
-                                <td colspan="7" style="text-align:center;">No Delivery Boy found</td>
+                                <td colspan="8" style="text-align:center;">No Delivery Boy found</td>
                             </tr>
                         <?php endif; ?>
                         </tbody>
