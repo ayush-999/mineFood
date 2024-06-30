@@ -1,26 +1,17 @@
 <?php
-/**
- * The function pre() in PHP is used to display the contents of an array in a formatted and readable
- * manner.
- *
- * @param arr The `pre` function is a custom function in PHP that is used to display the contents of an
- * array in a more readable format by wrapping it in `<pre>` tags and using `print_r` to output the
- * array elements.
- */
+require_once __DIR__ . '/vendor/autoload.php';
+
+use Dotenv\Dotenv;
+
+$dotenv = Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
 function pre($arr)
 {
     echo '<pre>';
     print_r($arr);
 }
 
-/**
- * The function preArr in PHP is used to display the contents of an array in a formatted way and then
- * terminate the script execution.
- *
- * @param arr The `preArr` function is a custom function that takes an array as a parameter, prints the
- * array in a human-readable format using `print_r`, and then stops the script execution using `die()`.
- * This can be useful for debugging purposes to quickly inspect the contents of an array.
- */
 function preArr($arr)
 {
     echo '<pre>';
@@ -28,15 +19,6 @@ function preArr($arr)
     die();
 }
 
-/**
- * The function `redirect` in PHP is used to redirect the user to a specified link using JavaScript and
- * then terminate the script execution.
- *
- * @param link The `redirect` function you provided is a PHP function that redirects the user to a
- * specified link using JavaScript. When this function is called with a link parameter, it generates a
- * JavaScript script that changes the window location to the specified link and then terminates the
- * script execution using `die()`.
- */
 function redirect($link)
 {
     ?>
@@ -45,6 +27,21 @@ function redirect($link)
     </script>
     <?php
     die();
+}
+
+function encryptData($data): string
+{
+    $key = base64_decode($_ENV['ENCRYPTION_KEY']);
+    $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes-256-cbc'));
+    $encrypted = openssl_encrypt($data, 'aes-256-cbc', $key, 0, $iv);
+    return base64_encode($encrypted . '::' . $iv);
+}
+
+function decryptData($data): bool|string
+{
+    $key = base64_decode($_ENV['ENCRYPTION_KEY']);
+    list($encrypted_data, $iv) = explode('::', base64_decode($data), 2);
+    return openssl_decrypt($encrypted_data, 'aes-256-cbc', $key, 0, $iv);
 }
 
 ?>

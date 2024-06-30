@@ -72,7 +72,13 @@ if (isset($_SESSION['message'])) {
                 <div class="card-header">
                     <div class="d-flex justify-content-between align-items-center">
                         <h5 class="card-title">
-                            <b><?php echo $pageSubTitle; ?></b>
+                            <b>
+                                <?php
+                                    if (!empty($pageSubTitle)) {
+                                        echo $pageSubTitle;
+                                    }
+                                ?>
+                            </b>
                         </h5>
                         <button class="btn bg-gradient-success btn-sm rounded-circle add-btn" type="button"
                                 data-toggle="modal" data-target="#couponCode-modal">

@@ -21,7 +21,7 @@ $(document).ready(function () {
          mobile: {
             required: true,
             maxlength: 15,
-            minlength: 10,
+            minlength: 12,
          },
          address: {
             required: true,

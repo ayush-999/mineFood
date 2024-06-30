@@ -15,7 +15,7 @@ vendor
 # Ignore user-specific files for VS Code
 ../.vscode
 .idea
-.vscode/
+.vscode
 .vscode/*
 
 # Ignore typical files that should not be committed
@@ -42,5 +42,8 @@ vendor
 *.swp
 *.tmp
 
+#
 note.txt
 sample.sql
+vendor
+uploads/*

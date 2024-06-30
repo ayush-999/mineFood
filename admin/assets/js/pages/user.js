@@ -71,7 +71,7 @@ $(document).ready(function () {
          userMobile: {
             required: true,
             maxlength: 15,
-            minlength: 10,
+            minlength: 12,
          },
          userEmail: {
             required: true,

@@ -79,7 +79,9 @@ if (isset($_SESSION['message'])) {
                             <?php foreach ($get_users as $index => $users): ?>
                                 <tr>
                                     <td><?php echo $index + 1; ?></td>
-                                    <td><?php echo htmlspecialchars($users['name']); ?></td>
+                                    <td>
+                                        <?php echo htmlspecialchars($users['name']); ?>
+                                    </td>
                                     <td><?php echo htmlspecialchars($users['mobile']); ?></td>
                                     <td><?php echo htmlspecialchars($users['email']); ?></td>
                                     <td class="text-center">

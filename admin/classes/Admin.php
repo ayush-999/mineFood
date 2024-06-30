@@ -200,6 +200,10 @@ class Admin
             $stmt = $this->db->prepare($strQuery);
             $stmt->execute();
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($result as &$user) {
+                $user['name'] = decryptData($user['name']);
+                $user['email'] = decryptData($user['email']);
+            }
             return json_encode($result);
         } catch (PDOException $e) {
             throw new Exception("Database error: " . $e->getMessage());
@@ -230,6 +234,8 @@ class Admin
     public function add_user($userName, $userMobile, $userEmail, $status, $added_on)
     {
         try {
+            $userName = encryptData($userName);
+            $userEmail = encryptData($userEmail);
             // Insert new user
             $strQuery = "CALL sp_addUser(?, ?, ?, ?, ?)";
             $stmt = $this->db->prepare($strQuery);
@@ -255,6 +261,8 @@ class Admin
     public function update_user($userId, $userName, $userMobile, $userEmail, $status, $added_on)
     {
         try {
+            $userName = encryptData($userName);
+            $userEmail = encryptData($userEmail);
             $strQuery = "CALL sp_updateUser(?, ?, ?, ?, ?, ?)";
             $stmt = $this->db->prepare($strQuery);
             $stmt->bindParam(1, $userId, PDO::PARAM_INT);
