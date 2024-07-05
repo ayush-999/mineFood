@@ -93,25 +93,25 @@ if (isset($_SESSION['message'])) {
                         <tr>
                             <th style="width: 10px">S.No.</th>
                             <th>
-                                <span class="couponCode-name-h">Code</span>
+                                Code
                             </th>
                             <th>
-                                <span class="couponCode-type-h">Type</span>
+                                Type
                             </th>
                             <th>
-                                <span class="couponCode-value-h">Cart Value</span>
+                                Cart Value
                             </th>
                             <th>
-                                <span class="couponCode-cartValue-h">Minimum Cart</span>
+                                Minimum Cart
                             </th>
                             <th>
-                                <span class="couponCode-addDate-h">Start Date</span>
+                                Start Date
                             </th>
                             <th>
-                                <span class="couponCode-exDate-h">Expire Date</span>
+                                Expire Date
                             </th>
                             <th>
-                                <span class="couponCode-status-h">Status</span>
+                                Status
                             </th>
                             <th>Action</th>
                         </tr>
@@ -216,21 +216,6 @@ if (isset($_SESSION['message'])) {
             })
             $('.bgColorPicker').on('colorpickerChange', function (event) {
                 $('.bgColorPicker .fa-circle').css('color', event.color.toString());
-            });
-
-            tippy('.couponCode-value-h', {
-                arrow: true,
-                content: "Coupon cart value",
-            });
-
-            tippy('.couponCode-cartValue-h', {
-                arrow: true,
-                content: "Minimum cart value",
-            });
-
-            tippy('.couponCode-type-h', {
-                arrow: true,
-                content: "Coupon Type",
             });
 
             // Add button click event

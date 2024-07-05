@@ -373,3 +373,28 @@ Profile
     display: flex;
     flex-direction: column;
 }
+
+/********************************
+Dish
+********************************/
+
+.dish-img{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.dish-type-img {
+    width: 24px;
+    height: 24px;
+}
+
+.see-more {
+    font-size: 14px;
+    color: #007bff;
+    letter-spacing: 0;
+    word-spacing: -1px;
+}
