@@ -1,7 +1,7 @@
 # .gitignore for PHP projects using Visual Studio Code
 
 # Ignore Composer files
-vendor
+/vendor
 /vendor/
 /composer.lock
 
@@ -45,3 +45,4 @@ vendor
 note.txt
 sample.sql
 templates
+uploads/*
