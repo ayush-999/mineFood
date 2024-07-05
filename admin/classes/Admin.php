@@ -466,4 +466,22 @@ class Admin
         }
     }
 
+    /****************** Dish function start ****************
+     * @throws Exception
+     */
+    public function get_dish(): bool|string
+    {
+        try {
+            $strQuery = "CALL sp_getAllDish()";
+            $stmt = $this->db->prepare($strQuery);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return json_encode($result);
+        } catch (PDOException $e) {
+            throw new Exception("Database error: " . $e->getMessage());
+        } catch (Exception $e) {
+            throw new Exception("Error: " . $e->getMessage());
+        }
+    }
+
 }

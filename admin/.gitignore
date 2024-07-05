@@ -45,5 +45,4 @@ vendor
 #
 note.txt
 sample.sql
-vendor
-uploads/*
+uploads/

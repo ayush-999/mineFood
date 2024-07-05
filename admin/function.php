@@ -44,4 +44,14 @@ function decryptData($data): bool|string
     return openssl_decrypt($encrypted_data, 'aes-256-cbc', $key, 0, $iv);
 }
 
+function truncateText($text, $word_limit) {
+    $words = explode(" ", $text);
+    if (count($words) > $word_limit) {
+        $truncated = implode(" ", array_slice($words, 0, $word_limit)) . ' ... <span class="see-more" data-tippy-content="' . htmlspecialchars($text) . '">see more</span>';
+    } else {
+        $truncated = $text;
+    }
+    return $truncated;
+}
+
 ?>

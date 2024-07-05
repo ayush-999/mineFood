@@ -95,6 +95,7 @@ $imagePath = $profileImg ? 'uploads/admin/profile-pic/' . $profileImg : 'assets/
     <script src="assets/js/pages/profile.js"></script>
     <script src="assets/js/pages/deliveryBoy.js"></script>
     <script src="assets/js/pages/couponCode.js"></script>
+    <script src="assets/js/pages/dish.js"></script>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
