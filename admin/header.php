@@ -32,7 +32,7 @@ try {
 }
 
 $profileImg = $adminDetails['admin_img'] ?? '';
-$imagePath = $profileImg ? 'uploads/admin/profile-pic/' . $profileImg : 'assets/img/avatar6.png';
+$imagePath = $profileImg ? 'uploads/admin/profile-pic/' . $profileImg : 'assets/img/no-img.png';
 
 ?>
 <!DOCTYPE html>

@@ -62,14 +62,15 @@ if (isset($_SESSION['message'])) {
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <table id="category" class="table table-bordered table-striped table-hover text-nowrap">
+                    <table id="category" class="table table-bordered table-hover text-nowrap">
                         <thead>
                         <tr>
                             <th style="width: 10px">S.No.</th>
                             <th>Category Name</th>
                             <th>Order Number</th>
-                            <th>Status</th>
-                            <th>Action</th>
+                            <th class="text-center">Status</th>
+                            <th class="text-center">Added Date</th>
+                            <th class="text-center">Action</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -84,6 +85,12 @@ if (isset($_SESSION['message'])) {
                                         class="<?php echo $category['status'] == 0 ? 'inactive-badge' : 'active-badge'; ?>">
                                     <?php echo $category['status'] == 0 ? 'Inactive' : 'Active'; ?>
                                 </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <?php
+                                        $date = new DateTime($category['added_on']);
+                                        echo $date->format('d-m-Y');
+                                        ?>
                                     </td>
                                     <td class="text-center">
                                         <button class="btn bg-gradient-success btn-sm rounded-circle mr-1 edit-btn"
@@ -120,7 +127,8 @@ if (isset($_SESSION['message'])) {
 
             //Initialize Select2 Elements
             $('#categoryStatus').select2({
-                theme: 'bootstrap4'
+                theme: 'bootstrap4',
+                minimumResultsForSearch: -1
             });
 
             toastr.options = {

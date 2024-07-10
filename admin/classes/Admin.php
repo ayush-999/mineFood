@@ -469,11 +469,17 @@ class Admin
     /****************** Dish function start ****************
      * @throws Exception
      */
-    public function get_dish(): bool|string
+    public function get_dish($dishId = null): bool|string
     {
         try {
-            $strQuery = "CALL sp_getAllDish()";
-            $stmt = $this->db->prepare($strQuery);
+            if ($dishId) {
+                $strQuery = "CALL sp_getDishById(?)";
+                $stmt = $this->db->prepare($strQuery);
+                $stmt->bindParam(1, $dishId, PDO::PARAM_INT);
+            } else {
+                $strQuery = "CALL sp_getAllDish()";
+                $stmt = $this->db->prepare($strQuery);
+            }
             $stmt->execute();
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
             return json_encode($result);
@@ -484,4 +490,72 @@ class Admin
         }
     }
 
+    /**
+     * @throws Exception
+     */
+    public function delete_dish($dishId): bool
+    {
+        try {
+            $strQuery = "CALL sp_deleteDish(?)";
+            $stmt = $this->db->prepare($strQuery);
+            $stmt->bindParam(1, $dishId, PDO::PARAM_INT);
+            $stmt->execute();
+            return true;
+        } catch (PDOException $e) {
+            throw new Exception("Database error: " . $e->getMessage());
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function add_dish($dishName, $dishCategory, $dishStatus, $dishType, $dishDetail, $added_on, $imagePath)
+    {
+        try {
+            // Insert new Coupon Code
+            $strQuery = "CALL sp_addDish(?, ?, ?, ?, ?, ?, ?)";
+            $stmt = $this->db->prepare($strQuery);
+            $stmt->bindParam(1, $dishCategory, PDO::PARAM_INT);
+            $stmt->bindParam(2, $dishName, PDO::PARAM_STR);
+            $stmt->bindParam(3, $dishDetail, PDO::PARAM_STR);
+            $stmt->bindParam(4, $imagePath, PDO::PARAM_STR);
+            $stmt->bindParam(5, $dishType, PDO::PARAM_STR);
+            $stmt->bindParam(6, $dishStatus, PDO::PARAM_INT);
+            $stmt->bindParam(7, $added_on, PDO::PARAM_STR);
+            $stmt->execute();
+            return "Dish added successfully";
+        } catch (PDOException $e) {
+            if ($e->errorInfo[0] === '45000') {
+                return $e->errorInfo[2]; // Custom error message from stored procedure
+            }
+            throw new Exception("Database error: " . $e->getMessage());
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function update_dish($dishId, $dishName, $dishCategory, $dishStatus, $dishType, $dishDetail, $added_on, $imagePath)
+    {
+        try {
+            // Update Coupon Code
+            $strQuery = "CALL sp_updateDish(?, ?, ?, ?, ?, ?, ?, ?)";
+            $stmt = $this->db->prepare($strQuery);
+            $stmt->bindParam(1, $dishId, PDO::PARAM_INT);
+            $stmt->bindParam(2, $dishCategory, PDO::PARAM_INT);
+            $stmt->bindParam(3, $dishName, PDO::PARAM_STR);
+            $stmt->bindParam(4, $dishDetail, PDO::PARAM_STR);
+            $stmt->bindParam(5, $imagePath, PDO::PARAM_STR);
+            $stmt->bindParam(6, $dishType, PDO::PARAM_STR);
+            $stmt->bindParam(7, $dishStatus, PDO::PARAM_INT);
+            $stmt->bindParam(8, $added_on, PDO::PARAM_STR);
+            $stmt->execute();
+            return "Dish updated successfully";
+        } catch (PDOException $e) {
+            if ($e->errorInfo[0] === '45000') {
+                return $e->errorInfo[2]; // Custom error message from stored procedure
+            }
+            throw new Exception("Database error: " . $e->getMessage());
+        }
+    }
 }

@@ -19,7 +19,7 @@
                             </label>
                             <input type="file" class="form-control" id="profileImg" name="profileImg" accept="image/*">
                             <img src="<?php echo $imagePath; ?>" class="img-circle"
-                                 alt="<?php echo $adminDetails['name']; ?>" id="image-preview">
+                                 alt="" id="image-preview">
                         </div>
                     </div>
                     <div class="row mb-2">
