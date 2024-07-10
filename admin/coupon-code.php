@@ -197,10 +197,12 @@ if (isset($_SESSION['message'])) {
 
             //Initialize Select2 Elements
             $('#couponCodeStatus').select2({
-                theme: 'bootstrap4'
+                theme: 'bootstrap4',
+                minimumResultsForSearch: -1
             });
             $('#couponCodeType').select2({
-                theme: 'bootstrap4'
+                theme: 'bootstrap4',
+                minimumResultsForSearch: -1
             });
 
             //Initialize color picker with addon

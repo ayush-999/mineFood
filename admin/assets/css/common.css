@@ -202,6 +202,20 @@ Template customize
     border-radius: 0 100px 100px 0;
 }
 
+.disabled-cell {
+    /*background-color: #f5f5f5; !* Light gray background *!*/
+    background-color: #f2dede; /* Light red background for disabled rows */
+    color: #a94442; /* Dark red text for better visibility */
+    /*pointer-events: none; !* Disable pointer events *!*/
+    opacity: 0.6; /* Slightly transparent */
+}
+/*
+.disabled-cell .btn {
+    pointer-events: none;
+    opacity: 0.4;
+}
+*/
+
 /******************************** 
 Login Page 
 ********************************/

@@ -71,7 +71,7 @@ $(document).ready(function () {
          deliveryBoyMobile: {
             required: true,
             maxlength: 15,
-            minlength: 12,
+            minlength: 10,
          },
          deliveryBoyEmail: {
             required: true,

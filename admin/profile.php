@@ -14,7 +14,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['updateAction'])) {
     $profileAddress = $_POST['address'];
     $profileMobile = $_POST['mobile'];
     $added_on = date('Y-m-d h:i:s');
-
     // Image upload handling
     $imagePath = '';
     if (isset($_FILES['profileImg']) && $_FILES['profileImg']['error'] == UPLOAD_ERR_OK) {
@@ -22,15 +21,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['updateAction'])) {
         if (!is_dir($uploadDir)) {
             mkdir($uploadDir, 0755, true);
         }
-
         // Remove old image
         if (!empty($adminDetails['admin_img']) && file_exists($uploadDir . $adminDetails['admin_img'])) {
             unlink($uploadDir . $adminDetails['admin_img']);
         }
-
         $imagePath = basename($_FILES['profileImg']['name']);
         $uploadFile = $uploadDir . $imagePath;
-
         if (!move_uploaded_file($_FILES['profileImg']['tmp_name'], $uploadFile)) {
             $_SESSION['message'] = json_encode(["message" => "Image upload failed"]);
             header("Location: profile.php");
@@ -46,7 +42,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['updateAction'])) {
         }
         $imagePath = $adminDetails['admin_img'];
     }
-
     try {
         if ($action == 'update') {
             $result = $admin->updateAdmin($profileId, $profileName, $profileUsername, $profileEmail, $profilePassword, $profileAddress, $profileMobile, $added_on, $imagePath);

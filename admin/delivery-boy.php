@@ -61,7 +61,7 @@ if (isset($_SESSION['message'])) {
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <table id="deliveryBoy" class="table table-bordered table-striped table-hover text-nowrap">
+                    <table id="deliveryBoy" class="table table-bordered table-hover text-nowrap">
                         <thead>
                         <tr>
                             <th style="width: 10px">S.No.</th>
@@ -156,7 +156,8 @@ if (isset($_SESSION['message'])) {
 
             //Initialize Select2 Elements
             $('#deliveryBoyStatus').select2({
-                theme: 'bootstrap4'
+                theme: 'bootstrap4',
+                minimumResultsForSearch: -1
             });
 
             $('.add-btn').on('click', function () {
