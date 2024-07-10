@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jun 24, 2024 at 02:34 PM
+-- Generation Time: Jul 10, 2024 at 08:21 PM
 -- Server version: 8.3.0
 -- PHP Version: 8.2.18
 
@@ -44,7 +44,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_addCouponCode` (IN `couponCodeNa
 END$$
 
 DROP PROCEDURE IF EXISTS `sp_addDeliveryBoy`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_addDeliveryBoy` (IN `deliveryBoyName` VARCHAR(50), IN `deliveryBoyMobile` VARCHAR(15), IN `deliveryBoyEmail` VARCHAR(50), IN `status` INT, IN `addedOn` DATETIME)   BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_addDeliveryBoy` (IN `deliveryBoyName` VARCHAR(255), IN `deliveryBoyMobile` VARCHAR(15), IN `deliveryBoyEmail` VARCHAR(255), IN `status` INT, IN `addedOn` DATETIME)   BEGIN
     -- Check for existing delivery boy by mobile or email
     IF (SELECT COUNT(*) FROM delivery_boy WHERE mobile = deliveryBoyMobile OR email = deliveryBoyEmail) > 0 THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Delivery boy with this mobile or email already exists';
@@ -55,8 +55,20 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_addDeliveryBoy` (IN `deliveryBoy
     END IF;
 END$$
 
+DROP PROCEDURE IF EXISTS `sp_addDish`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_addDish` (IN `dishCategoryId` INT, IN `dishName` VARCHAR(100), IN `dishDetail` TEXT, IN `dishImage` VARCHAR(255), IN `dishType` ENUM('veg','non-veg'), IN `status` INT, IN `addedOn` DATETIME)   BEGIN
+    -- Check for existing dish by name
+    IF (SELECT COUNT(*) FROM dish WHERE dish_name = dishName) > 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Dish already exists';
+    ELSE
+        -- Insert new Dish
+        INSERT INTO dish (category_id, dish_name, dish_detail, image, type, status, added_on)
+        VALUES (dishCategoryId, dishName, dishDetail, dishImage, dishType, status, addedOn);
+    END IF;
+END$$
+
 DROP PROCEDURE IF EXISTS `sp_addUser`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_addUser` (IN `userName` VARCHAR(50), IN `userMobile` VARCHAR(15), IN `userEmail` VARCHAR(50), IN `status` INT, IN `addedOn` DATETIME)   BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_addUser` (IN `userName` VARCHAR(255), IN `userMobile` VARCHAR(15), IN `userEmail` VARCHAR(255), IN `status` INT, IN `addedOn` DATETIME)   BEGIN
     -- Check for existing delivery boy by mobile or email
     IF (SELECT COUNT(*) FROM user WHERE mobile = userMobile OR email = userEmail) > 0 THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'User with this mobile or email already exists';
@@ -90,6 +102,12 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_deleteDeliveryBoy` (IN `delivery
     WHERE id = deliveryBoyId;
 END$$
 
+DROP PROCEDURE IF EXISTS `sp_deleteDish`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_deleteDish` (IN `dishId` INT)   BEGIN
+	DELETE FROM dish
+    WHERE id = dishId;
+END$$
+
 DROP PROCEDURE IF EXISTS `sp_deleteUser`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_deleteUser` (IN `userId` INT)   BEGIN
 	DELETE FROM user
@@ -119,9 +137,29 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_getAllDeliveryBoy` ()   BEGIN
 	SELECT * FROM delivery_boy;
 END$$
 
+DROP PROCEDURE IF EXISTS `sp_getAllDish`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_getAllDish` ()   BEGIN
+    SELECT dish.*, 
+    category.category_name,
+	category.status as category_status
+    FROM dish, category 
+    where dish.category_id = category.id 
+    order by dish.id asc;
+END$$
+
 DROP PROCEDURE IF EXISTS `sp_getAllUsers`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_getAllUsers` ()   BEGIN
 	SELECT * FROM user;
+END$$
+
+DROP PROCEDURE IF EXISTS `sp_getDishById`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_getDishById` (IN `dishId` INT)   BEGIN
+    SELECT dish.*,
+           category.category_name,
+           category.status as category_status
+    FROM dish
+    JOIN category ON dish.category_id = category.id
+    WHERE dish.id = dishId;
 END$$
 
 DROP PROCEDURE IF EXISTS `sp_updateAdmin`$$
@@ -168,7 +206,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_updateCouponCode` (IN `couponCod
 END$$
 
 DROP PROCEDURE IF EXISTS `sp_updateDeliveryBoy`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_updateDeliveryBoy` (IN `deliveryBoyId` INT, IN `deliveryBoyName` VARCHAR(50), IN `deliveryBoyMobile` VARCHAR(15), IN `deliveryBoyEmail` VARCHAR(50), IN `status` INT, IN `addedOn` DATETIME)   BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_updateDeliveryBoy` (IN `deliveryBoyId` INT, IN `deliveryBoyName` VARCHAR(255), IN `deliveryBoyMobile` VARCHAR(15), IN `deliveryBoyEmail` VARCHAR(255), IN `status` INT, IN `addedOn` DATETIME)   BEGIN
     -- Check for existing delivery boy by mobile or email, excluding current record
     IF (SELECT COUNT(*) FROM delivery_boy WHERE (mobile = deliveryBoyMobile OR email = deliveryBoyEmail) AND id != deliveryBoyId) > 0 THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Delivery boy with this mobile or email already exists';
@@ -180,8 +218,33 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_updateDeliveryBoy` (IN `delivery
     END IF;
 END$$
 
+DROP PROCEDURE IF EXISTS `sp_updateDish`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_updateDish` (IN `dishId` INT, IN `dishCategoryId` INT, IN `dishName` VARCHAR(100), IN `dishDetail` TEXT, IN `dishImage` VARCHAR(255), IN `dishType` ENUM('veg','non-veg'), IN `status` INT, IN `addedOn` DATETIME)   BEGIN
+    -- Check for existing dish by name, excluding current record
+    IF
+(
+SELECT COUNT(*)
+FROM dish
+WHERE (dish_name = dishName)
+  AND id != dishId) > 0 THEN
+        SIGNAL SQLSTATE '45000'
+SET MESSAGE_TEXT = 'Dish already exists';
+ELSE
+        -- Update Dish
+UPDATE dish
+SET category_id = dishCategoryId,
+    dish_name   = dishName,
+    dish_detail = dishDetail,
+    image       = dishImage,
+    type        = dishType,
+    status      = status,
+    added_on    = addedOn
+WHERE id = dishId;
+END IF;
+END$$
+
 DROP PROCEDURE IF EXISTS `sp_updateUser`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_updateUser` (IN `userId` INT, IN `userName` VARCHAR(50), IN `userMobile` VARCHAR(15), IN `userEmail` VARCHAR(15), IN `status` INT, IN `addedOn` DATETIME)   BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_updateUser` (IN `userId` INT, IN `userName` VARCHAR(255), IN `userMobile` VARCHAR(15), IN `userEmail` VARCHAR(255), IN `status` INT, IN `addedOn` DATETIME)   BEGIN
     -- Check for existing delivery boy by mobile or email, excluding current record
     IF (SELECT COUNT(*) FROM user WHERE (mobile = userMobile OR email = userEmail) AND id != userId) > 0 THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'User with this mobile or email already exists';
@@ -227,7 +290,7 @@ CREATE TABLE IF NOT EXISTS `admin` (
 --
 
 INSERT INTO `admin` (`id`, `name`, `username`, `password`, `email`, `mobile_no`, `added_on`, `address`, `admin_img`) VALUES
-(1, 'Ayush', 'admin', 'Ayush@123', 'admin@gmail.com', '+919993832158', '2024-06-05 10:40:55', 'Pendra, Bilaspur, Chhattisgarh, 495119', '05.jpg');
+(1, 'Ayush', 'admin', 'Ayush@123', 'admin@gmail.com', '+919993832158', '2024-07-10 03:04:37', 'Pendra, Bilaspur, Chhattisgarh, 495119', '05.jpg');
 
 -- --------------------------------------------------------
 
@@ -271,15 +334,17 @@ CREATE TABLE IF NOT EXISTS `category` (
   `status` int NOT NULL,
   `added_on` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `category`
 --
 
 INSERT INTO `category` (`id`, `category_name`, `order_number`, `status`, `added_on`) VALUES
-(1, 'Chaat & Snacks', 2, 0, '2024-06-16 09:17:38'),
-(5, 'Murg', 1, 0, '2024-06-23 02:15:04');
+(1, 'Chaat & Snacks', 2, 0, '2024-07-05 03:26:19'),
+(5, 'Murg', 1, 1, '2024-07-05 04:22:57'),
+(6, 'Sweets', 3, 1, '2024-07-05 04:18:53'),
+(7, 'Chinese', 4, 1, '2024-07-10 06:34:55');
 
 -- --------------------------------------------------------
 
@@ -326,14 +391,15 @@ CREATE TABLE IF NOT EXISTS `coupon_code` (
   `txt_color` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'rgba(184, 65, 0, 1)',
   `added_on` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `coupon_code`
 --
 
 INSERT INTO `coupon_code` (`id`, `coupon_name`, `coupon_type`, `coupon_value`, `cart_min_value`, `started_on`, `expired_on`, `status`, `bg_color`, `txt_color`, `added_on`) VALUES
-(6, 'WELCOME50', 'P', 50, 100, '2024-06-18', '2024-06-21', 1, 'rgb(234, 199, 0)', 'rgba(208, 148, 3, 0.94)', '2024-06-24 09:35:41');
+(6, 'WELCOME50', 'P', 50, 100, '2024-06-18', '2024-06-21', 1, 'rgb(234, 199, 0)', 'rgb(141, 100, 0)', '2024-06-24 09:35:41'),
+(8, 'FAST50', 'F', 50, 100, '2024-06-25', '2024-06-24', 1, 'rgb(255, 176, 29)', 'rgb(184, 65, 0)', '2024-06-24 02:57:32');
 
 -- --------------------------------------------------------
 
@@ -344,24 +410,23 @@ INSERT INTO `coupon_code` (`id`, `coupon_name`, `coupon_type`, `coupon_value`, `
 DROP TABLE IF EXISTS `delivery_boy`;
 CREATE TABLE IF NOT EXISTS `delivery_boy` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) NOT NULL,
+  `name` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `mobile` varchar(15) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
-  `email` varchar(50) NOT NULL,
+  `email` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `password` varchar(50) NOT NULL,
   `status` int NOT NULL,
   `email_verify` int NOT NULL,
   `added_on` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `delivery_boy`
 --
 
 INSERT INTO `delivery_boy` (`id`, `name`, `mobile`, `email`, `password`, `status`, `email_verify`, `added_on`) VALUES
-(5, 'Ayush', '+919993832158', 'ayush@gmail.com', '', 1, 0, '2024-06-16 09:20:37'),
-(11, 'Rajesh', '+911234567890', 'ashish@gmail.com', '', 2, 1, '2024-06-16 07:51:46'),
-(12, 'ram', '+919876543210', 'ram@gmail.com', '', 0, 0, '2024-06-24 10:32:53');
+(14, 'L1dpV005TkJIZVBOUnNYUUtGZ25Tdz09OjpTSk/Wj+tIbTEDrMS3VfRK', '+911234567890', 'R05yaDFGN1BmTUp1MTFDeUpyMmlEZz09OjqPtoVVIvR+JzZMskdn5Wo8', '', 1, 0, '2024-06-30 06:53:42'),
+(15, 'SzA4UFBvOFhZQUgxU0NKU1pVc3krQT09OjpoxYdAFkr5X7o/2P2YhZpl', '+919993832158', 'WVZLTGZpNHZ5R1dUQ2lUUnBnNHZlS2gxRjlSWXZPUDlQa3Z6UUlSekc4WT06OogFWoiUArjg4zGQwV8PgGs=', '', 1, 0, '2024-07-10 03:04:07');
 
 -- --------------------------------------------------------
 
@@ -373,24 +438,23 @@ DROP TABLE IF EXISTS `dish`;
 CREATE TABLE IF NOT EXISTS `dish` (
   `id` int NOT NULL AUTO_INCREMENT,
   `category_id` int NOT NULL,
-  `dish` varchar(100) NOT NULL,
-  `dish_detail` text NOT NULL,
-  `image` varchar(100) NOT NULL,
-  `type` enum('veg','non-veg') NOT NULL,
+  `dish_name` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `dish_detail` text CHARACTER SET latin1 COLLATE latin1_swedish_ci,
+  `image` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `type` enum('veg','non-veg') CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `status` int NOT NULL,
   `added_on` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `dish`
 --
 
-INSERT INTO `dish` (`id`, `category_id`, `dish`, `dish_detail`, `image`, `type`, `status`, `added_on`) VALUES
-(1, 4, 'Gulab Jamun', 'Gulab Jamun', '977945963_862169053_gulab-jamun.jpg', 'veg', 1, '2020-06-17 10:43:59'),
-(3, 2, 'Chow mein', 'Chow mein', '836724175_Chowmein.jpg', 'non-veg', 1, '2020-06-17 10:47:26'),
-(4, 5, 'Butter Chicken', 'Butter chicken or murg makhani is a dish, originating in the Indian subcontinent, of chicken in a mildly spiced tomato sauce.', '348714192_30-Minute-Instant-Pot-Butter-Chicken-7.jpg', 'non-veg', 1, '2020-06-27 12:50:50'),
-(5, 2, 'Testing', 'testing', '140977647_404.jpg', 'veg', 0, '2020-07-06 12:00:24');
+INSERT INTO `dish` (`id`, `category_id`, `dish_name`, `dish_detail`, `image`, `type`, `status`, `added_on`) VALUES
+(1, 6, 'Gulab Jamun', 'Gulab Jamun', '', 'veg', 1, '2020-06-17 10:43:59'),
+(3, 7, 'Chow mein', 'Chow mein', 'avatar.png', 'non-veg', 1, '2024-07-10 07:47:11'),
+(4, 5, 'Butter Chicken', 'Butter chicken or murg makhani is a dish, originating in the Indian subcontinent, of chicken in a mildly spiced tomato sauce.', 'default-male.png', 'non-veg', 1, '2024-07-10 07:46:55');
 
 -- --------------------------------------------------------
 
@@ -590,9 +654,9 @@ INSERT INTO `setting` (`id`, `cart_min_price`, `cart_min_price_msg`, `website_cl
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE IF NOT EXISTS `user` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) NOT NULL,
-  `email` varchar(50) NOT NULL,
-  `mobile` varchar(15) NOT NULL,
+  `name` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `mobile` varchar(15) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `password` varchar(100) NOT NULL,
   `status` int NOT NULL,
   `email_verify` int NOT NULL,
@@ -601,14 +665,14 @@ CREATE TABLE IF NOT EXISTS `user` (
   `from_referral_code` varchar(20) NOT NULL,
   `added_on` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `user`
 --
 
 INSERT INTO `user` (`id`, `name`, `email`, `mobile`, `password`, `status`, `email_verify`, `rand_str`, `referral_code`, `from_referral_code`, `added_on`) VALUES
-(6, 'Ayush Chaturvedi', 'ayush@gmail.com', '+919993832158', '', 2, 0, '', '', '', '2024-06-16 09:19:04');
+(16, 'V21Vb1hwb2cybnJwWlpKTitObXNjUT09Ojp2QN20fkmGuEwsR2jvZymo', 'VVZQVEZMK1pTNkd2SVpLY3YwSzU1czljWVloY285U2xDd2lyRnpMY1EwND06OtVauJw9Cj5LF7uTI38gbHM=', '+919876543210', '', 0, 0, '', '', '', '2024-06-30 06:54:18');
 
 -- --------------------------------------------------------
 
