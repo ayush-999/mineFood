@@ -1,6 +1,8 @@
+### While doing git clone we need to add uploads folder under this path "admin/uploads"
+
 ---
-https://github.com/vlucas/phpdotenv
----
+
+## https://github.com/vlucas/phpdotenv
 
 jQuery Validation Plugin : https://jqueryvalidation.org/files/demo/
 
