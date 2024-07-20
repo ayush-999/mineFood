@@ -87,7 +87,8 @@ $imagePath = $profileImg ? 'uploads/admin/profile-pic/' . $profileImg : 'assets/
     <!-- intlTelInput -->
     <link rel="stylesheet" href="assets/plugins/intlTelInput/css/intlTelInput.min.css">
     <script src="assets/plugins/intlTelInput/js/intlTelInputWithUtils.min.js"></script>
-
+    <!-- CKEditor -->
+    <script src="assets/plugins/ckeditor/ckeditor.js"></script>
     <!--========================= Pages JS =========================-->
     <script src="assets/js/common.js"></script>
     <script src="assets/js/pages/category.js"></script>

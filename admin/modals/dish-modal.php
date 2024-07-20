@@ -24,12 +24,12 @@ $imagePath = $dishImg ? 'uploads/dish/' . $dishImg : 'assets/img/no-img.png';
                     <input type="hidden" id="dishId" name="dishId" value="">
                     <input type="hidden" id="submitAction" name="submitAction" value="">
                     <div class="row mb-3">
-                        <div class="col-md-9 form-group mb-0">
+                        <div class="col-md-10 form-group mb-0">
                             <label for="dishName">Dish Name</label>
                             <input type="text" class="form-control" id="dishName" name="dishName"
                                    placeholder="Enter Dish name" value="" required>
                         </div>
-                        <div class="col-md-3 form-group mb-0 d-flex justify-content-end">
+                        <div class="col-md-32 form-group mb-0 d-flex justify-content-end">
                             <div class="imgWrapper">
                                 <label class="-label" for="dishImg">
                                     <span>Change Image</span>
