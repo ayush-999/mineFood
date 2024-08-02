@@ -311,25 +311,6 @@ if (isset($_SESSION['message'])) {
         $('#dishImg').imoViewer({
             'preview': '#image-preview',
         })
-
-        // ClassicEditor.create(document.querySelector('#dishDetail'), {
-        //     toolbar: {
-        //         items: [
-        //             'bold',
-        //             'italic',
-        //             'bulletedList',
-        //             'numberedList',
-        //             'outdent',
-        //             'indent'
-        //         ]
-        //     },
-        //     language: 'en'
-        // }).then(editor => {
-        //     window.dishDetailEditor = editor;
-        // })
-        // .catch(error => {
-        //     console.error(error);
-        // });
     });
 </script>
 <?php include_once('footer.php') ?>
