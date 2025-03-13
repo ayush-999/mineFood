@@ -11,7 +11,7 @@ $dishImg = $get_dish['image'] ?? '';
 $imagePath = $dishImg ? 'uploads/dish/' . $dishImg : 'assets/img/no-img.png';
 ?>
 <div class="modal fade" id="dish-modal">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h6 class="modal-title">Dish</h6>
@@ -27,21 +27,21 @@ $imagePath = $dishImg ? 'uploads/dish/' . $dishImg : 'assets/img/no-img.png';
                         <div class="col-md-10 form-group mb-0">
                             <label for="dishName">Dish Name</label>
                             <input type="text" class="form-control" id="dishName" name="dishName"
-                                   placeholder="Enter Dish name" value="" required>
+                                placeholder="Enter Dish name" value="" required>
                         </div>
                         <div class="col-md-32 form-group mb-0 d-flex justify-content-end">
-                            <div class="imgWrapper">
+                            <div class="dishImgWrap imgWrapper">
                                 <label class="-label" for="dishImg">
                                     <span>Change Image</span>
                                 </label>
                                 <input type="file" class="form-control" id="dishImg" name="dishImg" accept="image/*">
                                 <img src="<?php echo $imagePath; ?>" class="img-circle"
-                                     alt="" id="image-preview">
+                                    alt="" id="image-preview">
                             </div>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <div class="col-md-12 form-group mb-0">
+                        <div class="col-md-6 form-group mb-0">
                             <label for="dishCategory">Category</label>
                             <select class="form-control" name="dishCategory" id="dishCategory">
                                 <option value="">Select Category</option>
@@ -54,9 +54,7 @@ $imagePath = $dishImg ? 'uploads/dish/' . $dishImg : 'assets/img/no-img.png';
                                 ?>
                             </select>
                         </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-md-6 form-group mb-0">
+                        <div class="col-md-3 form-group mb-0">
                             <label for="dishStatus">Status</label>
                             <select class="form-control" name="dishStatus" id="dishStatus">
                                 <option value="">Select Status</option>
@@ -64,7 +62,7 @@ $imagePath = $dishImg ? 'uploads/dish/' . $dishImg : 'assets/img/no-img.png';
                                 <option value="1">Active</option>
                             </select>
                         </div>
-                        <div class="col-md-6 form-group mb-0">
+                        <div class="col-md-3 form-group mb-0">
                             <label for="dishType">Type</label>
                             <select class="form-control" name="dishType" id="dishType">
                                 <option value="">Select Type</option>
@@ -77,6 +75,35 @@ $imagePath = $dishImg ? 'uploads/dish/' . $dishImg : 'assets/img/no-img.png';
                         <div class="col-md-12 form-group mb-0">
                             <label for="dishDetail">Detail</label>
                             <textarea class="form-control" id="dishDetail" name="dishDetail" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="attributeContainer mb-3" id="attributeContainer">
+                        <div class="row attribute-item" id="attributeItem1">
+                            <div class="col-md-6 form-group mb-0">
+                                <label for="dishPrice1">Price</label>
+                                <div class="input-group">
+                                    <div class="input-group-append">
+                                        <div class="input-group-text rounded-left">
+                                            <i class="fa-regular fa-indian-rupee-sign"></i>
+                                        </div>
+                                    </div>
+                                    <input type="text" class="form-control dishPrice" id="dishPrice" name="dishPrice[]"
+                                        placeholder="0.00" value="">
+                                </div>
+                            </div>
+                            <div class="col-md-5 form-group mb-0">
+                                <label for="dishAttribute1">Quantity</label>
+                                <select class="form-control dishAttribute" id="dishAttribute" name="dishAttribute[]">
+                                    <option value="">Select Quantity</option>
+                                    <option value="full">Full</option>
+                                    <option value="half">Half</option>
+                                </select>
+                            </div>
+                            <div class="col-md-1 form-group d-flex justify-content-center align-items-end mb-1">
+                                <button type="button" class="btn bg-gradient-success btn-sm rounded-circle" id="addMoreAttributes">
+                                    <i class="fa-regular fa-add"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                     <div class="row">

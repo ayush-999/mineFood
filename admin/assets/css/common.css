@@ -1,9 +1,9 @@
 body {
-    font-family: "Poppins", sans-serif !important;
-    font-size: 15px;
-    line-height: 1.5;
-    color: #000;
-    background-color: #F4F6F9;
+  font-family: "Poppins", sans-serif !important;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #000;
+  background-color: #f4f6f9;
 }
 
 /******************************** 
@@ -11,203 +11,209 @@ Template customize
 ********************************/
 
 :focus-visible {
-    outline: none;
+  outline: none;
 }
 
 .fs-12 {
-    font-size: 12px;
+  font-size: 12px;
 }
 
 .fs-14 {
-    font-size: 14px;
+  font-size: 14px;
 }
 
 .vrLine {
-    width: 1px;
-    background: #C0C6CB;
-    height: auto;
+  width: 1px;
+  background: #c0c6cb;
+  height: auto;
 }
 
 .dropdown-item.active,
 .dropdown-item:active {
-    color: #16181b !important;
-    text-decoration: none;
-    background-color: #f8f9fa !important;
+  color: #16181b !important;
+  text-decoration: none;
+  background-color: #f8f9fa !important;
 }
 
 .pending-badge::before {
-    font-family: "Font Awesome 6 Pro";
-    content: '\f017';
-    text-align: center;
-    padding-right: 2px;
+  font-family: "Font Awesome 6 Pro";
+  content: "\f017";
+  text-align: center;
+  padding-right: 2px;
 }
 
 .pending-badge {
-    background: rgba(220, 53, 69, 0.2);
-    color: #c42231;
-    border: 1px dashed #c42231;
-    border-radius: 0.25rem;
-    font-weight: 500;
-    display: inline-block;
-    padding: 0.50em 0.75em;
-    font-size: 12px;
-    line-height: 1;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: baseline;
-    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  background: rgba(220, 53, 69, 0.2);
+  color: #c42231;
+  border: 1px dashed #c42231;
+  border-radius: 0.25rem;
+  font-weight: 500;
+  display: inline-block;
+  padding: 0.5em 0.75em;
+  font-size: 12px;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 .verified-badge::before {
-    font-family: "Font Awesome 6 Pro";
-    content: '\f336';
-    text-align: center;
-    padding-right: 2px;
+  font-family: "Font Awesome 6 Pro";
+  content: "\f336";
+  text-align: center;
+  padding-right: 2px;
 }
 
 .verified-badge {
-    background: rgba(0, 123, 255, 0.2);
-    color: #007bff;
-    border: 1px dashed #007bff;
-    border-radius: 0.25rem;
-    font-weight: 500;
-    display: inline-block;
-    padding: 0.50em 0.828em;
-    font-size: 12px;
-    line-height: 1;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: baseline;
-    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  background: rgba(0, 123, 255, 0.2);
+  color: #007bff;
+  border: 1px dashed #007bff;
+  border-radius: 0.25rem;
+  font-weight: 500;
+  display: inline-block;
+  padding: 0.5em 0.828em;
+  font-size: 12px;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 .active-badge::before {
-    font-family: "Font Awesome 6 Pro";
-    content: '\f058';
-    text-align: center;
-    padding-right: 2px;
+  font-family: "Font Awesome 6 Pro";
+  content: "\f058";
+  text-align: center;
+  padding-right: 2px;
 }
 
 .active-badge {
-    background: rgba(40, 167, 69, 0.2);
-    color: #28a745;
-    border: 1px dashed #28a745;
-    border-radius: 0.25rem;
-    font-weight: 500;
-    display: inline-block;
-    padding: 0.50em 1.255em;
-    font-size: 12px;
-    line-height: 1;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: baseline;
-    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  background: rgba(40, 167, 69, 0.2);
+  color: #28a745;
+  border: 1px dashed #28a745;
+  border-radius: 0.25rem;
+  font-weight: 500;
+  display: inline-block;
+  padding: 0.5em 1.255em;
+  font-size: 12px;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 .blocked-badge::before {
-    font-family: "Font Awesome 6 Pro";
-    content: '\f05e';
-    text-align: center;
-    padding-right: 2px;
+  font-family: "Font Awesome 6 Pro";
+  content: "\f05e";
+  text-align: center;
+  padding-right: 2px;
 }
 
 .blocked-badge {
-    background: rgba(108, 117, 125, 0.2);
-    color: #6c757d;
-    border: 1px dashed #6c757d;
-    border-radius: 0.25rem;
-    font-weight: 500;
-    display: inline-block;
-    padding: 0.50em 0.828em;
-    font-size: 12px;
-    line-height: 1;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: baseline;
-    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  background: rgba(108, 117, 125, 0.2);
+  color: #6c757d;
+  border: 1px dashed #6c757d;
+  border-radius: 0.25rem;
+  font-weight: 500;
+  display: inline-block;
+  padding: 0.5em 0.828em;
+  font-size: 12px;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 .inactive-badge::before {
-    font-family: "Font Awesome 6 Pro";
-    content: '\f057';
-    text-align: center;
-    padding-right: 2px;
+  font-family: "Font Awesome 6 Pro";
+  content: "\f057";
+  text-align: center;
+  padding-right: 2px;
 }
 
 .inactive-badge {
-    background: rgba(255, 193, 7, 0.2);
-    color: #b38600;
-    border: 1px dashed #b38600;
-    border-radius: 0.25rem;
-    font-weight: 500;
-    display: inline-block;
-    padding: 0.50em 0.83em;
-    font-size: 12px;
-    line-height: 1;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: baseline;
-    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  background: rgba(255, 193, 7, 0.2);
+  color: #b38600;
+  border: 1px dashed #b38600;
+  border-radius: 0.25rem;
+  font-weight: 500;
+  display: inline-block;
+  padding: 0.5em 0.83em;
+  font-size: 12px;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 .coupon-outer {
-    position: relative;
-    border-radius: 0.25rem;
-    padding: 0.15em;
-    cursor: pointer;
-    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.2);
+  position: relative;
+  border-radius: 0.25rem;
+  padding: 0.15em;
+  cursor: pointer;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .coupon-outer:hover {
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .coupon-inner {
-    width: 100%;
-    display: inline-block;
-    border: 1px dashed rgba(255, 255, 255, 1);
-    border-radius: 0.25rem;
-    font-weight: 600;
-    padding: 0.50em 1.2em;
-    font-size: 14px;
-    line-height: 1;
-    white-space: nowrap;
-    vertical-align: baseline;
+  width: 100%;
+  display: inline-block;
+  border: 1px dashed rgba(255, 255, 255, 1);
+  border-radius: 0.25rem;
+  font-weight: 600;
+  padding: 0.5em 1.2em;
+  font-size: 14px;
+  line-height: 1;
+  white-space: nowrap;
+  vertical-align: baseline;
 }
 
 .coupon-outer::before {
-    position: absolute;
-    content: '';
-    text-align: center;
-    padding-right: 2px;
-    top: 10px;
-    right: -3px;
-    width: 9px;
-    height: 14px;
-    background: #fff;
-    border-radius: 100px 0 0 100px;
+  position: absolute;
+  content: "";
+  text-align: center;
+  padding-right: 2px;
+  top: 10px;
+  right: -3px;
+  width: 9px;
+  height: 14px;
+  background: #fff;
+  border-radius: 100px 0 0 100px;
 }
 
 .coupon-outer::after {
-    position: absolute;
-    content: '';
-    text-align: center;
-    padding-right: 2px;
-    top: 10px;
-    left: -3px;
-    width: 9px;
-    height: 14px;
-    background: #fff;
-    border-radius: 0 100px 100px 0;
+  position: absolute;
+  content: "";
+  text-align: center;
+  padding-right: 2px;
+  top: 10px;
+  left: -3px;
+  width: 9px;
+  height: 14px;
+  background: #fff;
+  border-radius: 0 100px 100px 0;
 }
 
 .disabled-cell {
-    /*background-color: #f5f5f5; !* Light gray background *!*/
-    background-color: #f2dede; /* Light red background for disabled rows */
-    color: #a94442; /* Dark red text for better visibility */
-    /*pointer-events: none; !* Disable pointer events *!*/
-    opacity: 0.6; /* Slightly transparent */
+  /*background-color: #f5f5f5; !* Light gray background *!*/
+  background-color: #f2dede; /* Light red background for disabled rows */
+  color: #a94442; /* Dark red text for better visibility */
+  /*pointer-events: none; !* Disable pointer events *!*/
+  opacity: 0.6; /* Slightly transparent */
 }
 /*
 .disabled-cell .btn {
@@ -220,53 +226,52 @@ Template customize
 Login Page 
 ********************************/
 .login-checkbox-label {
-    font-size: 15px !important;
-    font-weight: 500 !important;
+  font-size: 15px !important;
+  font-weight: 500 !important;
 }
 
 .input-error {
-    border: 1px solid #dc3545 !important;
-    background-color: #ffe5e5 !important;
+  border: 1px solid #dc3545 !important;
+  background-color: #ffe5e5 !important;
 }
 
 .icon-error {
-    color: #dc3545 !important;
+  color: #dc3545 !important;
 }
 
 .font-error {
-    color: #dc3545 !important;
+  color: #dc3545 !important;
 }
 
 .card-outline-error {
-    border-top: 3px solid #dc3545 !important;
+  border-top: 3px solid #dc3545 !important;
 }
 
 /* shake-animation */
 @keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
 
-    0%,
-    100% {
-        transform: translateX(0);
-    }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-10px);
+  }
 
-    10%,
-    30%,
-    50%,
-    70%,
-    90% {
-        transform: translateX(-10px);
-    }
-
-    20%,
-    40%,
-    60%,
-    80% {
-        transform: translateX(10px);
-    }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(10px);
+  }
 }
 
 .shake-animation {
-    animation: shake 0.82s cubic-bezier(.36, .07, .19, .97) both;
+  animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
 
 /******************************** 
@@ -274,32 +279,32 @@ Home
 ********************************/
 
 .navUserImg {
-    width: 30px;
-    height: 30px;
-    object-fit: cover;
-    border-radius: 50%;
-    background-position: center center;
-    background-repeat: no-repeat;
-    border: 2px solid #e4edf4;
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
+  border-radius: 50%;
+  background-position: center center;
+  background-repeat: no-repeat;
+  border: 2px solid #e4edf4;
 }
 
 .category-img {
-    width: 50px;
-    height: 50px !important;
-    border-radius: 100% !important;
-    object-fit: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
+  width: 50px;
+  height: 50px !important;
+  border-radius: 100% !important;
+  object-fit: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
 }
 
 .sidebar-img {
-    width: 45px !important;
-    height: 45px !important;
-    object-fit: cover;
-    border-radius: 50%;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-color: #e4edf4;
+  width: 45px !important;
+  height: 45px !important;
+  object-fit: cover;
+  border-radius: 50%;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-color: #e4edf4;
 }
 
 /******************************** 
@@ -307,163 +312,183 @@ Profile
 ********************************/
 
 .profile-wrapper {
-    border: 1px dashed #C0C6CB;
-    padding: 20px;
-    border-radius: 18px;
+  border: 1px dashed #c0c6cb;
+  padding: 20px;
+  border-radius: 18px;
 }
 
 .mainProfileImg {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 50%;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-color: #e4edf4;
-
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 50%;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-color: #e4edf4;
 }
 
 .profileImg-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .imgWrapper {
-    width: 80px;
-    height: 80px;
-    color: transparent;
-    transition: all 0.3s ease;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
+  width: 80px;
+  height: 80px;
+  color: transparent;
+  transition: all 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
 }
 
 .imgWrapper input {
-    display: none;
+  display: none;
 }
 
 .imgWrapper img {
-    position: absolute;
-    margin-top: 20px;
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
-    border-radius: 50%;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-color: #e4edf4;
+  position: absolute;
+  margin-top: 20px;
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 50%;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-color: #e4edf4;
 }
 
 .imgWrapper .-label {
-    cursor: pointer;
-    height: 80px;
-    width: 80px;
-    margin-top: 20px;
+  cursor: pointer;
+  height: 80px;
+  width: 80px;
+  margin-top: 20px;
 }
 
 .imgWrapper:hover .-label {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    background-color: rgba(0, 0, 0, .8);
-    z-index: 10000;
-    color: #fafafa;
-    transition: background-color 0.2s ease-in-out;
-    border-radius: 100px;
-    margin-bottom: 0;
-    text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 10000;
+  color: #fafafa;
+  transition: background-color 0.2s ease-in-out;
+  border-radius: 100px;
+  margin-bottom: 0;
+  text-align: center;
 }
 
 .imgWrapper span {
-    padding: 0.2em;
-    height: 2em;
-    display: inline-flex;
-    font-weight: 400;
-    font-size: 12px;
+  padding: 0.2em;
+  height: 2em;
+  display: inline-flex;
+  font-weight: 400;
+  font-size: 12px;
 }
 
 .tel-wrapper {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 /********************************
 Dish
 ********************************/
 
-.dish-img{
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    object-fit: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
-    transition: all 0.2s ease-in-out;
+.dish-img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  transition: all 0.2s ease-in-out;
 }
 
-.dish-img:hover {opacity: 0.7;cursor: pointer;}
+.dish-img:hover {
+  opacity: 0.7;
+  cursor: pointer;
+}
 
 .dish-type-img {
-    width: 24px;
-    height: 24px;
+  width: 24px;
+  height: 24px;
 }
 
 .see-more {
-    font-size: 14px;
-    color: #007bff;
-    letter-spacing: 0;
-    word-spacing: -1px;
+  font-size: 14px;
+  color: #007bff;
+  letter-spacing: 0;
+  word-spacing: -1px;
 }
-
 
 #image-viewer {
-    display: none;
-    position: fixed;
-    z-index: 9999;
-    padding-top: 100px;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgb(0,0,0);
-    background-color: rgba(0,0,0,0.9);
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.9);
 }
 .image-modal-content {
-    margin: auto;
-    display: block;
-    width: 80%;
-    max-width: 500px;
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 500px;
 }
-.image-modal-content { 
-    animation-name: zoom;
-    animation-duration: 0.6s;
+.image-modal-content {
+  animation-name: zoom;
+  animation-duration: 0.6s;
 }
 @keyframes zoom {
-    from {transform:scale(0)} 
-    to {transform:scale(1)}
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
 }
 #image-viewer .close {
-    position: absolute;
-    top: 15px;
-    right: 35px;
-    color: #f1f1f1;
-    font-size: 30px;
-    font-weight: bold;
-    transition: all ease-in-out 0.3s;
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 30px;
+  font-weight: bold;
+  transition: all ease-in-out 0.3s;
 }
 #image-viewer .close:hover,
 #image-viewer .close:focus {
-    color: #bbb;
-    text-decoration: none;
-    cursor: pointer;
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
 }
 
-@media only screen and (max-width: 700px){
-    .image-modal-content {
-        width: 100%;
-    }
+@media only screen and (max-width: 700px) {
+  .image-modal-content {
+    width: 100%;
+  }
+}
+
+#dish p {
+  margin-bottom: 0 !important;
+}
+
+.dishImgWrap.imgWrapper {
+  margin-left: 20px;
+}
+
+.attributeContainer{
+  padding: 10px;
+  border: 1px dashed #28a745;
+  border-radius: 0.35rem;
+  background-color: #FCFEFC;
 }

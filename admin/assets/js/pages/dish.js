@@ -82,9 +82,6 @@ $(document).ready(function () {
       dishType: {
         required: true,
       },
-      dishDetail: {
-        required: true,
-      },
     },
     messages: {
       dishName: {
@@ -98,9 +95,6 @@ $(document).ready(function () {
       },
       dishType: {
         required: "Please select type",
-      },
-      dishDetail: {
-        required: "Please enter dish detail",
       },
     },
     errorElement: "span",

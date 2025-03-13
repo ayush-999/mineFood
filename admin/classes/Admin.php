@@ -246,7 +246,6 @@ class Admin
             $stmt->bindParam(5, $added_on, PDO::PARAM_STR);
             $stmt->execute();
             return "User added successfully";
-
         } catch (PDOException $e) {
             if ($e->errorInfo[0] === '45000') {
                 return $e->errorInfo[2]; // Custom error message from stored procedure
@@ -469,9 +468,10 @@ class Admin
     /****************** Dish function start ****************
      * @throws Exception
      */
-    public function get_dish($dishId = null): bool|string
+    public function get_dish($dishId = null)
     {
         try {
+            $result = [];
             if ($dishId) {
                 $strQuery = "CALL sp_getDishById(?)";
                 $stmt = $this->db->prepare($strQuery);
@@ -481,15 +481,32 @@ class Admin
                 $stmt = $this->db->prepare($strQuery);
             }
             $stmt->execute();
-            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            // Fetch main dish details
+            $dishDetails = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            // Move to next result set to fetch attributes
+            $stmt->nextRowset();
+            $dishAttributes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            // Organize attributes by dish_id
+            $attributesByDish = [];
+            foreach ($dishAttributes as $attribute) {
+                $attributesByDish[$attribute['dish_id']][] = $attribute;
+            }
+
+            // Add attributes to each dish
+            foreach ($dishDetails as &$dish) {
+                $dish['attributes'] = $attributesByDish[$dish['id']] ?? [];
+            }
+
+            $result['dish'] = $dishDetails;
+
             return json_encode($result);
         } catch (PDOException $e) {
             throw new Exception("Database error: " . $e->getMessage());
-        } catch (Exception $e) {
-            throw new Exception("Error: " . $e->getMessage());
         }
     }
-
     /**
      * @throws Exception
      */
@@ -500,6 +517,7 @@ class Admin
             $stmt = $this->db->prepare($strQuery);
             $stmt->bindParam(1, $dishId, PDO::PARAM_INT);
             $stmt->execute();
+            $this->delete_dish_attributes($dishId);
             return true;
         } catch (PDOException $e) {
             throw new Exception("Database error: " . $e->getMessage());
@@ -509,10 +527,9 @@ class Admin
     /**
      * @throws Exception
      */
-    public function add_dish($dishName, $dishCategory, $dishStatus, $dishType, $dishDetail, $added_on, $imagePath)
+    public function add_dish($dishName, $dishCategory, $dishStatus, $dishType, $dishDetail, $added_on, $imagePath, $dishAttributes)
     {
         try {
-            // Insert new Coupon Code
             $strQuery = "CALL sp_addDish(?, ?, ?, ?, ?, ?, ?)";
             $stmt = $this->db->prepare($strQuery);
             $stmt->bindParam(1, $dishCategory, PDO::PARAM_INT);
@@ -523,6 +540,14 @@ class Admin
             $stmt->bindParam(6, $dishStatus, PDO::PARAM_INT);
             $stmt->bindParam(7, $added_on, PDO::PARAM_STR);
             $stmt->execute();
+
+            $newDishId = $this->db->lastInsertId();
+
+            // Insert dish attributes
+            foreach ($dishAttributes as $attribute) {
+                $this->add_dish_attribute($newDishId, $attribute['attribute'], $attribute['price'], $added_on);
+            }
+
             return "Dish added successfully";
         } catch (PDOException $e) {
             if ($e->errorInfo[0] === '45000') {
@@ -535,10 +560,9 @@ class Admin
     /**
      * @throws Exception
      */
-    public function update_dish($dishId, $dishName, $dishCategory, $dishStatus, $dishType, $dishDetail, $added_on, $imagePath)
+    public function update_dish($dishId, $dishName, $dishCategory, $dishStatus, $dishType, $dishDetail, $added_on, $imagePath, $dishAttributes)
     {
         try {
-            // Update Coupon Code
             $strQuery = "CALL sp_updateDish(?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $this->db->prepare($strQuery);
             $stmt->bindParam(1, $dishId, PDO::PARAM_INT);
@@ -550,6 +574,15 @@ class Admin
             $stmt->bindParam(7, $dishStatus, PDO::PARAM_INT);
             $stmt->bindParam(8, $added_on, PDO::PARAM_STR);
             $stmt->execute();
+
+            // Clear existing attributes
+            $this->delete_dish_attributes($dishId);
+
+            // Re-insert dish attributes
+            foreach ($dishAttributes as $attribute) {
+                $this->add_dish_attribute($dishId, $attribute['attribute'], $attribute['price'], $added_on);
+            }
+
             return "Dish updated successfully";
         } catch (PDOException $e) {
             if ($e->errorInfo[0] === '45000') {
@@ -557,5 +590,24 @@ class Admin
             }
             throw new Exception("Database error: " . $e->getMessage());
         }
+    }
+
+    private function add_dish_attribute($dishId, $attribute, $price, $added_on)
+    {
+        $strQuery = "CALL sp_addDishAttribute(?, ?, ?, ?)";
+        $stmt = $this->db->prepare($strQuery);
+        $stmt->bindParam(1, $dishId, PDO::PARAM_INT);
+        $stmt->bindParam(2, $attribute, PDO::PARAM_STR);
+        $stmt->bindParam(3, $price, PDO::PARAM_STR);
+        $stmt->bindParam(4, $added_on, PDO::PARAM_STR);
+        $stmt->execute();
+    }
+
+    private function delete_dish_attributes($dishId)
+    {
+        $strQuery = "CALL sp_deleteDishAttributes(?)";
+        $stmt = $this->db->prepare($strQuery);
+        $stmt->bindParam(1, $dishId, PDO::PARAM_INT);
+        $stmt->execute();
     }
 }

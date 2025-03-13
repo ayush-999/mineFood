@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jul 18, 2024 at 03:01 AM
+-- Generation Time: Dec 13, 2024 at 08:20 AM
 -- Server version: 8.3.0
 -- PHP Version: 8.2.18
 
@@ -64,7 +64,14 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_addDish` (IN `dishCategoryId` IN
         -- Insert new Dish
         INSERT INTO dish (category_id, dish_name, dish_detail, image, type, status, added_on)
         VALUES (dishCategoryId, dishName, dishDetail, dishImage, dishType, status, addedOn);
+
     END IF;
+END$$
+
+DROP PROCEDURE IF EXISTS `sp_addDishAttribute`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_addDishAttribute` (IN `dishId` INT, IN `attribute` VARCHAR(100), IN `price` DECIMAL(10,2), IN `addedOn` DATETIME)   BEGIN
+    INSERT INTO dish_details(dish_id, attribute, price, added_on)
+    VALUES (dishId, attribute, price, addedOn);
 END$$
 
 DROP PROCEDURE IF EXISTS `sp_addUser`$$
@@ -106,6 +113,12 @@ DROP PROCEDURE IF EXISTS `sp_deleteDish`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_deleteDish` (IN `dishId` INT)   BEGIN
 	DELETE FROM dish
     WHERE id = dishId;
+END$$
+
+DROP PROCEDURE IF EXISTS `sp_deleteDishAttributes`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_deleteDishAttributes` (IN `dishId` INT)   BEGIN
+    -- Delete all attributes for the given dish ID
+    DELETE FROM dish_details WHERE dish_id = dishId;
 END$$
 
 DROP PROCEDURE IF EXISTS `sp_deleteUser`$$
@@ -154,12 +167,28 @@ END$$
 
 DROP PROCEDURE IF EXISTS `sp_getDishById`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_getDishById` (IN `dishId` INT)   BEGIN
-    SELECT dish.*,
-           category.category_name,
-           category.status as category_status
-    FROM dish
-    JOIN category ON dish.category_id = category.id
-    WHERE dish.id = dishId;
+    -- Fetch main dish details
+    SELECT 
+        dish.*,
+        category.category_name,
+        category.status AS category_status
+    FROM 
+        dish
+    INNER JOIN 
+        category 
+    ON 
+        dish.category_id = category.id
+    WHERE 
+        dish.id = dishId;
+
+    -- Fetch associated dish details (attributes and prices)
+    SELECT 
+        dish_details.attribute,
+        dish_details.price
+    FROM 
+        dish_details
+    WHERE 
+        dish_details.dish_id = dishId;
 END$$
 
 DROP PROCEDURE IF EXISTS `sp_updateAdmin`$$
@@ -343,7 +372,7 @@ CREATE TABLE IF NOT EXISTS `category` (
 INSERT INTO `category` (`id`, `category_name`, `order_number`, `status`, `added_on`) VALUES
 (1, 'Chaat & Snacks', 2, 0, '2024-07-05 03:26:19'),
 (5, 'Murg', 1, 1, '2024-07-05 04:22:57'),
-(6, 'Sweets', 3, 1, '2024-07-05 04:18:53'),
+(6, 'Sweets', 3, 1, '2024-11-24 06:05:43'),
 (7, 'Chinese', 4, 1, '2024-07-10 06:34:55');
 
 -- --------------------------------------------------------
@@ -445,16 +474,14 @@ CREATE TABLE IF NOT EXISTS `dish` (
   `status` int NOT NULL,
   `added_on` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `dish`
 --
 
 INSERT INTO `dish` (`id`, `category_id`, `dish_name`, `dish_detail`, `image`, `type`, `status`, `added_on`) VALUES
-(1, 6, 'Gulab Jamun', 'Gulab Jamun', '', 'veg', 1, '2020-06-17 10:43:59'),
-(3, 7, 'Chow mein', 'Chow mein', 'avatar.png', 'non-veg', 1, '2024-07-10 07:47:11'),
-(4, 5, 'Butter Chicken', 'Butter chicken or murg makhani is a dish, originating in the Indian subcontinent, of chicken in a mildly spiced tomato sauce.', 'default-male.png', 'non-veg', 1, '2024-07-10 07:46:55');
+(16, 6, 'Gulab Jamun', '<p>abc</p>', 'Gulab-Jamun-335x300.jpg', 'veg', 1, '2024-12-02 08:41:17');
 
 -- --------------------------------------------------------
 
@@ -494,20 +521,7 @@ CREATE TABLE IF NOT EXISTS `dish_details` (
   `status` int NOT NULL,
   `added_on` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `dish_details`
---
-
-INSERT INTO `dish_details` (`id`, `dish_id`, `attribute`, `price`, `status`, `added_on`) VALUES
-(1, 3, 'Full', 300, 1, '2020-06-19 10:25:47'),
-(2, 3, 'Half', 170, 1, '2020-06-19 10:49:45'),
-(6, 1, 'Per Piece', 40, 1, '2020-06-20 00:00:00'),
-(8, 4, 'Half', 250, 0, '2020-06-27 12:50:50'),
-(9, 4, 'Full', 410, 1, '2020-06-27 12:50:50'),
-(11, 5, 'Test1', 100, 1, '2020-07-06 12:00:24'),
-(12, 5, 'Test2', 200, 0, '2020-07-06 12:00:24');
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
