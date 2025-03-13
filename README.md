@@ -14,7 +14,7 @@ Bootstrap Colorpicker: https://itsjavi.com/bootstrap-colorpicker/tutorial-Basics
 
 showLoading.js: https://www.jqueryscript.net/loading/Loading-Indicator-Plugin-jQuery-showLoading.html
 
-Watch time video part 4 time 09:00 https://www.youtube.com/watch?v=HAbfd9h5BZ0&list=PLWCLxMult9xeARrYUNDyt599W4bE9mSOQ&index=4
+Watch time video part 5 time 30:30 https://www.youtube.com/watch?v=nAbUBkSbVvs&list=PLWCLxMult9xeARrYUNDyt599W4bE9mSOQ&index=5
 
 ---
 

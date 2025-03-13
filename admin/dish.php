@@ -15,43 +15,73 @@ if (isset($_POST['submitAction'])) {
     $dishStatus = $_POST['dishStatus'];
     $dishType = $_POST['dishType'];
     $dishDetail = $_POST['dishDetail'];
+    $dishPrice = $_POST['dishPrice'];
+    $dishAttribute = $_POST['dishAttribute'];
     $added_on = date('Y-m-d h:i:s');
     $imagePath = '';
-    if (isset($_POST['dishId'])) {
-        $dishId = $_POST['dishId'];
-        $dishDetails = json_decode($admin->get_dish($dishId), true)[0];
-        $existingImage = $dishDetails['image'];
-        $uploadDir = 'uploads/admin/dish/' . $dishId . '/';
+    $dishAttributes = [];
+
+    // Set upload directory
+    $dishId = $_POST['dishId'] ?? null;
+    $uploadDir = 'uploads/admin/dish/';
+    if ($dishId) {
+        $uploadDir .= $dishId . '/';
     } else {
-        $dishId = null;
-        $existingImage = '';
-        $uploadDir = 'uploads/admin/dish/temp/';
+        $uploadDir .= 'temp/';
     }
+
+    // Create the directory if it doesn't exist
     if (!is_dir($uploadDir)) {
         mkdir($uploadDir, 0755, true);
     }
+    // Handle image upload
     if (isset($_FILES['dishImg']) && $_FILES['dishImg']['error'] == UPLOAD_ERR_OK) {
-        if (!empty($existingImage) && file_exists($uploadDir . $existingImage)) {
-            unlink($uploadDir . $existingImage);
-        }
         $imagePath = basename($_FILES['dishImg']['name']);
         $uploadFile = $uploadDir . $imagePath;
+
         if (!move_uploaded_file($_FILES['dishImg']['tmp_name'], $uploadFile)) {
             $_SESSION['message'] = json_encode(["message" => "Image upload failed"]);
             header("Location: dish.php");
             exit;
         }
-    } else {
-        $imagePath = $existingImage;
+    } elseif ($dishId) {
+        // Retain the existing image if no new image is uploaded
+        $dishDetails = json_decode($admin->get_dish($dishId), true)['dish'][0] ?? [];
+        $imagePath = $dishDetails['image'] ?? '';
+    }
+
+    if (!empty($dishPrice) && !empty($dishAttribute)) {
+        foreach ($dishPrice as $key => $price) {
+            $attribute = $dishAttribute[$key];
+            $dishAttributes[] = ['attribute' => $attribute, 'price' => $price];
+        }
     }
     try {
         if ($action == 'add') {
-            $result = $admin->add_dish($dishName, $dishCategory, $dishStatus, $dishType, $dishDetail, $added_on, $imagePath);
-            $_SESSION['message'] = $result;
-        } else if ($action == 'update') {
-            $result = $admin->update_dish($dishId, $dishName, $dishCategory, $dishStatus, $dishType, $dishDetail, $added_on, $imagePath);
-            $_SESSION['message'] = $result;
+            $result = $admin->add_dish(
+                $dishName,
+                $dishCategory,
+                $dishStatus,
+                $dishType,
+                $dishDetail,
+                $added_on,
+                $imagePath,
+                $dishAttributes
+            );
+        } elseif ($action == 'update') {
+            $result = $admin->update_dish(
+                $dishId,
+                $dishName,
+                $dishCategory,
+                $dishStatus,
+                $dishType,
+                $dishDetail,
+                $added_on,
+                $imagePath,
+                $dishAttributes
+            );
         }
+        $_SESSION['message'] = $result;
     } catch (Exception $e) {
         $_SESSION['message'] = json_encode(["message" => $e->getMessage()]);
     }
@@ -99,14 +129,34 @@ if (isset($_SESSION['message'])) {
                         </tr>
                     </thead>
                     <tbody>
-                        <?php if (!empty($get_dish)) : ?>
-                            <?php foreach ($get_dish as $index => $dish) : ?>
+                        <?php if (!empty($get_dish['dish'])) : ?>
+                            <?php foreach ($get_dish['dish'] as $index => $dish) : ?>
                                 <tr class="<?php echo $dish['category_status'] == 0 ? 'disabled-cell' : ''; ?>">
                                     <td class="text-center"><?php echo $index + 1; ?></td>
                                     <td><?php echo htmlspecialchars($dish['dish_name']); ?></td>
                                     <td><?php echo htmlspecialchars($dish['category_name']); ?></td>
                                     <td class="text-center">
-                                        <img src="<?php echo empty($dish['image']) ? 'assets/img/no-img.png' : 'uploads/admin/dish/' . $dish['id'] . '/' . $dish['image']; ?>" class="dish-img view-img" alt="<?php echo htmlspecialchars($dish['dish_name']); ?>">
+                                        <?php
+                                        $dishId = $dish['id'];
+                                        $imagePath = '';
+                                        // Check specific dish folder
+                                        $specificImagePath = "uploads/admin/dish/{$dishId}/" . $dish['image'];
+                                        if (!empty($dish['image']) && file_exists($specificImagePath)) {
+                                            $imagePath = $specificImagePath;
+                                        }
+                                        // Check temp folder if not found in specific dish folder
+                                        if (empty($imagePath)) {
+                                            $tempImagePath = "uploads/admin/dish/temp/" . $dish['image'];
+                                            if (!empty($dish['image']) && file_exists($tempImagePath)) {
+                                                $imagePath = $tempImagePath;
+                                            }
+                                        }
+                                        // Fallback to default no-img.png
+                                        if (empty($imagePath)) {
+                                            $imagePath = 'assets/img/no-img.png';
+                                        }
+                                        ?>
+                                        <img src="<?php echo htmlspecialchars($imagePath); ?>" class="dish-img view-img" alt="<?php echo htmlspecialchars($dish['dish_name']); ?>">
                                     </td>
                                     <td><?php echo truncateText($dish['dish_detail'], 3); ?></td>
                                     <td class="text-center">
@@ -128,7 +178,7 @@ if (isset($_SESSION['message'])) {
                                         ?>
                                     </td>
                                     <td class="text-center">
-                                        <button class="btn bg-gradient-success btn-sm rounded-circle mr-1 edit-btn" type="button" data-toggle="modal" data-target="#dish-modal" data-id="<?php echo $dish['id']; ?>" data-name="<?php echo htmlspecialchars($dish['dish_name']); ?>" data-category="<?php echo $dish['category_id']; ?>" data-status="<?php echo $dish['status']; ?>" data-type="<?php echo htmlspecialchars($dish['type']); ?>" data-detail="<?php echo htmlspecialchars($dish['dish_detail']); ?>" data-image="<?php echo htmlspecialchars($dish['image']); ?>">
+                                        <button class="btn bg-gradient-success btn-sm rounded-circle mr-1 edit-btn" type="button" data-toggle="modal" data-target="#dish-modal" data-id="<?php echo $dish['id']; ?>" data-name="<?php echo htmlspecialchars($dish['dish_name'] ?? ''); ?>" data-category="<?php echo $dish['category_id']; ?>" data-status="<?php echo $dish['status']; ?>" data-type="<?php echo htmlspecialchars($dish['type'] ?? ''); ?>" data-detail="<?php echo htmlspecialchars($dish['dish_detail'] ?? ''); ?>" data-image="<?php echo htmlspecialchars($dish['image'] ?? ''); ?>">
                                             <i class="fa-regular fa-pen-to-square"></i>
                                         </button>
                                         <button class="btn bg-gradient-danger btn-sm rounded-circle delete-dish" data-id="<?php echo $dish['id']; ?>" type="button">
@@ -209,7 +259,11 @@ if (isset($_SESSION['message'])) {
             }
         }
 
-        $('.add-btn, .edit-btn').on('click', function() {
+        // $('.add-btn, .edit-btn').on('click', function() {
+        //     initializeEditor();
+        // });
+
+        $('#dish-modal').on('shown.bs.modal', function() {
             initializeEditor();
         });
 
@@ -232,6 +286,10 @@ if (isset($_SESSION['message'])) {
             minimumResultsForSearch: -1,
             templateResult: formatDishType,
             templateSelection: formatDishType
+        });
+        $('#dishAttribute').select2({
+            theme: 'bootstrap4',
+            minimumResultsForSearch: -1
         });
 
         function formatDishType(state) {
@@ -311,6 +369,17 @@ if (isset($_SESSION['message'])) {
         $('#dishImg').imoViewer({
             'preview': '#image-preview',
         })
+
+        let attributeCount = 1;
+        $('#addMoreAttributes').on('click', function() {
+            attributeCount++;
+            let newAttributeRow = `<div class="row attribute-item mt-2" id="attributeItem${attributeCount}"><div class="col-md-6 form-group mb-0"><div class="input-group"><div class="input-group-append"><div class="input-group-text rounded-left"><i class="fa-regular fa-indian-rupee-sign"></i></div></div><input type="text" class="form-control dishPrice" id="dishPrice" name="dishPrice[]" placeholder="0.00" value=""></div></div><div class="col-md-5 form-group mb-0"><select class="form-control dishAttribute" name="dishAttribute[]" id="dishAttribute"><option value="">Select Quantity</option><option value="full">Full</option><option value="half">Half</option></select></div><div class="col-md-1 form-group d-flex justify-content-center align-items-end mb-1"><button class="btn bg-gradient-danger btn-sm rounded-circle" id="dish-attribute-remove" type="button"><i class="fa-regular fa-trash"></i></button></div></div>`;
+            $('#attributeContainer').append(newAttributeRow);
+        });
+
+        $('#attributeContainer').on('click', '#dish-attribute-remove', function() {
+            $(this).closest('.attribute-item').remove();
+        });
     });
 </script>
 <?php include_once('footer.php') ?>
