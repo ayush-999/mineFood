@@ -13,30 +13,30 @@ if (isset($_SESSION['message'])) {
     unset($_SESSION['message']);
 }
 ?>
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="card-title">
-                            <b>
-                                <?php
-                                if (!empty($pageSubTitle)) {
-                                    echo $pageSubTitle;
-                                }
-                                ?>
-                            </b>
-                        </h5>
-                        <button class="btn bg-gradient-success btn-sm rounded-circle add-btn" type="button"
-                                onclick="window.location.href='dishDetails.php'">
-                            <i class="fa-regular fa-plus"></i>
-                        </button>
-                    </div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="card-title">
+                        <b>
+                            <?php
+                            if (!empty($pageSubTitle)) {
+                                echo $pageSubTitle;
+                            }
+                            ?>
+                        </b>
+                    </h5>
+                    <button class="btn bg-gradient-success btn-sm rounded-circle add-btn" type="button"
+                        onclick="window.location.href='dishDetails.php'">
+                        <i class="fa-regular fa-plus"></i>
+                    </button>
                 </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-                    <table id="dish" class="table table-bordered table-hover text-nowrap">
-                        <thead>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <table id="dish" class="table table-bordered table-hover text-nowrap">
+                    <thead>
                         <tr>
                             <th style="width: 10px">S.No.</th>
                             <th class="text-center">Dish</th>
@@ -48,8 +48,8 @@ if (isset($_SESSION['message'])) {
                             <th class="text-center">Added Date</th>
                             <th class="text-center">Action</th>
                         </tr>
-                        </thead>
-                        <tbody>
+                    </thead>
+                    <tbody>
                         <?php if (!empty($get_dish['dish'])) : ?>
                             <?php foreach ($get_dish['dish'] as $index => $dish) : ?>
                                 <tr class="<?php echo $dish['category_status'] == 0 ? 'disabled-cell' : ''; ?>">
@@ -77,16 +77,16 @@ if (isset($_SESSION['message'])) {
                                         }
                                         ?>
                                         <img src="<?php echo htmlspecialchars($imagePath); ?>" class="dish-img view-img"
-                                             alt="<?php echo htmlspecialchars($dish['dish_name']); ?>">
+                                            alt="<?php echo htmlspecialchars($dish['dish_name']); ?>">
                                     </td>
                                     <td><?php echo truncateText($dish['dish_detail'], 3); ?></td>
                                     <td class="text-center">
                                         <?php if ($dish['type'] == 'veg') : ?>
                                             <img src="assets/img/veg_symbol.svg" alt="Veg"
-                                                 class="img-fluid dish-type-img">
+                                                class="img-fluid dish-type-img">
                                         <?php else : ?>
                                             <img src="assets/img/non-veg_symbol.svg" alt="Non-Veg"
-                                                 class="img-fluid dish-type-img">
+                                                class="img-fluid dish-type-img">
                                         <?php endif; ?>
                                     </td>
                                     <td class="text-center">
@@ -102,12 +102,12 @@ if (isset($_SESSION['message'])) {
                                     </td>
                                     <td class="text-center">
                                         <button class="btn bg-gradient-success btn-sm rounded-circle mr-1 edit-btn"
-                                                type="button"
-                                                onclick="window.location.href='dishDetails.php?id=<?php echo $dish['id']; ?>'">
+                                            type="button"
+                                            onclick="window.location.href='dishDetails.php?id=<?php echo $dish['id']; ?>'">
                                             <i class="fa-regular fa-pen-to-square"></i>
                                         </button>
                                         <button class="btn bg-gradient-danger btn-sm rounded-circle delete-dish"
-                                                data-id="<?php echo $dish['id']; ?>" type="button">
+                                            data-id="<?php echo $dish['id']; ?>" type="button">
                                             <i class="fa-regular fa-trash"></i>
                                         </button>
                                     </td>
@@ -118,48 +118,48 @@ if (isset($_SESSION['message'])) {
                                 <td colspan="9" style="text-align:center;">No Dish found</td>
                             </tr>
                         <?php endif; ?>
-                        </tbody>
-                    </table>
-                </div>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
-    <div id="image-viewer">
-        <span class="close"><i class="fa-solid fa-xmark"></i></span>
-        <img class="image-modal-content" id="full-image">
-    </div>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            tippy('.see-more', {
-                arrow: true,
-                allowHTML: true
-            })
-            toastr.options = {
-                "closeButton": true,
-                "debug": false,
-                "newestOnTop": true,
-                "progressBar": true,
-                "positionClass": "toast-top-center",
-                "preventDuplicates": true,
-                "onclick": null,
-                "showDuration": "100", // default : 300
-                "hideDuration": "500", // default : 1000
-                "timeOut": "2000", // default : 5000
-                "extendedTimeOut": "500", // default : 1000
-                "showEasing": "swing",
-                "hideEasing": "linear",
-                "showMethod": "fadeIn",
-                "hideMethod": "fadeOut",
-            };
-            let message = <?php echo json_encode($msg); ?>;
-            if (message) {
-                if (message === "Dish already exists" || message === "Image upload failed") {
-                    toastr.error(message);
-                } else if (message === "Dish added successfully" || message ===
-                    "Dish updated successfully") {
-                    toastr.success(message);
-                }
+</div>
+<div id="image-viewer">
+    <span class="close"><i class="fa-solid fa-xmark"></i></span>
+    <img class="image-modal-content" id="full-image">
+</div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        tippy('.see-more', {
+            arrow: true,
+            allowHTML: true
+        })
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": true,
+            "progressBar": true,
+            "positionClass": "toast-top-center",
+            "preventDuplicates": true,
+            "onclick": null,
+            "showDuration": "100", // default : 300
+            "hideDuration": "500", // default : 1000
+            "timeOut": "2000", // default : 5000
+            "extendedTimeOut": "500", // default : 1000
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut",
+        };
+        let message = <?php echo json_encode($msg); ?>;
+        if (message) {
+            if (message === "Dish already exists" || message === "Image upload failed") {
+                toastr.error(message);
+            } else if (message === "Dish added successfully" || message ===
+                "Dish updated successfully") {
+                toastr.success(message);
             }
-        });
-    </script>
+        }
+    });
+</script>
 <?php include_once('footer.php') ?>

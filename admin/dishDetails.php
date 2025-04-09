@@ -334,7 +334,8 @@ if ($displayImgFilename && $displayCategory) {
                         </div>
                         <div class="row">
                             <div class="col-md-12 form-group mb-0">
-                                <button type="submit" class="btn bg-gradient-success btn-block" name="submit">Submit
+                                <button type="submit" class="btn bg-gradient-success btn-block" name="submit">
+                                    <?php echo isset($dishId) ? 'Update Dish' : 'Add Dish'; ?>
                                 </button>
                             </div>
                         </div>

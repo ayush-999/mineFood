@@ -3,7 +3,11 @@ body {
   font-size: 15px;
   line-height: 1.5;
   color: #000;
-  background-color: #f4f6f9;
+  background-color: #eff7fa !important;
+}
+
+.content-wrapper{
+  background-color: #eff7fa !important;
 }
 
 /******************************** 
