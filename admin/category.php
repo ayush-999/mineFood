@@ -49,9 +49,9 @@ if (isset($_SESSION['message'])) {
                         <h5 class="card-title">
                             <b>
                                 <?php
-                                    if (!empty($pageSubTitle)) {
-                                        echo $pageSubTitle;
-                                    }
+                                if (!empty($pageSubTitle)) {
+                                    echo $pageSubTitle;
+                                }
                                 ?>
                             </b>
                         </h5>

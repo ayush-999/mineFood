@@ -70,7 +70,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="dish.php"
-                       class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'dish.php' ? 'active' : '' ?>">
+                       class="nav-link <?= (basename($_SERVER['PHP_SELF']) == 'dish.php') || (basename($_SERVER['PHP_SELF']) == 'dishDetails.php') ? 'active' : ''?>">
                         <i class="nav-icon fa-solid fa-utensils"></i>
                         <p>
                             Dish
@@ -78,11 +78,11 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="site-settings.php"
-                       class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'site-settings.php' ? 'active' : '' ?>">
+                    <a href="settings.php"
+                       class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'settings.php' ? 'active' : '' ?>">
                         <i class="nav-icon fas fa-cogs"></i>
                         <p>
-                            Site Settings
+                            Settings
                         </p>
                     </a>
                 </li>

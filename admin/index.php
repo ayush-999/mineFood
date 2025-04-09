@@ -9,9 +9,9 @@ include_once('header.php');
                         <h5 class="card-title">
                             <b>
                                 <?php
-                                    if (!empty($pageSubTitle)) {
-                                        echo $pageSubTitle;
-                                    }
+                                if (!empty($pageSubTitle)) {
+                                    echo $pageSubTitle;
+                                }
                                 ?>
                             </b>
                         </h5>

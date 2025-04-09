@@ -30,12 +30,12 @@ $pageSettings = [
             ['title' => 'Users', 'link' => 'user.php'],
         ]
     ],
-    'site-settings.php' => [
-        'title' => 'Site Setting',
-        'sub-title' => 'Site Setting',
+    'settings.php' => [
+        'title' => 'Setting',
+        'sub-title' => 'Setting',
         'breadcrumbs' => [
             ['title' => 'Home', 'link' => 'index.php'],
-            ['title' => 'Site Setting', 'link' => 'site-settings.php'],
+            ['title' => 'Setting', 'link' => 'settings.php'],
         ]
     ],
     'profile.php' => [
@@ -68,6 +68,15 @@ $pageSettings = [
         'breadcrumbs' => [
             ['title' => 'Home', 'link' => 'index.php'],
             ['title' => 'Dish', 'link' => 'dish.php'],
+        ]
+    ],
+    'dishDetails.php' => [
+        'title' => 'Manage Dish',
+        'sub-title' => 'Manage Dish',
+        'breadcrumbs' => [
+            ['title' => 'Home', 'link' => 'index.php'],
+            ['title' => 'Dish', 'link' => 'dish.php'],
+            ['title' => 'Manage Dish', 'link' => 'dishDetails.php'],
         ]
     ]
 ];
