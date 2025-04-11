@@ -6,7 +6,7 @@ body {
   background-color: #eff7fa !important;
 }
 
-.content-wrapper{
+.content-wrapper {
   background-color: #eff7fa !important;
 }
 
@@ -226,6 +226,29 @@ Template customize
 }
 */
 
+#user_wrapper,
+#deliveryBoy_wrapper,
+#admin_wrapper,
+#dish_wrapper,
+#banner_wrapper,
+#couponCode_wrapper {
+  overflow-x: scroll;
+  overflow-y: auto;
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: transparent transparent; /* Firefox */
+}
+
+/* For Chrome, Safari, Edge */
+#user_wrapper::-webkit-scrollbar,
+#deliveryBoy_wrapper::-webkit-scrollbar,
+#admin_wrapper::-webkit-scrollbar,
+#dish_wrapper::-webkit-scrollbar,
+#banner_wrapper::-webkit-scrollbar,
+#couponCode_wrapper::-webkit-scrollbar {
+  height: 0px; /* Hides horizontal scrollbar */
+  width: 6px; /* Keeps vertical scrollbar visible */
+}
+
 /******************************** 
 Login Page 
 ********************************/
@@ -318,7 +341,7 @@ Profile
 .profile-wrapper {
   border: 1px dashed #c0c6cb;
   padding: 20px;
-  border-radius: 18px;
+  border-radius: 8px;
 }
 
 .mainProfileImg {
@@ -490,9 +513,96 @@ Dish
   margin-left: 20px;
 }
 
-.attributeContainer{
+.attributeContainer {
   padding: 10px;
   border: 1px dashed #28a745;
   border-radius: 0.35rem;
-  background-color: #FCFEFC;
+  background-color: #fcfefc;
+}
+
+/********************************
+Banner
+********************************/
+
+.banner-img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  transition: all 0.2s ease-in-out;
+}
+
+.banner-img:hover {
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+.banner-type-img {
+  width: 24px;
+  height: 24px;
+}
+
+
+
+/* 
+  Image uploader Css
+*/
+.uploader {
+  width: 100%;
+  height: 175px;
+  border: 2px dashed #b3d7ff;
+  padding: 10px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.upload-area {
+  text-align: center;
+}
+
+.icon {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 10px;
+  color: #66b0ff;
+}
+
+.upload-area p {
+  font-size: 14px;
+  color: #999;
+  margin-bottom: 0;
+}
+
+.upload-area.dragover {
+  border-color: #666;
+  background-color: #f8f9fa;
+}
+
+.upload-area img {
+  max-width: 100%;
+  max-height: 175px;
+  display: block;
+  margin: 0 auto;
+  border-radius: 5px;
+  object-fit: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.remove-btn-container {
+  text-align: center;
+  position: absolute;
+  z-index: 999;
+  top: 0;
+  right: 0;
+}
+
+.remove-image-btn {
+  padding: 4px 10px !important;
 }

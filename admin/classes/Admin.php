@@ -780,4 +780,122 @@ class Admin
         $stmt->bindParam(1, $dishId, PDO::PARAM_INT);
         $stmt->execute();
     }
+
+    /****************** Banner function start *****************/
+    /**
+     * Retrieves all Banners from the database
+     * @return bool|string JSON encoded list of all users
+     * @throws Exception If there's a general retrieval error
+     * @throws PDOException If there's a database error during retrieval
+     */
+    public function get_banner(): bool|string
+    {
+        try {
+            $strQuery = "CALL sp_getAllBanner()";
+            $stmt = $this->db->prepare($strQuery);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return json_encode($result);
+        } catch (PDOException $e) {
+            throw new Exception("Database error: " . $e->getMessage());
+        } catch (Exception $e) {
+            throw new Exception("Error: " . $e->getMessage());
+        }
+    }
+
+    /**
+     * Deletes a specific banner by ID
+     * @param int $bannerId The ID of the banner to delete
+     * @return bool True if deletion was successful
+     * @throws Exception If there's a database error during deletion
+     * @throws PDOException If there's a specific PDO database error
+     */
+    public function delete_banner(int $bannerId): bool
+    {
+        try {
+            $strQuery = "CALL sp_deleteBanner(?)";
+            $stmt = $this->db->prepare($strQuery);
+            $stmt->bindParam(1, $bannerId, PDO::PARAM_INT);
+            $stmt->execute();
+            return true;
+        } catch (PDOException $e) {
+            throw new Exception("Database error: " . $e->getMessage());
+        }
+    }
+
+    /**
+     * Adds a new banner
+     * @param string $heading Heading of the banner
+     * @param string $subHeading Subheading of the banner
+     * @param string $link link of the banner
+     * @param string $linkText Link text of the banner
+     * @param int $orderNumber order number of the banner
+     * @param int $status Status of the banner
+     * @param string $added_on Creation timestamp
+     * @param string $imageName Image name of the banner
+     * @return string Success or error message
+     * @throws Exception If there's a general addition error
+     * @throws PDOException If there's a database error or if dish already exists (error code 45000)
+     */
+    public function add_banner($heading, $subHeading, $link, $linkText, $orderNumber, $status, $added_on, $imageName): string
+    {
+        try {
+            $strQuery = "CALL sp_addBanner(?, ?, ?, ?, ?, ?, ?, ?)";
+            $stmt = $this->db->prepare($strQuery);
+            $stmt->bindParam(1, $imageName, PDO::PARAM_STR);
+            $stmt->bindParam(2, $heading, PDO::PARAM_STR);
+            $stmt->bindParam(3, $subHeading, PDO::PARAM_STR);
+            $stmt->bindParam(4, $link, PDO::PARAM_STR);
+            $stmt->bindParam(5, $linkText, PDO::PARAM_STR);
+            $stmt->bindParam(6, $orderNumber, PDO::PARAM_INT);
+            $stmt->bindParam(7, $added_on, PDO::PARAM_STR);
+            $stmt->bindParam(8, $status, PDO::PARAM_INT);
+            $stmt->execute();
+            return "Banner added successfully";
+        } catch (PDOException $e) {
+            if ($e->errorInfo[0] === '45000') {
+                return $e->errorInfo[2]; // Custom error message from stored procedure
+            }
+            throw new Exception("Database error: " . $e->getMessage());
+        }
+    }
+
+    /**
+     * Update a banner
+     * @param int $bannerId Banner ID to update
+     * @param string $heading Heading of the banner
+     * @param string $subHeading Subheading of the banner
+     * @param string $link link of the banner
+     * @param string $linkText Link text of the banner
+     * @param int $orderNumber order number of the banner
+     * @param int $status Status of the banner
+     * @param string $added_on Creation timestamp
+     * @param string $imageName Image name of the banner
+     * @return string Success or error message
+     * @throws Exception If there's a general addition error
+     * @throws PDOException If there's a database error or if dish already exists (error code 45000)
+     */
+    public function update_banner($bannerId, $heading, $subHeading, $link, $linkText, $orderNumber, $status, $added_on, $imageName): string
+    {
+        try {
+            $strQuery = "CALL sp_updateBanner(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $stmt = $this->db->prepare($strQuery);
+            $stmt->bindParam(1, $bannerId, PDO::PARAM_INT);
+            $stmt->bindParam(2, $imageName, PDO::PARAM_STR);
+            $stmt->bindParam(3, $heading, PDO::PARAM_STR);
+            $stmt->bindParam(4, $subHeading, PDO::PARAM_STR);
+            $stmt->bindParam(5, $link, PDO::PARAM_STR);
+            $stmt->bindParam(6, $linkText, PDO::PARAM_STR);
+            $stmt->bindParam(7, $orderNumber, PDO::PARAM_INT);
+            $stmt->bindParam(8, $added_on, PDO::PARAM_STR);
+            $stmt->bindParam(9, $status, PDO::PARAM_INT);
+            $stmt->execute();
+            return "Banner updated successfully";
+        } catch (PDOException $e) {
+            if ($e->errorInfo[0] === '45000') {
+                return $e->errorInfo[2]; // Custom error message from stored procedure
+            }
+            throw new Exception("Database error: " . $e->getMessage());
+        }
+    }
 }

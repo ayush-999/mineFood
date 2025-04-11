@@ -38,6 +38,14 @@ $pageSettings = [
             ['title' => 'Setting', 'link' => 'settings.php'],
         ]
     ],
+    'banner.php' => [
+        'title' => 'Banner',
+        'sub-title' => 'Banner Master',
+        'breadcrumbs' => [
+            ['title' => 'Home', 'link' => 'index.php'],
+            ['title' => 'Banner', 'link' => 'banner.php'],
+        ]
+    ],
     'profile.php' => [
         'title' => 'Profile',
         'sub-title' => 'Profile Setting',

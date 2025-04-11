@@ -33,6 +33,15 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="banner.php"
+                       class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'banner.php' ? 'active' : '' ?>">
+                        <i class="nav-icon fa-solid fa-images"></i>
+                        <p>
+                            Banner
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="category.php"
                        class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'category.php' ? 'active' : '' ?>">
                         <i class="nav-icon fa-solid fa-layer-group"></i>

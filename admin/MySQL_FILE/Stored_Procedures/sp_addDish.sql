@@ -1,5 +1,5 @@
 DROP PROCEDURE IF EXISTS `sp_addDish`;
-CREATE PROCEDURE `sp_addDish`(
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_addDish`(
     IN `dishCategoryId` INT,
     IN `dishName` VARCHAR(100),
     IN `dishDetail` TEXT,
@@ -17,8 +17,8 @@ BEGIN
         -- Insert new Dish
         INSERT INTO dish (category_id, dish_name, dish_detail, image, type, status, added_on)
         VALUES (dishCategoryId, dishName, dishDetail, dishImage, dishType, status, addedOn);
-
+        
         -- Get the last inserted dish ID
         SET newDishId = LAST_INSERT_ID();
     END IF;
-END;
+END
