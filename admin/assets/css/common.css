@@ -377,7 +377,7 @@ Profile
 
 .imgWrapper img {
   position: absolute;
-  margin-top: 20px;
+  /* margin-top: 20px; */
   width: 80px;
   height: 80px;
   object-fit: cover;
@@ -391,7 +391,7 @@ Profile
   cursor: pointer;
   height: 80px;
   width: 80px;
-  margin-top: 20px;
+  /* margin-top: 20px; */
 }
 
 .imgWrapper:hover .-label {
@@ -419,6 +419,35 @@ Profile
 .tel-wrapper {
   display: flex;
   flex-direction: column;
+}
+
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+  color: #fff !important;
+  background: #007bff linear-gradient(180deg, #268fff, #007bff) repeat-x !important;
+}
+
+.nav-pills .nav-link:not(.active):hover {
+  color: #fff !important;
+  background: #007bff linear-gradient(180deg, #268fff, #007bff) repeat-x !important;
+}
+
+.pswd_info {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+  font-size: 13px;
+}
+
+.pswd_info li {
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 5px;
+  line-height: 1.4;
+}
+
+.pswd_info li:last-child {
+  margin-bottom: 0;
 }
 
 /********************************
@@ -543,8 +572,6 @@ Banner
   width: 24px;
   height: 24px;
 }
-
-
 
 /* 
   Image uploader Css

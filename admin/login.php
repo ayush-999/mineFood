@@ -33,7 +33,6 @@ $cardErrorClass = "";
 
 if (isset($_POST['submit'])) {
     $username = $_POST['userInput'];
-    // $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
     $password = $_POST['password'];
     $result = $admin->admin_login($username, $password);
     if ($result) {

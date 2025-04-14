@@ -11,7 +11,7 @@
                 <div class="modal-body">
                     <input type="hidden" id="bannerId" name="bannerId" value="">
                     <input type="hidden" id="submitAction" name="submitAction" value="">
-                    <div class="row mb-3">
+                    <div class="row mb-2">
                         <div class="col-md-12 form-group mb-0">
                             <div class="uploader">
                                 <div class="upload-area">
@@ -36,21 +36,21 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row mb-3">
+                    <div class="row mb-2">
                         <div class="col-md-12 form-group mb-0">
                             <label for="bannerHeading">Heading</label>
                             <input type="text" class="form-control" id="bannerHeading" name="bannerHeading"
                                 placeholder="Enter banner heading" value="" required>
                         </div>
                     </div>
-                    <div class="row mb-3">
+                    <div class="row mb-2">
                         <div class="col-md-12 form-group mb-0">
                             <label for="bannerSubHeading">Sub Heading</label>
                             <input type="text" class="form-control" id="bannerSubHeading" name="bannerSubHeading"
                                 placeholder="Enter banner sub heading" value="" required>
                         </div>
                     </div>
-                    <div class="row mb-3">
+                    <div class="row mb-2">
                         <div class="col-md-6 form-group mb-0">
                             <label for="bannerLink">Link</label>
                             <input type="text" class="form-control" id="bannerLink" name="bannerLink"

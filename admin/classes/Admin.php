@@ -151,20 +151,21 @@ class Admin
      * @throws Exception If there's a general authentication error
      * @throws PDOException If there's a database error during authentication
      */
-
     public function admin_login(string $username, string $password): false|array
     {
         try {
-            $strQuery = "CALL sp_userLogin(?, ?)";
+            $strQuery = "CALL sp_userLogin(?)";
             $stmt = $this->db->prepare($strQuery);
             $stmt->bindParam(1, $username, PDO::PARAM_STR);
-            $stmt->bindParam(2, $password, PDO::PARAM_STR);
             $stmt->execute();
-            return $stmt->fetch(PDO::FETCH_ASSOC);
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($user && $this->verifyPassword($password, $user['password'])) {
+                return $user;
+            }
+            return false;
         } catch (PDOException $e) {
             throw new Exception("Database error: " . $e->getMessage());
-        } catch (Exception $e) {
-            throw new Exception("Error: " . $e->getMessage());
         }
     }
 
@@ -204,7 +205,6 @@ class Admin
             } else {
                 return json_encode(["message" => "Profile not updated"]);
             }
-            // return "Profile updated successfully";
         } catch (PDOException $e) {
             throw new Exception("Database error: " . $e->getMessage());
         }
@@ -229,6 +229,16 @@ class Admin
         } catch (Exception $e) {
             throw new Exception("Error: " . $e->getMessage());
         }
+    }
+
+    public function hashPassword(string $password): string
+    {
+        return password_hash($password, PASSWORD_BCRYPT);
+    }
+
+    public function verifyPassword(string $password, string $hash): bool
+    {
+        return password_verify($password, $hash);
     }
 
     /****************** User function start *****************/
