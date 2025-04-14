@@ -6,7 +6,8 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_addDish`(
     IN `dishImage` VARCHAR(255),
     IN `dishType` ENUM ('veg','non-veg'),
     IN `status` INT,
-    IN `addedOn` DATETIME
+    IN `addedOn` DATETIME,
+    OUT `newDishId` INT
 )
 BEGIN
     -- Check for existing dish by name
@@ -16,6 +17,8 @@ BEGIN
         -- Insert new Dish
         INSERT INTO dish (category_id, dish_name, dish_detail, image, type, status, added_on)
         VALUES (dishCategoryId, dishName, dishDetail, dishImage, dishType, status, addedOn);
-
+        
+        -- Get the last inserted dish ID
+        SET newDishId = LAST_INSERT_ID();
     END IF;
 END

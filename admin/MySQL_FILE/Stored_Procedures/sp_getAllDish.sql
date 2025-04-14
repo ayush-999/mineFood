@@ -4,7 +4,7 @@ BEGIN
     SELECT dish.*,
            category.category_name,
            category.status as category_status
-    FROM dish, category
-    where dish.category_id = category.id
-    order by dish.id asc;
+    FROM dish
+    INNER JOIN category ON dish.category_id = category.id
+    ORDER BY dish.id ASC;
 END

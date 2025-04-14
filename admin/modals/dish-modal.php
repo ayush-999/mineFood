@@ -8,7 +8,7 @@ if (!empty($admin)) {
     }
 }
 $dishImg = $get_dish['image'] ?? '';
-$imagePath = $dishImg ? 'uploads/dish/' . $dishImg : 'assets/img/no-img.png';
+$imagePath = $dishImg ? 'uploads/admin/dish/' . $dishCategory . '/' . $dishImg : 'assets/img/no-img.png';
 ?>
 <div class="modal fade" id="dish-modal">
     <div class="modal-dialog modal-lg">
@@ -19,7 +19,8 @@ $imagePath = $dishImg ? 'uploads/dish/' . $dishImg : 'assets/img/no-img.png';
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" id="dishForm" enctype="multipart/form-data">
+            <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" id="dishForm"
+                  enctype="multipart/form-data">
                 <div class="modal-body">
                     <input type="hidden" id="dishId" name="dishId" value="">
                     <input type="hidden" id="submitAction" name="submitAction" value="">
@@ -27,7 +28,7 @@ $imagePath = $dishImg ? 'uploads/dish/' . $dishImg : 'assets/img/no-img.png';
                         <div class="col-md-10 form-group mb-0">
                             <label for="dishName">Dish Name</label>
                             <input type="text" class="form-control" id="dishName" name="dishName"
-                                placeholder="Enter Dish name" value="" required>
+                                   placeholder="Enter Dish name" value="" required>
                         </div>
                         <div class="col-md-32 form-group mb-0 d-flex justify-content-end">
                             <div class="dishImgWrap imgWrapper">
@@ -36,7 +37,7 @@ $imagePath = $dishImg ? 'uploads/dish/' . $dishImg : 'assets/img/no-img.png';
                                 </label>
                                 <input type="file" class="form-control" id="dishImg" name="dishImg" accept="image/*">
                                 <img src="<?php echo $imagePath; ?>" class="img-circle"
-                                    alt="" id="image-preview">
+                                     alt="" id="image-preview">
                             </div>
                         </div>
                     </div>
@@ -88,7 +89,7 @@ $imagePath = $dishImg ? 'uploads/dish/' . $dishImg : 'assets/img/no-img.png';
                                         </div>
                                     </div>
                                     <input type="text" class="form-control dishPrice" id="dishPrice" name="dishPrice[]"
-                                        placeholder="0.00" value="">
+                                           placeholder="0.00" value="">
                                 </div>
                             </div>
                             <div class="col-md-5 form-group mb-0">
@@ -100,7 +101,8 @@ $imagePath = $dishImg ? 'uploads/dish/' . $dishImg : 'assets/img/no-img.png';
                                 </select>
                             </div>
                             <div class="col-md-1 form-group d-flex justify-content-center align-items-end mb-1">
-                                <button type="button" class="btn bg-gradient-success btn-sm rounded-circle" id="addMoreAttributes">
+                                <button type="button" class="btn bg-gradient-success btn-sm rounded-circle"
+                                        id="addMoreAttributes">
                                     <i class="fa-regular fa-add"></i>
                                 </button>
                             </div>

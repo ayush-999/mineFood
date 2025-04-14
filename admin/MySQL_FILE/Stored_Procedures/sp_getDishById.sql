@@ -5,22 +5,19 @@ BEGIN
     SELECT 
         dish.*,
         category.category_name,
-        category.status AS category_status
+        category.status AS category_status,
+        dish_details.attribute As attribute,
+        dish_details.price As price
     FROM 
         dish
     INNER JOIN 
         category 
     ON 
         dish.category_id = category.id
+	INNER JOIN
+		dish_details
+	ON 
+		dish.id = dish_details.dish_id
     WHERE 
         dish.id = dishId;
-
-    -- Fetch associated dish details (attributes and prices)
-    SELECT 
-        dish_details.attribute,
-        dish_details.price
-    FROM 
-        dish_details
-    WHERE 
-        dish_details.dish_id = dishId;
 END

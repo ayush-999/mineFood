@@ -14,8 +14,6 @@ Bootstrap Colorpicker: https://itsjavi.com/bootstrap-colorpicker/tutorial-Basics
 
 showLoading.js: https://www.jqueryscript.net/loading/Loading-Indicator-Plugin-jQuery-showLoading.html
 
-Watch time video part 5 time 30:30 https://www.youtube.com/watch?v=nAbUBkSbVvs&list=PLWCLxMult9xeARrYUNDyt599W4bE9mSOQ&index=5
-
 ---
 
 JIRA :- https://ayushchaturvedi789.atlassian.net/jira/software/projects/MINE/list
@@ -29,3 +27,6 @@ Branch name start with "MINE-"
 ---
 
 For website hosting follow this video 👉 https://www.youtube.com/watch?v=kTfuZzuwczg
+
+
+Watch time video part 6 time 04:00 https://www.youtube.com/watch?v=o4pmlr-Ipvs&list=PLWCLxMult9xeARrYUNDyt599W4bE9mSOQ&index=6

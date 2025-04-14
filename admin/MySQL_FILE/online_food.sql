@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Dec 13, 2024 at 08:20 AM
--- Server version: 8.3.0
--- PHP Version: 8.2.18
+-- Generation Time: Apr 02, 2025 at 12:36 PM
+-- Server version: 9.1.0
+-- PHP Version: 8.3.14
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -56,7 +56,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_addDeliveryBoy` (IN `deliveryBoy
 END$$
 
 DROP PROCEDURE IF EXISTS `sp_addDish`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_addDish` (IN `dishCategoryId` INT, IN `dishName` VARCHAR(100), IN `dishDetail` TEXT, IN `dishImage` VARCHAR(255), IN `dishType` ENUM('veg','non-veg'), IN `status` INT, IN `addedOn` DATETIME)   BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_addDish` (IN `dishCategoryId` INT, IN `dishName` VARCHAR(100), IN `dishDetail` TEXT, IN `dishImage` VARCHAR(255), IN `dishType` ENUM('veg','non-veg'), IN `status` INT, IN `addedOn` DATETIME, OUT `newDishId` INT)   BEGIN
     -- Check for existing dish by name
     IF (SELECT COUNT(*) FROM dish WHERE dish_name = dishName) > 0 THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Dish already exists';
@@ -64,7 +64,9 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_addDish` (IN `dishCategoryId` IN
         -- Insert new Dish
         INSERT INTO dish (category_id, dish_name, dish_detail, image, type, status, added_on)
         VALUES (dishCategoryId, dishName, dishDetail, dishImage, dishType, status, addedOn);
-
+        
+        -- Get the last inserted dish ID
+        SET newDishId = LAST_INSERT_ID();
     END IF;
 END$$
 
@@ -152,12 +154,12 @@ END$$
 
 DROP PROCEDURE IF EXISTS `sp_getAllDish`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_getAllDish` ()   BEGIN
-    SELECT dish.*, 
-    category.category_name,
-	category.status as category_status
-    FROM dish, category 
-    where dish.category_id = category.id 
-    order by dish.id asc;
+    SELECT dish.*,
+           category.category_name,
+           category.status as category_status
+    FROM dish
+    INNER JOIN category ON dish.category_id = category.id
+    ORDER BY dish.id ASC;
 END$$
 
 DROP PROCEDURE IF EXISTS `sp_getAllUsers`$$
@@ -171,24 +173,21 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_getDishById` (IN `dishId` INT)  
     SELECT 
         dish.*,
         category.category_name,
-        category.status AS category_status
+        category.status AS category_status,
+        dish_details.attribute As attribute,
+        dish_details.price As price
     FROM 
         dish
     INNER JOIN 
         category 
     ON 
         dish.category_id = category.id
+	INNER JOIN
+		dish_details
+	ON 
+		dish.id = dish_details.dish_id
     WHERE 
         dish.id = dishId;
-
-    -- Fetch associated dish details (attributes and prices)
-    SELECT 
-        dish_details.attribute,
-        dish_details.price
-    FROM 
-        dish_details
-    WHERE 
-        dish_details.dish_id = dishId;
 END$$
 
 DROP PROCEDURE IF EXISTS `sp_updateAdmin`$$
@@ -372,7 +371,7 @@ CREATE TABLE IF NOT EXISTS `category` (
 INSERT INTO `category` (`id`, `category_name`, `order_number`, `status`, `added_on`) VALUES
 (1, 'Chaat & Snacks', 2, 0, '2024-07-05 03:26:19'),
 (5, 'Murg', 1, 1, '2024-07-05 04:22:57'),
-(6, 'Sweets', 3, 1, '2024-11-24 06:05:43'),
+(6, 'Sweets', 3, 1, '2025-03-20 05:40:28'),
 (7, 'Chinese', 4, 1, '2024-07-10 06:34:55');
 
 -- --------------------------------------------------------
@@ -474,14 +473,14 @@ CREATE TABLE IF NOT EXISTS `dish` (
   `status` int NOT NULL,
   `added_on` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `dish`
 --
 
 INSERT INTO `dish` (`id`, `category_id`, `dish_name`, `dish_detail`, `image`, `type`, `status`, `added_on`) VALUES
-(16, 6, 'Gulab Jamun', '<p>abc</p>', 'Gulab-Jamun-335x300.jpg', 'veg', 1, '2024-12-02 08:41:17');
+(29, 6, 'Gulab Jamun', '<p>test</p>', 'Gulab-Jamun-335x300.jpg', 'veg', 1, '2025-03-21 04:41:23');
 
 -- --------------------------------------------------------
 
@@ -518,10 +517,16 @@ CREATE TABLE IF NOT EXISTS `dish_details` (
   `dish_id` int NOT NULL,
   `attribute` varchar(100) NOT NULL,
   `price` int NOT NULL,
-  `status` int NOT NULL,
   `added_on` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `dish_details`
+--
+
+INSERT INTO `dish_details` (`id`, `dish_id`, `attribute`, `price`, `added_on`) VALUES
+(56, 29, 'full', 100, '2025-03-21 04:41:23');
 
 -- --------------------------------------------------------
 

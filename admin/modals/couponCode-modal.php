@@ -29,7 +29,7 @@
                             <input type="text" class="form-control" id="couponCodeMinCartValue"
                                    name="couponCodeMinCartValue" placeholder="Enter min cart value" value="">
                         </div>
-                    </div>
+                    </div> 
                     <div class="row mb-3">
                         <div class="col-md-6 form-group mb-0">
                             <label for="couponCodeStatus">Status</label>
