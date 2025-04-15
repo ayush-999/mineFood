@@ -61,6 +61,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $profileAddress,
                     $profileMobile,
                     $added_on,
+                    $adminDetails['area'],
+                    $adminDetails['city'],
+                    $adminDetails['district'],
+                    $adminDetails['pincode'],
+                    $adminDetails['state'],
+                    $adminDetails['country'],
                     $imagePath
                 );
                 $_SESSION['message'] = $result;
@@ -102,12 +108,67 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $adminDetails['address'],
                 $adminDetails['mobile_no'],
                 date('Y-m-d h:i:s'),
+                $adminDetails['area'],
+                $adminDetails['city'],
+                $adminDetails['district'],
+                $adminDetails['pincode'],
+                $adminDetails['state'],
+                $adminDetails['country'],
                 $adminDetails['admin_img']
             );
 
             $_SESSION['message'] = $result;
         } catch (Exception $e) {
             $_SESSION['message'] = json_encode(["message" => $e->getMessage(), "password_changed" => false]);
+        }
+        header("Location: profile.php");
+        exit;
+    } elseif (isset($_POST['updateAddress'])) {
+        // Handle address update
+        $profileId = $_POST['id'];
+        $added_on = date('Y-m-d h:i:s');
+
+        // Get address components
+        $area = $_POST['area'] ?? '';
+        $city = $_POST['city'] ?? '';
+        $district = $_POST['district'] ?? '';
+        $pincode = $_POST['pincode'] ?? '';
+        $state = $_POST['state'] ?? '';
+        $country = $_POST['country'] ?? '';
+
+        // Combine address components with comma separation
+        $addressParts = array_filter([$area, $city, $district, $pincode, $state, $country]);
+        $profileAddress = implode(', ', $addressParts);
+
+        try {
+            $adminDetails = json_decode($admin->getAdminDetails(), true);
+            $profileName = $adminDetails['name'];
+            $profileMobile = $adminDetails['mobile_no'];
+            $profileUsername = $adminDetails['username'];
+            $profileEmail = $adminDetails['email'];
+            $profilePassword = $adminDetails['password'];
+
+            $result = $admin->updateAdmin(
+                $profileId,
+                $profileName,
+                $profileUsername,
+                $profileEmail,
+                $profilePassword,
+                $profileAddress,
+                $profileMobile,
+                $added_on,
+                $area,
+                $city,
+                $district,
+                $pincode,
+                $state,
+                $country,
+                $adminDetails['admin_img']
+            );
+
+            $_SESSION['message'] = $result;
+        } catch (Exception $e) {
+            $_SESSION['message'] = json_encode(["message" => $e->getMessage()]);
         }
         header("Location: profile.php");
         exit;
@@ -137,7 +198,6 @@ if (isset($_SESSION['message'])) {
                     </h5>
                 </div>
             </div>
-            <!-- /.card-header -->
             <div class="card-body">
                 <div class="profile-wrapper mb-2">
                     <div class="row">
@@ -156,8 +216,12 @@ if (isset($_SESSION['message'])) {
                             <button class="btn bg-gradient-success btn-block edit-address-btn mt-4" type="button"
                                 data-toggle="modal" data-target="#address-modal"
                                 data-id="<?php echo $adminDetails['id']; ?>"
-                                data-name="<?php echo $adminDetails['name']; ?>"
-                                data-mobile="<?php echo $adminDetails['mobile_no']; ?>">
+                                data-area="<?php echo $adminDetails['area']; ?>"
+                                data-state="<?php echo $adminDetails['state']; ?>"
+                                data-district="<?php echo $adminDetails['district']; ?>"
+                                data-pincode="<?php echo $adminDetails['pincode']; ?>"
+                                data-city="<?php echo $adminDetails['city']; ?>"
+                                data-country="<?php echo $adminDetails['country']; ?>">
                                 Edit address
                             </button>
                         </div>
@@ -475,12 +539,21 @@ if (isset($_SESSION['message'])) {
 
         $('.edit-address-btn').on('click', function() {
             let profileId = $(this).data('id');
-            let name = $(this).data('name');
-            let mobile = $(this).data('mobile');
+            let area = $(this).data('area');
+            let state = $(this).data('state');
+            let district = $(this).data('district');
+            let pincode = $(this).data('pincode');
+            let city = $(this).data('city');
+            let country = $(this).data('country');
+
             $('#address_updateAction').val('update');
             $('#address_profileId').val(profileId);
-            $('#address_fullName').val(name);
-            $('#address_mobile').val(mobile);
+            $('#address_country').val(country).trigger('change');
+            $('#address_area').val(area);
+            $('#address_state').val(state).trigger('change');
+            $('#address_district').val(district).trigger('change');
+            $('#address_pincode').val(pincode).trigger('change');
+            $('#address_city').val(city).trigger('change');
 
             $('#address-modal').modal('show');
         });

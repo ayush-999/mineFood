@@ -247,6 +247,6 @@ class AddressDropdowns {
 }
 
 // Initialize when DOM is ready
-$(document).ready(function () {
-  window.addressDropdowns = new AddressDropdowns();
-});
+// $(document).ready(function () {
+//   window.addressDropdowns = new AddressDropdowns();
+// });

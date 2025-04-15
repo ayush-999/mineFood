@@ -184,10 +184,10 @@ class Admin
      * @throws Exception If there's a general update error
      * @throws PDOException If there's a database error during update
      */
-    public function updateAdmin(int $profileId, string $profileName, string $profileUsername, string $profileEmail, string $profilePassword, string $profileAddress, string $profileMobile, string $added_on, string $profileImg): bool|string
+    public function updateAdmin(int $profileId, string $profileName, string $profileUsername, string $profileEmail, string $profilePassword, string $profileAddress, string $profileMobile, string $added_on, string $area, string $city, string $district, int $pincode, string $state, string $country, string $profileImg): bool|string
     {
         try {
-            $strQuery = "CALL sp_updateAdmin(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $strQuery = "CALL sp_updateAdmin(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $this->db->prepare($strQuery);
             $stmt->bindParam(1, $profileId, PDO::PARAM_INT);
             $stmt->bindParam(2, $profileName, PDO::PARAM_STR);
@@ -196,8 +196,14 @@ class Admin
             $stmt->bindParam(5, $profileEmail, PDO::PARAM_STR);
             $stmt->bindParam(6, $profileMobile, PDO::PARAM_STR);
             $stmt->bindParam(7, $added_on, PDO::PARAM_STR);
-            $stmt->bindParam(8, $profileAddress, PDO::PARAM_STR);
-            $stmt->bindParam(9, $profileImg, PDO::PARAM_STR);
+            $stmt->bindParam(8, $area, PDO::PARAM_STR);
+            $stmt->bindParam(9, $state, PDO::PARAM_STR);
+            $stmt->bindParam(10, $district, PDO::PARAM_STR);
+            $stmt->bindParam(11, $pincode, PDO::PARAM_INT);
+            $stmt->bindParam(12, $city, PDO::PARAM_STR);
+            $stmt->bindParam(13, $country, PDO::PARAM_STR);
+            $stmt->bindParam(14, $profileAddress, PDO::PARAM_STR);
+            $stmt->bindParam(15, $profileImg, PDO::PARAM_STR);
             $stmt->execute();
             $result = $stmt->rowCount();
             if ($result > 0) {
