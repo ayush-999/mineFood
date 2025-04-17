@@ -17,6 +17,14 @@ if (!empty($currentScript)) {
 if (!empty($conn)) {
     $user = new User($conn);
 }
+
+if (!empty($user)) {
+    try {
+        $getAdminDetails = json_decode($user->getAdminDetails(), true);
+    } catch (Exception $e) {
+        error_log($e->getMessage());
+    }
+}
 ?>
 <!doctype html>
 <html class="no-js" lang="en">
@@ -31,6 +39,7 @@ if (!empty($conn)) {
     <!-- Favicon -->
     <link rel="shortcut icon" href="assets/img/favicon.ico" type="image/x-icon">
 
+    <link rel="stylesheet" href="assets/css/custom.css">
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/animate.css">
     <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
@@ -94,11 +103,12 @@ if (!empty($conn)) {
         </div>
         <div class="header-middle">
             <div class="container">
-                <div class="row">
+                <div class="row align-items-center">
                     <div class="col-lg-3 col-md-4 col-12 col-sm-4">
                         <div class="logo">
-                            <a href="index.html">
-                                <img alt="" src="assets/img/logo/logo.png" />
+                            <a href="index.php" class="d-flex align-items-center justify-content-lg-start justify-content-md-start justify-content-center">
+                                <img alt="" src="assets/img/logo/logo-icon.png" class="main-logo" />
+                                <h3 class="ml-1 mb-0"><b>mine</b>food.</h3>
                             </a>
                         </div>
                     </div>

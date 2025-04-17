@@ -67,7 +67,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $adminDetails['pincode'],
                     $adminDetails['state'],
                     $adminDetails['country'],
-                    $imagePath
+                    $imagePath,
+                    $adminDetails['contact_email'],
+                    $adminDetails['contact_phone']
                 );
                 $_SESSION['message'] = $result;
             }
@@ -114,7 +116,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $adminDetails['pincode'],
                 $adminDetails['state'],
                 $adminDetails['country'],
-                $adminDetails['admin_img']
+                $adminDetails['admin_img'],
+                $adminDetails['contact_email'],
+                $adminDetails['contact_phone']
             );
 
             $_SESSION['message'] = $result;
@@ -163,7 +167,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $pincode,
                 $state,
                 $country,
-                $adminDetails['admin_img']
+                $adminDetails['admin_img'],
+                $adminDetails['contact_email'],
+                $adminDetails['contact_phone']
             );
 
             $_SESSION['message'] = $result;
@@ -183,25 +189,21 @@ if (isset($_SESSION['message'])) {
 
 ?>
 <div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header">
-                <div class="d-flex justify-content-between align-items-center">
-                    <h5 class="card-title">
-                        <b>
-                            <?php
-                            if (!empty($pageSubTitle)) {
-                                echo $pageSubTitle;
-                            }
-                            ?>
-                        </b>
-                    </h5>
-                </div>
+    <div class="col-4">
+        <div class="card card-success card-outline">
+            <div class="card-header p-0">
+                <h5 class="profile-details-title">
+                    <?php
+                    if (!empty($pageSubTitle)) {
+                        echo $pageSubTitle;
+                    }
+                    ?>
+                </h5>
             </div>
             <div class="card-body">
-                <div class="profile-wrapper mb-2">
+                <div class="profile-wrapper">
                     <div class="row">
-                        <div class="col-md-5">
+                        <div class="col-md-12">
                             <div class="d-flex flex-column align-items-center text-center">
                                 <img src="<?php if (!empty($imagePath)) {
                                                 echo $imagePath;
@@ -210,7 +212,7 @@ if (isset($_SESSION['message'])) {
                                     <h5><?php if (!empty($adminDetails)) {
                                             echo $adminDetails['name'];
                                         } ?></h5>
-                                    <p class="text-muted font-size-sm text-left mb-0"><?php echo $adminDetails['address']; ?></p>
+                                    <p class="text-muted font-size-sm text-center mb-0"><?php echo $adminDetails['address']; ?></p>
                                 </div>
                             </div>
                             <button class="btn bg-gradient-success btn-block edit-address-btn mt-4" type="button"
@@ -225,139 +227,139 @@ if (isset($_SESSION['message'])) {
                                 Edit address
                             </button>
                         </div>
-                        <div class="col-md-7">
-                            <div class="nav nav-pills nav-fill mb-3" id="profileInfoTabs" role="tablist">
-                                <a class="nav-item nav-link active mr-1" id="profile-details-tab" data-toggle="pill" href="#profile-details" role="tab" aria-controls="profile-details" aria-selected="true">Profile Details</a>
-                                <a class="nav-item nav-link ml-1" id="change-password-tab" data-toggle="pill" href="#change-password" role="tab" aria-controls="change-password" aria-selected="false">Change Password</a>
-                            </div>
-                            <div class="tab-content" id="profileInfoTabsContent">
-                                <div class="tab-pane fade show active" id="profile-details" role="tabpanel" aria-labelledby="profile-details-tab">
-                                    <div class="card shadow-none border">
-                                        <div class="card-body">
-                                            <div class="row align-items-center">
-                                                <div class="col-sm-3">
-                                                    <h6 class="mb-0">Full Name</h6>
-                                                </div>
-                                                <div class="col-sm-9 text-secondary">
-                                                    <input type="text" class="form-control"
-                                                        value="<?php echo $adminDetails['name']; ?>"
-                                                        disabled>
-                                                </div>
-                                            </div>
-                                            <hr>
-                                            <div class="row align-items-center">
-                                                <div class="col-sm-3">
-                                                    <h6 class="mb-0">Email</h6>
-                                                </div>
-                                                <div class="col-sm-9 text-secondary">
-                                                    <input type="email" class="form-control"
-                                                        value="<?php echo $adminDetails['email']; ?>" disabled>
-                                                </div>
-                                            </div>
-                                            <hr>
-                                            <div class="row align-items-center">
-                                                <div class="col-sm-3">
-                                                    <h6 class="mb-0">Username</h6>
-                                                </div>
-                                                <div class="col-sm-9 text-secondary">
-                                                    <input type="text" class="form-control"
-                                                        value="<?php echo $adminDetails['username']; ?>" disabled>
-                                                </div>
-                                            </div>
-                                            <hr>
-                                            <div class="row align-items-center">
-                                                <div class="col-sm-3">
-                                                    <h6 class="mb-0">Mobile</h6>
-                                                </div>
-                                                <div class="col-sm-9 text-secondary">
-                                                    <span><?php echo $adminDetails['mobile_no']; ?></span>
-                                                </div>
-                                            </div>
-                                            <hr>
-                                            <div class="row align-items-center">
-                                                <div class="col-sm-12">
-                                                    <button class="btn bg-gradient-success btn-block edit-btn" type="button"
-                                                        data-toggle="modal" data-target="#profile-modal"
-                                                        data-id="<?php echo $adminDetails['id']; ?>"
-                                                        data-name="<?php echo $adminDetails['name']; ?>"
-                                                        data-username="<?php echo $adminDetails['username']; ?>"
-                                                        data-email="<?php echo $adminDetails['email']; ?>"
-                                                        data-mobile="<?php echo $adminDetails['mobile_no']; ?>">
-                                                        Edit
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tab-pane fade" id="change-password" role="tabpanel" aria-labelledby="change-password-tab">
-                                    <div class="card shadow-none border">
-                                        <div class="card-body">
-                                            <form id="changePasswordForm" method="POST" action="">
-                                                <input type="hidden" name="changePassword" value="1">
-                                                <input type="hidden" name="adminId" value="<?php echo $adminDetails['id']; ?>">
 
-                                                <div class="row align-items-center">
-                                                    <div class="col-sm-4">
-                                                        <h6 class="mb-0">Old Password</h6>
-                                                    </div>
-                                                    <div class="col-sm-8 text-secondary">
-                                                        <div class="input-group">
-                                                            <input type="password" class="form-control" id="oldPassword" name="oldPassword" required>
-                                                            <div class="input-group-append">
-                                                                <button class="input-group-text toggle-password" type="button" data-target="#oldPassword">
-                                                                    <i class="fa fa-eye"></i>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <hr>
-                                                <div class="row align-items-center">
-                                                    <div class="col-sm-4">
-                                                        <h6 class="mb-0">New Password</h6>
-                                                    </div>
-                                                    <div class="col-sm-8 text-secondary">
-                                                        <div class="input-group">
-                                                            <input type="password" class="form-control" id="newPassword" name="newPassword" required>
-                                                            <div class="input-group-append">
-                                                                <button class="input-group-text toggle-password" type="button" data-target="#newPassword">
-                                                                    <i class="fa fa-eye"></i>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <hr>
-                                                <div class="row align-items-center">
-                                                    <div class="col-sm-4">
-                                                        <h6 class="mb-0">Confirm Password</h6>
-                                                    </div>
-                                                    <div class="col-sm-8 text-secondary">
-                                                        <div class="input-group">
-                                                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
-                                                            <div class="input-group-append">
-                                                                <button class="input-group-text toggle-password" type="button" data-target="#confirmPassword">
-                                                                    <i class="fa fa-eye"></i>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <hr>
-                                                <div class="row align-items-center">
-                                                    <div class="col-sm-12">
-                                                        <button type="submit" class="btn bg-gradient-success btn-block">
-                                                            Change Password
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <div class="nav nav-pills" id="profileInfoTabs" role="tablist">
+                    <a class="nav-item nav-link active mr-1" id="profile-details-tab" data-toggle="pill" href="#profile-details" role="tab" aria-controls="profile-details" aria-selected="true">Profile Details</a>
+                    <a class="nav-item nav-link ml-1" id="change-password-tab" data-toggle="pill" href="#change-password" role="tab" aria-controls="change-password" aria-selected="false">Change Password</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="tab-content" id="profileInfoTabsContent">
+                    <div class="tab-pane fade show active" id="profile-details" role="tabpanel" aria-labelledby="profile-details-tab">
+                        <div class="row align-items-center">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Full Name</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                <input type="text" class="form-control"
+                                    value="<?php echo $adminDetails['name']; ?>"
+                                    disabled>
                             </div>
                         </div>
+                        <hr>
+                        <div class="row align-items-center">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Email</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                <input type="email" class="form-control"
+                                    value="<?php echo $adminDetails['email']; ?>" disabled>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row align-items-center">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Username</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                <input type="text" class="form-control"
+                                    value="<?php echo $adminDetails['username']; ?>" disabled>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row align-items-center">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Mobile</h6>
+                            </div>
+                            <div class="col-sm-9 tel-wrapper">
+                                <input type="tel" class="form-control" id="d_mobile"
+                                    value="<?php echo $adminDetails['mobile_no']; ?>" disabled>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row align-items-center">
+                            <div class="col-sm-12">
+                                <button class="btn bg-gradient-success btn-block edit-btn" type="button"
+                                    data-toggle="modal" data-target="#profile-modal"
+                                    data-id="<?php echo $adminDetails['id']; ?>"
+                                    data-name="<?php echo $adminDetails['name']; ?>"
+                                    data-username="<?php echo $adminDetails['username']; ?>"
+                                    data-email="<?php echo $adminDetails['email']; ?>"
+                                    data-mobile="<?php echo $adminDetails['mobile_no']; ?>">
+                                    Edit profile
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="change-password" role="tabpanel" aria-labelledby="change-password-tab">
+                        <form id="changePasswordForm" method="POST" action="">
+                            <input type="hidden" name="changePassword" value="1">
+                            <input type="hidden" name="adminId" value="<?php echo $adminDetails['id']; ?>">
+
+                            <div class="row align-items-center">
+                                <div class="col-sm-4">
+                                    <h6 class="mb-0">Old Password</h6>
+                                </div>
+                                <div class="col-sm-8 text-secondary">
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" id="oldPassword" name="oldPassword" required>
+                                        <div class="input-group-append">
+                                            <button class="input-group-text toggle-password" type="button" data-target="#oldPassword">
+                                                <i class="fa fa-eye"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row align-items-center">
+                                <div class="col-sm-4">
+                                    <h6 class="mb-0">New Password</h6>
+                                </div>
+                                <div class="col-sm-8 text-secondary">
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" id="newPassword" name="newPassword" required>
+                                        <div class="input-group-append">
+                                            <button class="input-group-text toggle-password" type="button" data-target="#newPassword">
+                                                <i class="fa fa-eye"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row align-items-center">
+                                <div class="col-sm-4">
+                                    <h6 class="mb-0">Confirm Password</h6>
+                                </div>
+                                <div class="col-sm-8 text-secondary">
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                                        <div class="input-group-append">
+                                            <button class="input-group-text toggle-password" type="button" data-target="#confirmPassword">
+                                                <i class="fa fa-eye"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row align-items-center">
+                                <div class="col-sm-12">
+                                    <button type="submit" class="btn bg-gradient-success btn-block">
+                                        Change Password
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -499,6 +501,20 @@ if (isset($_SESSION['message'])) {
             }
         }
 
+        // for display mobile number
+        const d_input = document.querySelector("#d_mobile");
+        const d_iti = window.intlTelInput(d_input, {
+            initialCountry: "auto",
+            geoIpLookup: callback => {
+                fetch("https://ipapi.co/json")
+                    .then(res => res.json())
+                    .then(data => callback(data.country_code))
+                    .catch(() => callback("us"));
+            },
+            separateDialCode: true,
+        });
+
+        // for display and edit mobile number
         const input = document.querySelector("#mobile");
         const iti = window.intlTelInput(input, {
             initialCountry: "auto",

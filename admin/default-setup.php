@@ -15,76 +15,75 @@ $pageSettings = [
         ]
     ],
     'category.php' => [
-        'title' => 'Category',
-        'sub-title' => 'Category Master',
+        'title' => 'Manage category',
+        'sub-title' => 'Manage category',
         'breadcrumbs' => [
             ['title' => 'Home', 'link' => 'index.php'],
-            ['title' => 'Category', 'link' => 'category.php'],
+            ['title' => 'Manage category', 'link' => 'category.php'],
         ]
     ],
     'user.php' => [
-        'title' => 'Users',
-        'sub-title' => 'Users Master',
+        'title' => 'Manage users',
+        'sub-title' => 'Manage users',
         'breadcrumbs' => [
             ['title' => 'Home', 'link' => 'index.php'],
-            ['title' => 'Users', 'link' => 'user.php'],
+            ['title' => 'Manage users', 'link' => 'user.php'],
         ]
     ],
     'settings.php' => [
-        'title' => 'Setting',
-        'sub-title' => 'Setting',
+        'title' => 'Manage setting',
+        'sub-title' => 'Manage setting',
         'breadcrumbs' => [
             ['title' => 'Home', 'link' => 'index.php'],
-            ['title' => 'Setting', 'link' => 'settings.php'],
+            ['title' => 'Manage setting', 'link' => 'settings.php'],
         ]
     ],
     'banner.php' => [
-        'title' => 'Banner',
-        'sub-title' => 'Banner Master',
+        'title' => 'Manage banner',
+        'sub-title' => 'Manage banner',
         'breadcrumbs' => [
             ['title' => 'Home', 'link' => 'index.php'],
-            ['title' => 'Banner', 'link' => 'banner.php'],
+            ['title' => 'Manage banner', 'link' => 'banner.php'],
         ]
     ],
     'profile.php' => [
-        'title' => 'Profile',
-        'sub-title' => 'Profile Setting',
+        'title' => 'Manage profile',
+        'sub-title' => 'Manage profile',
         'breadcrumbs' => [
             ['title' => 'Home', 'link' => 'index.php'],
-            ['title' => 'Profile Setting', 'link' => 'profile.php'],
+            ['title' => 'Manage profile', 'link' => 'profile.php'],
         ]
     ],
     'delivery-boy.php' => [
-        'title' => 'Delivery Boy',
-        'sub-title' => 'Delivery Boy Master',
+        'title' => 'Manage delivery boy',
+        'sub-title' => 'Manage delivery boy',
         'breadcrumbs' => [
             ['title' => 'Home', 'link' => 'index.php'],
-            ['title' => 'Delivery Boy', 'link' => 'delivery-boy.php'],
+            ['title' => 'Manage delivery boy', 'link' => 'delivery-boy.php'],
         ]
     ],
     'coupon-code.php' => [
-        'title' => 'Coupon Code',
-        'sub-title' => 'Coupon Code Master',
+        'title' => 'Manage coupon code',
+        'sub-title' => 'Manage coupon code',
         'breadcrumbs' => [
             ['title' => 'Home', 'link' => 'index.php'],
-            ['title' => 'Coupon Code', 'link' => 'coupon-code.php'],
+            ['title' => 'Manage coupon code', 'link' => 'coupon-code.php'],
         ]
     ],
     'dish.php' => [
-        'title' => 'Dish',
-        'sub-title' => 'Dish Master',
+        'title' => 'Manage dish',
+        'sub-title' => 'Manage dish',
         'breadcrumbs' => [
             ['title' => 'Home', 'link' => 'index.php'],
-            ['title' => 'Dish', 'link' => 'dish.php'],
+            ['title' => 'Manage dish', 'link' => 'dish.php'],
         ]
     ],
     'dishDetails.php' => [
-        'title' => 'Manage Dish',
-        'sub-title' => 'Manage Dish',
+        'title' => 'Manage dish',
+        'sub-title' => 'Manage dish',
         'breadcrumbs' => [
             ['title' => 'Home', 'link' => 'index.php'],
-            ['title' => 'Dish', 'link' => 'dish.php'],
-            ['title' => 'Manage Dish', 'link' => 'dishDetails.php'],
+            ['title' => 'Manage dish', 'link' => 'dish.php'],
         ]
     ]
 ];

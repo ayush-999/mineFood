@@ -102,6 +102,7 @@ $imagePath = $profileImg ? 'uploads/admin/profile-pic/' . $profileImg : 'assets/
     <script src="assets/js/pages/couponCode.js"></script>
     <script src="assets/js/pages/dish.js"></script>
     <script src="assets/js/pages/banner.js"></script>
+    <script src="assets/js/pages/setting.js"></script>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -114,6 +115,9 @@ $imagePath = $profileImg ? 'uploads/admin/profile-pic/' . $profileImg : 'assets/
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a href="../user/index.php" class="btn btn-block btn-outline-secondary rounded-pill">Go to site</a>
+                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link" data-toggle="dropdown" href="#">
                         <i class="far fa-bell"></i>
@@ -167,9 +171,7 @@ $imagePath = $profileImg ? 'uploads/admin/profile-pic/' . $profileImg : 'assets/
             <section class="content-header">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-sm-6">
-
-                        </div>
+                        <div class="col-sm-6"></div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <?php

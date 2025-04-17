@@ -14,7 +14,9 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_updateAdmin`(
     IN `p_city` VARCHAR(100),
     IN `p_country` VARCHAR(100),
     IN `p_address` VARCHAR(255),
-    IN `p_profileImg` VARCHAR(255)
+    IN `p_profileImg` VARCHAR(255),
+    IN `p_contactEmail` VARCHAR(50),
+    IN `p_contactPhone` VARCHAR(15)
 )
 BEGIN
     UPDATE admin
@@ -32,7 +34,9 @@ BEGIN
         city = p_city,
         country = p_country,
         address = p_address,
-        admin_img = p_profileImg
+        admin_img = p_profileImg,
+        contact_email = p_contactEmail,
+        contact_phone = p_contactPhone
     WHERE id = p_adminId;
     
     SELECT ROW_COUNT() AS rows_affected;

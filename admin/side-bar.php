@@ -91,7 +91,7 @@
                        class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'settings.php' ? 'active' : '' ?>">
                         <i class="nav-icon fas fa-cogs"></i>
                         <p>
-                            Settings
+                            Site Settings
                         </p>
                     </a>
                 </li>

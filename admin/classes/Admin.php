@@ -184,10 +184,10 @@ class Admin
      * @throws Exception If there's a general update error
      * @throws PDOException If there's a database error during update
      */
-    public function updateAdmin(int $profileId, string $profileName, string $profileUsername, string $profileEmail, string $profilePassword, string $profileAddress, string $profileMobile, string $added_on, string $area, string $city, string $district, int $pincode, string $state, string $country, string $profileImg): bool|string
+    public function updateAdmin(int $profileId, string $profileName, string $profileUsername, string $profileEmail, string $profilePassword, string $profileAddress, string $profileMobile, string $added_on, string $area, string $city, string $district, int $pincode, string $state, string $country, string $profileImg, string $contactEmail, string $contactNumber): bool|string
     {
         try {
-            $strQuery = "CALL sp_updateAdmin(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $strQuery = "CALL sp_updateAdmin(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $this->db->prepare($strQuery);
             $stmt->bindParam(1, $profileId, PDO::PARAM_INT);
             $stmt->bindParam(2, $profileName, PDO::PARAM_STR);
@@ -204,6 +204,8 @@ class Admin
             $stmt->bindParam(13, $country, PDO::PARAM_STR);
             $stmt->bindParam(14, $profileAddress, PDO::PARAM_STR);
             $stmt->bindParam(15, $profileImg, PDO::PARAM_STR);
+            $stmt->bindParam(16, $contactEmail, PDO::PARAM_STR);
+            $stmt->bindParam(17, $contactNumber, PDO::PARAM_STR);
             $stmt->execute();
             $result = $stmt->rowCount();
             if ($result > 0) {
