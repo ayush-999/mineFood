@@ -2,11 +2,8 @@
 
 class User
 {
-    protected PDO $db;
-
-    public function __construct(PDO $dbConnection)
+    public function __construct(protected PDO $db)
     {
-        $this->db = $dbConnection;
     }
 
     /**

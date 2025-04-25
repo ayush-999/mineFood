@@ -3,7 +3,7 @@ include_once('header.php');
 $msg = '';
 if (!empty($admin)) {
     try {
-        $get_dish = json_decode($admin->get_dish(), true);
+        $get_dish = json_decode((string) $admin->get_dish(), true);
     } catch (Exception $e) {
         error_log($e->getMessage());
     }
@@ -54,8 +54,8 @@ if (isset($_SESSION['message'])) {
                             <?php foreach ($get_dish['dish'] as $index => $dish) : ?>
                                 <tr class="<?php echo $dish['category_status'] == 0 ? 'disabled-cell' : ''; ?>">
                                     <td class="text-center"><?php echo $index + 1; ?></td>
-                                    <td><?php echo htmlspecialchars($dish['dish_name']); ?></td>
-                                    <td><?php echo htmlspecialchars($dish['category_name']); ?></td>
+                                    <td><?php echo htmlspecialchars((string) $dish['dish_name']); ?></td>
+                                    <td><?php echo htmlspecialchars((string) $dish['category_name']); ?></td>
                                     <td class="text-center">
                                         <?php
                                         $imagePath = '';
@@ -77,7 +77,7 @@ if (isset($_SESSION['message'])) {
                                         }
                                         ?>
                                         <img src="<?php echo htmlspecialchars($imagePath); ?>" class="dish-img view-img"
-                                            alt="<?php echo htmlspecialchars($dish['dish_name']); ?>">
+                                            alt="<?php echo htmlspecialchars((string) $dish['dish_name']); ?>">
                                     </td>
                                     <td><?php echo truncateText($dish['dish_detail'], 3); ?></td>
                                     <td class="text-center">

@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $added_on = date('Y-m-d h:i:s');
 
         try {
-            $adminDetails = json_decode($admin->getAdminDetails(), true);
+            $adminDetails = json_decode((string) $admin->getAdminDetails(), true);
             $profileUsername = $adminDetails['username'];
             $profileEmail = $adminDetails['email'];
             $profilePassword = $adminDetails['password'];
@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (!empty($adminDetails['admin_img']) && file_exists($uploadDir . $adminDetails['admin_img'])) {
                 unlink($uploadDir . $adminDetails['admin_img']);
             }
-            $imagePath = basename($_FILES['profileImg']['name']);
+            $imagePath = basename((string) $_FILES['profileImg']['name']);
             $uploadFile = $uploadDir . $imagePath;
             if (!move_uploaded_file($_FILES['profileImg']['tmp_name'], $uploadFile)) {
                 $_SESSION['message'] = json_encode(["message" => "Image upload failed"]);
@@ -43,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             if (!empty($admin)) {
                 try {
-                    $adminDetails = json_decode($admin->getAdminDetails(), true);
+                    $adminDetails = json_decode((string) $admin->getAdminDetails(), true);
                 } catch (Exception $e) {
                     error_log($e->getMessage());
                 }
@@ -85,7 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $confirmPassword = $_POST['confirmPassword'];
 
         try {
-            $adminDetails = json_decode($admin->getAdminDetails(), true);
+            $adminDetails = json_decode((string) $admin->getAdminDetails(), true);
 
             if (!$admin->verifyPassword($oldPassword, $adminDetails['password'])) {
                 $_SESSION['message'] = json_encode(["message" => "Old password is incorrect", "password_changed" => false]);
@@ -145,7 +145,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $profileAddress = implode(', ', $addressParts);
 
         try {
-            $adminDetails = json_decode($admin->getAdminDetails(), true);
+            $adminDetails = json_decode((string) $admin->getAdminDetails(), true);
             $profileName = $adminDetails['name'];
             $profileMobile = $adminDetails['mobile_no'];
             $profileUsername = $adminDetails['username'];
@@ -605,7 +605,7 @@ if (isset($_SESSION['message'])) {
             "hideMethod": "fadeOut",
         };
 
-        let message = '<?php echo addslashes($msg); ?>';
+        let message = '<?php echo addslashes((string) $msg); ?>';
         if (message) {
             message = JSON.parse(message);
             if (message.hasOwnProperty("message")) {

@@ -672,6 +672,20 @@ Banner
   text-align: center;
 }
 /********************************
-Contact Details
+Settings
 ********************************/
+.breadcrumbsContainer{
+  padding: 20px;
+  border: 1px dashed #6c757d;
+  border-radius: 8px;
+  background-color: #e8e9ea; 
+}
 
+.remove-breadcrumb{
+  position: absolute;
+  top: -5px;
+  right: 0;
+  padding: 3px 8px !important;
+  border-radius: 50% !important;
+  font-size: 12px !important;
+}

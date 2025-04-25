@@ -1,4 +1,8 @@
 <?php
+require_once('config/database.php');
+require_once('classes/Admin.php');
+
+$admin = new Admin($conn);
 
 $pageSettings = [
     'login.php' => [
@@ -31,11 +35,11 @@ $pageSettings = [
         ]
     ],
     'settings.php' => [
-        'title' => 'Manage setting',
-        'sub-title' => 'Manage setting',
+        'title' => 'Manage details',
+        'sub-title' => 'Manage details',
         'breadcrumbs' => [
             ['title' => 'Home', 'link' => 'index.php'],
-            ['title' => 'Manage setting', 'link' => 'settings.php'],
+            ['title' => 'Manage details', 'link' => 'settings.php'],
         ]
     ],
     'banner.php' => [
@@ -88,7 +92,25 @@ $pageSettings = [
     ]
 ];
 
-// Determine current script name
-$currentScript = basename($_SERVER['PHP_SELF']);
+// Initial Data Migration
+// Uncomment the following lines to perform the migration
+
+// foreach ($pageSettings as $page => $settings) {
+//     $data = [
+//         'page_name' => $page,
+//         'page_title' => $settings['title'],
+//         'sub_title' => $settings['sub-title'],
+//         'breadcrumbs' => $settings['breadcrumbs']
+//     ];
+    
+//     try {
+//         $admin->saveSeoSettings($data);
+//         echo "Migrated $page successfully\n";
+//     } catch (Exception $e) {
+//         echo "Error migrating $page: " . $e->getMessage() . "\n";
+//     }
+// }
+
+// echo "Migration complete!\n";
 
 ?>

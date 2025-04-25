@@ -7,7 +7,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" id="deliveryBoyForm">
+            <form method="POST" action="<?php echo htmlspecialchars((string) $_SERVER["PHP_SELF"]); ?>" id="deliveryBoyForm">
                 <div class="modal-body">
                     <input type="hidden" id="deliveryBoyId" name="deliveryBoyId" value="">
                     <input type="hidden" id="submitAction" name="submitAction" value="">

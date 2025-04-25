@@ -2,7 +2,7 @@
 include_once('./header.php');
 if (!empty($user)) {
     try {
-        $get_banner = json_decode($user->get_banner(), true);
+        $get_banner = json_decode((string) $user->get_banner(), true);
     } catch (Exception $e) {
         error_log($e->getMessage());
     }

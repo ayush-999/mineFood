@@ -4,7 +4,7 @@ include_once('header.php');
 $msg = '';
 if (!empty($admin)) {
     try {
-        $get_categories = json_decode($admin->get_all_categories(), true);
+        $get_categories = json_decode((string) $admin->get_all_categories(), true);
     } catch (Exception $e) {
         error_log($e->getMessage());
     }
@@ -77,7 +77,7 @@ if (isset($_SESSION['message'])) {
                             <?php foreach ($get_categories as $index => $category): ?>
                                 <tr>
                                     <td><?php echo $category['order_number']; ?></td>
-                                    <td><?php echo htmlspecialchars($category['category_name']); ?></td>
+                                    <td><?php echo htmlspecialchars((string) $category['category_name']); ?></td>
                                     <td class="text-center">
                                         <span
                                             class="<?php echo $category['status'] == 0 ? 'inactive-badge' : 'active-badge'; ?>">
@@ -94,7 +94,7 @@ if (isset($_SESSION['message'])) {
                                         <button class="btn bg-gradient-success btn-sm rounded-circle mr-1 edit-btn"
                                             type="button" data-toggle="modal" data-target="#category-modal"
                                             data-id="<?php echo $category['id']; ?>"
-                                            data-name="<?php echo htmlspecialchars($category['category_name']); ?>"
+                                            data-name="<?php echo htmlspecialchars((string) $category['category_name']); ?>"
                                             data-order="<?php echo $category['order_number']; ?>"
                                             data-status="<?php echo $category['status']; ?>">
                                             <i class="fa-regular fa-pen-to-square"></i>

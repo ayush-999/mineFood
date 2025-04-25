@@ -7,7 +7,7 @@
                     <span>&times;</span>
                 </button>
             </div>
-            <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" id="bannerForm" enctype="multipart/form-data">
+            <form method="POST" action="<?php echo htmlspecialchars((string) $_SERVER["PHP_SELF"]); ?>" id="bannerForm" enctype="multipart/form-data">
                 <div class="modal-body">
                     <input type="hidden" id="bannerId" name="bannerId" value="">
                     <input type="hidden" id="submitAction" name="submitAction" value="">

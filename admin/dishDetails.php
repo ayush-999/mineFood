@@ -7,9 +7,9 @@ $dishDetails = [];
 $dishId = $_GET['id'] ?? null;
 if (!empty($admin)) {
     try {
-        $get_categories = json_decode($admin->get_all_categories(), true);
+        $get_categories = json_decode((string) $admin->get_all_categories(), true);
         if ($dishId) {
-            $dishData = json_decode($admin->get_dish($dishId), true);
+            $dishData = json_decode((string) $admin->get_dish($dishId), true);
             if (isset($dishData['dish'][0])) {
                 $dishDetails = $dishData['dish'][0];
             } else {
@@ -62,7 +62,7 @@ if (isset($_POST['submit'])) {
     }
     // Handle new image upload
     elseif (isset($_FILES['dishImg']) && $_FILES['dishImg']['error'] == UPLOAD_ERR_OK && $_FILES['dishImg']['size'] > 0) {
-        $newImageName = basename($_FILES['dishImg']['name']);
+        $newImageName = basename((string) $_FILES['dishImg']['name']);
         $uploadDir = 'uploads/admin/dish/';
 
         if ($dishCategory) {
@@ -232,9 +232,9 @@ if ($displayImgFilename && $displayCategory) {
             </div>
             <div class="card-body">
                 <?php if (!empty($msg)): ?>
-                    <div class="alert alert-info"><?php echo htmlspecialchars($msg); ?></div>
+                    <div class="alert alert-info"><?php echo htmlspecialchars((string) $msg); ?></div>
                 <?php endif; ?>
-                <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . ($dishId ? '?id=' . $dishId : ''); ?>" id="dishForm"
+                <form method="POST" action="<?php echo htmlspecialchars((string) $_SERVER["PHP_SELF"]) . ($dishId ? '?id=' . $dishId : ''); ?>" id="dishForm"
                     enctype="multipart/form-data">
                     <div class="form-body">
                         <input type="hidden" id="dishId" name="dishId" value="<?php echo htmlspecialchars($dishId ?? ''); ?>">
@@ -258,7 +258,7 @@ if ($displayImgFilename && $displayCategory) {
                                     if (!empty($get_categories)) {
                                         foreach ($get_categories as $category) {
                                             $selected = (isset($dishDetails['category_id']) && $category['id'] == $dishDetails['category_id']) ? 'selected' : '';
-                                            echo '<option value="' . htmlspecialchars($category['id']) . '" ' . $selected . '>' . htmlspecialchars($category['category_name']) . '</option>';
+                                            echo '<option value="' . htmlspecialchars((string) $category['id']) . '" ' . $selected . '>' . htmlspecialchars((string) $category['category_name']) . '</option>';
                                         }
                                     }
                                     ?>

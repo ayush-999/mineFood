@@ -1,8 +1,8 @@
 <?php
 if (!empty($admin)) {
     try {
-        $get_categories = json_decode($admin->get_all_categories(), true);
-        $get_dish = json_decode($admin->get_dish(), true);
+        $get_categories = json_decode((string) $admin->get_all_categories(), true);
+        $get_dish = json_decode((string) $admin->get_dish(), true);
     } catch (Exception $e) {
         error_log($e->getMessage());
     }
@@ -19,7 +19,7 @@ $imagePath = $dishImg ? 'uploads/admin/dish/' . $dishCategory . '/' . $dishImg :
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" id="dishForm"
+            <form method="POST" action="<?php echo htmlspecialchars((string) $_SERVER["PHP_SELF"]); ?>" id="dishForm"
                   enctype="multipart/form-data">
                 <div class="modal-body">
                     <input type="hidden" id="dishId" name="dishId" value="">
@@ -49,7 +49,7 @@ $imagePath = $dishImg ? 'uploads/admin/dish/' . $dishCategory . '/' . $dishImg :
                                 <?php
                                 if (!empty($get_categories)) {
                                     foreach ($get_categories as $category) {
-                                        echo '<option class="" value="' . htmlspecialchars($category['id']) . '">' . htmlspecialchars($category['category_name']) . '</option>';
+                                        echo '<option class="" value="' . htmlspecialchars((string) $category['id']) . '">' . htmlspecialchars((string) $category['category_name']) . '</option>';
                                     }
                                 }
                                 ?>

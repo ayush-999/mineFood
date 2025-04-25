@@ -7,7 +7,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" id="addressForm" enctype="multipart/form-data">
+            <form method="POST" action="<?php echo htmlspecialchars((string) $_SERVER["PHP_SELF"]); ?>" id="addressForm" enctype="multipart/form-data">
                 <input type="hidden" id="address_profileId" name="id" value="">
                 <input type="hidden" id="address_updateAction" name="updateAddress" value="">
                 <div class="modal-body">

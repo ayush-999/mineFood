@@ -4,7 +4,7 @@ include_once('header.php');
 $msg = '';
 if (!empty($admin)) {
     try {
-        $get_delivery_boy = json_decode($admin->get_all_delivery_boy(), true);
+        $get_delivery_boy = json_decode((string) $admin->get_all_delivery_boy(), true);
     } catch (Exception $e) {
         error_log($e->getMessage());
     }
@@ -79,9 +79,9 @@ if (isset($_SESSION['message'])) {
                             <?php foreach ($get_delivery_boy as $index => $delivery_boy): ?>
                                 <tr>
                                     <td><?php echo $index + 1; ?></td>
-                                    <td><?php echo htmlspecialchars($delivery_boy['name']); ?></td>
-                                    <td><?php echo htmlspecialchars($delivery_boy['mobile']); ?></td>
-                                    <td><?php echo htmlspecialchars($delivery_boy['email']); ?></td>
+                                    <td><?php echo htmlspecialchars((string) $delivery_boy['name']); ?></td>
+                                    <td><?php echo htmlspecialchars((string) $delivery_boy['mobile']); ?></td>
+                                    <td><?php echo htmlspecialchars((string) $delivery_boy['email']); ?></td>
                                     <td class="text-center">
                                 <span
                                         class="<?php echo $delivery_boy['email_verify'] == 0 ? 'pending-badge' : 'verified-badge'; ?>">
@@ -107,9 +107,9 @@ if (isset($_SESSION['message'])) {
                                         <button class="btn bg-gradient-success btn-sm rounded-circle mr-1 edit-btn"
                                                 type="button" data-toggle="modal" data-target="#delivery-boy-modal"
                                                 data-id="<?php echo $delivery_boy['id']; ?>"
-                                                data-name="<?php echo htmlspecialchars($delivery_boy['name']); ?>"
-                                                data-email="<?php echo htmlspecialchars($delivery_boy['email']); ?>"
-                                                data-mobile="<?php echo htmlspecialchars($delivery_boy['mobile']); ?>"
+                                                data-name="<?php echo htmlspecialchars((string) $delivery_boy['name']); ?>"
+                                                data-email="<?php echo htmlspecialchars((string) $delivery_boy['email']); ?>"
+                                                data-mobile="<?php echo htmlspecialchars((string) $delivery_boy['mobile']); ?>"
                                                 data-status="<?php echo $delivery_boy['status']; ?>">
                                             <i class="fa-regular fa-pen-to-square"></i>
                                         </button>
