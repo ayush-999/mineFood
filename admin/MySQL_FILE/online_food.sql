@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Apr 15, 2025 at 07:12 AM
+-- Generation Time: May 03, 2025 at 06:25 AM
 -- Server version: 9.1.0
 -- PHP Version: 8.3.14
 
@@ -235,8 +235,13 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_getDishById` (IN `dishId` INT)  
         dish.id = dishId;
 END$$
 
+DROP PROCEDURE IF EXISTS `sp_getSettings`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_getSettings` ()   BEGIN
+	SELECT * FROM setting;
+END$$
+
 DROP PROCEDURE IF EXISTS `sp_updateAdmin`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_updateAdmin` (IN `p_adminId` INT, IN `p_name` VARCHAR(50), IN `p_username` VARCHAR(50), IN `p_password` VARCHAR(255), IN `p_email` VARCHAR(50), IN `p_mobile` VARCHAR(15), IN `addedOn` DATETIME, IN `p_area` VARCHAR(255), IN `p_state` VARCHAR(100), IN `p_district` VARCHAR(100), IN `p_pincode` INT, IN `p_city` VARCHAR(100), IN `p_country` VARCHAR(100), IN `p_address` VARCHAR(255), IN `p_profileImg` VARCHAR(255))   BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_updateAdmin` (IN `p_adminId` INT, IN `p_name` VARCHAR(50), IN `p_username` VARCHAR(50), IN `p_password` VARCHAR(255), IN `p_email` VARCHAR(50), IN `p_mobile` VARCHAR(15), IN `addedOn` DATETIME, IN `p_area` VARCHAR(255), IN `p_state` VARCHAR(100), IN `p_district` VARCHAR(100), IN `p_pincode` INT, IN `p_city` VARCHAR(100), IN `p_country` VARCHAR(100), IN `p_address` VARCHAR(255), IN `p_profileImg` VARCHAR(255), IN `p_contactEmail` VARCHAR(50), IN `p_contactPhone` VARCHAR(15))   BEGIN
     UPDATE admin
     SET 
         name = p_name, 
@@ -252,7 +257,9 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_updateAdmin` (IN `p_adminId` INT
         city = p_city,
         country = p_country,
         address = p_address,
-        admin_img = p_profileImg
+        admin_img = p_profileImg,
+        contact_email = p_contactEmail,
+        contact_phone = p_contactPhone
     WHERE id = p_adminId;
     
     SELECT ROW_COUNT() AS rows_affected;
@@ -399,6 +406,8 @@ CREATE TABLE IF NOT EXISTS `admin` (
   `country` varchar(100) DEFAULT NULL,
   `address` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
   `admin_img` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `contact_email` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `contact_phone` varchar(15) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
@@ -406,8 +415,8 @@ CREATE TABLE IF NOT EXISTS `admin` (
 -- Dumping data for table `admin`
 --
 
-INSERT INTO `admin` (`id`, `name`, `username`, `password`, `email`, `mobile_no`, `added_on`, `area`, `state`, `district`, `pincode`, `city`, `country`, `address`, `admin_img`) VALUES
-(1, 'Ayush Chaturvedi', 'admin', '$2y$10$hdpBn39.AFhPNMavo8wcsuyNbMfi/QCNHD4DLHfAYg/9fkdqkokTW', 'admin@gmail.com', '+919993832158', '2025-04-15 07:07:54', 'Flat 1, 4th Floor, Krishna Reddy Building, In front of Paradise Studio Rooms PG for girls\nNear Juice Juction, Bellandur Signal', 'KARNATAKA', 'BENGALURU URBAN', 560103, 'Bellandur', 'India', 'Flat 1, 4th Floor, Krishna Reddy Building, In front of Paradise Studio Rooms PG for girls\r\nNear Juice Juction, Bellandur Signal, Bellandur, BENGALURU URBAN, 560103, KARNATAKA, India', 'M-Avata.jpg');
+INSERT INTO `admin` (`id`, `name`, `username`, `password`, `email`, `mobile_no`, `added_on`, `area`, `state`, `district`, `pincode`, `city`, `country`, `address`, `admin_img`, `contact_email`, `contact_phone`) VALUES
+(1, 'Ayush Chaturvedi', 'admin', '$2y$10$SM.wQXVe7AIewwp3kDkjU.uVOb8ntq2X9hDoh1owHRZmvD6sF6h2C', 'admin@gmail.com', '+919993832158', '2025-04-23 01:33:02', 'Flat 1, 4th Floor, Krishna Reddy Building', 'CHHATTISGARH', 'Gaurella Pendra Marwahi', 495119, 'Patgawan', 'India', 'Flat 1, 4th Floor, Krishna Reddy Building, Patgawan, Gaurella Pendra Marwahi, 495119, CHHATTISGARH, India', 'M-Avata.jpg', 'contact@minefood.com', '+919876543210');
 
 -- --------------------------------------------------------
 
@@ -434,7 +443,7 @@ CREATE TABLE IF NOT EXISTS `banner` (
 --
 
 INSERT INTO `banner` (`id`, `image`, `heading`, `sub_heading`, `link`, `link_txt`, `order_number`, `added_on`, `status`) VALUES
-(4, 'banner_1744377881.jpg', 'Drink & Heathy Food', 'Fresh Heathy and Organic.', 'index', 'Order Now', 1, '2025-04-12 07:56:51', 0),
+(4, 'banner_1744377881.jpg', 'Drink & Heathy Food', 'Fresh Heathy and Organic.', 'index', 'Order Now', 1, '2025-04-21 04:31:03', 0),
 (6, 'banner_1744378098.jpg', 'Drink & Heathy Food', 'Fresh Heathy and Organic.', 'index', 'Order Now', 2, '2025-04-12 07:56:57', 1),
 (8, 'banner_1744378642.jpg', 'Drink & Heathy Food', 'Fresh Heathy and Organic.', 'index', 'Order Now', 3, '2025-04-12 07:57:04', 1);
 
@@ -543,8 +552,7 @@ CREATE TABLE IF NOT EXISTS `delivery_boy` (
 --
 
 INSERT INTO `delivery_boy` (`id`, `name`, `mobile`, `email`, `password`, `status`, `email_verify`, `added_on`) VALUES
-(14, 'L1dpV005TkJIZVBOUnNYUUtGZ25Tdz09OjpTSk/Wj+tIbTEDrMS3VfRK', '+911234567890', 'R05yaDFGN1BmTUp1MTFDeUpyMmlEZz09OjqPtoVVIvR+JzZMskdn5Wo8', '', 1, 0, '2024-06-30 06:53:42'),
-(15, 'SzA4UFBvOFhZQUgxU0NKU1pVc3krQT09OjpoxYdAFkr5X7o/2P2YhZpl', '+919993832158', 'WVZLTGZpNHZ5R1dUQ2lUUnBnNHZlS2gxRjlSWXZPUDlQa3Z6UUlSekc4WT06OogFWoiUArjg4zGQwV8PgGs=', '', 1, 0, '2024-07-10 03:04:07');
+(14, 'L1dpV005TkJIZVBOUnNYUUtGZ25Tdz09OjpTSk/Wj+tIbTEDrMS3VfRK', '+911234567890', 'R05yaDFGN1BmTUp1MTFDeUpyMmlEZz09OjqPtoVVIvR+JzZMskdn5Wo8', '', 1, 0, '2024-06-30 06:53:42');
 
 -- --------------------------------------------------------
 
@@ -563,14 +571,15 @@ CREATE TABLE IF NOT EXISTS `dish` (
   `status` int NOT NULL,
   `added_on` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `dish`
 --
 
 INSERT INTO `dish` (`id`, `category_id`, `dish_name`, `dish_detail`, `image`, `type`, `status`, `added_on`) VALUES
-(30, 6, 'Gulab Jamun', '<p><strong>Lorem Ipsum</strong> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum</p>', 'Gulab-Jamun-335x300.jpg', 'veg', 1, '2025-04-14 03:58:32');
+(30, 6, 'Gulab Jamun', '<p><strong>Lorem Ipsum</strong> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum</p>', 'Gulab-Jamun-335x300.jpg', 'veg', 1, '2025-04-17 06:40:15'),
+(31, 7, 'Chow mein', '<p><strong>test </strong>text</p>', 'chicken-chow-mein-recipe.jpg', 'veg', 1, '2025-04-23 01:31:49');
 
 -- --------------------------------------------------------
 
@@ -609,15 +618,17 @@ CREATE TABLE IF NOT EXISTS `dish_details` (
   `price` int NOT NULL,
   `added_on` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `dish_details`
 --
 
 INSERT INTO `dish_details` (`id`, `dish_id`, `attribute`, `price`, `added_on`) VALUES
-(65, 30, 'full', 100, '2025-04-14 03:58:32'),
-(66, 30, 'full', 60, '2025-04-14 03:58:32');
+(71, 30, 'full', 100, '2025-04-17 06:40:15'),
+(72, 30, 'full', 60, '2025-04-17 06:40:15'),
+(75, 31, 'full', 80, '2025-04-23 01:31:49'),
+(76, 31, 'half', 50, '2025-04-23 01:31:49');
 
 -- --------------------------------------------------------
 
@@ -729,6 +740,48 @@ CREATE TABLE IF NOT EXISTS `rating` (
 
 INSERT INTO `rating` (`id`, `user_id`, `order_id`, `dish_detail_id`, `rating`) VALUES
 (1, 1, 6, 1, 5);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `seo_settings`
+--
+
+DROP TABLE IF EXISTS `seo_settings`;
+CREATE TABLE IF NOT EXISTS `seo_settings` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `page_name` varchar(255) NOT NULL,
+  `page_title` varchar(255) NOT NULL,
+  `meta_description` text,
+  `meta_keywords` text,
+  `canonical_url` varchar(255) DEFAULT NULL,
+  `og_title` varchar(255) DEFAULT NULL,
+  `og_description` text,
+  `og_image` varchar(255) DEFAULT NULL,
+  `breadcrumbs` text COMMENT 'JSON encoded breadcrumbs',
+  `sub_title` varchar(255) DEFAULT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `page_name` (`page_name`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `seo_settings`
+--
+
+INSERT INTO `seo_settings` (`id`, `page_name`, `page_title`, `meta_description`, `meta_keywords`, `canonical_url`, `og_title`, `og_description`, `og_image`, `breadcrumbs`, `sub_title`, `created_at`, `updated_at`) VALUES
+(3, 'login.php', 'Login', NULL, NULL, NULL, NULL, NULL, NULL, '[]', 'Login page', '2025-04-23 00:27:00', '2025-04-23 00:27:00'),
+(4, 'index.php', 'Home', NULL, NULL, NULL, NULL, NULL, NULL, '[{\"title\":\"Home\",\"link\":\"index.php\"},{\"title\":\"Dashboard\",\"link\":\"index.php\"}]', 'Dashboard page', '2025-04-23 00:27:00', '2025-04-23 00:27:00'),
+(5, 'category.php', 'Manage category', NULL, NULL, NULL, NULL, NULL, NULL, '[{\"title\":\"Home\",\"link\":\"index.php\"},{\"title\":\"Manage category\",\"link\":\"category.php\"}]', 'Manage category', '2025-04-23 00:27:00', '2025-04-23 00:27:00'),
+(6, 'user.php', 'Manage users', NULL, NULL, NULL, NULL, NULL, NULL, '[{\"title\":\"Home\",\"link\":\"index.php\"},{\"title\":\"Manage users\",\"link\":\"user.php\"}]', 'Manage users', '2025-04-23 00:27:00', '2025-04-23 00:27:00'),
+(7, 'settings.php', 'Manage details', NULL, NULL, NULL, NULL, NULL, NULL, '[{\"title\":\"Home\",\"link\":\"index.php\"},{\"title\":\"Manage details\",\"link\":\"settings.php\"}]', 'Manage details', '2025-04-23 00:27:00', '2025-04-23 00:27:00'),
+(8, 'banner.php', 'Manage banner', NULL, NULL, NULL, NULL, NULL, NULL, '[{\"title\":\"Home\",\"link\":\"index.php\"},{\"title\":\"Manage banner\",\"link\":\"banner.php\"}]', 'Manage banner', '2025-04-23 00:27:00', '2025-04-23 00:27:00'),
+(9, 'profile.php', 'Manage profile', NULL, NULL, NULL, NULL, NULL, NULL, '[{\"title\":\"Home\",\"link\":\"index.php\"},{\"title\":\"Manage profile\",\"link\":\"profile.php\"}]', 'Manage profile', '2025-04-23 00:27:00', '2025-04-23 00:27:00'),
+(10, 'delivery-boy.php', 'Manage delivery boy', NULL, NULL, NULL, NULL, NULL, NULL, '[{\"title\":\"Home\",\"link\":\"index.php\"},{\"title\":\"Manage delivery boy\",\"link\":\"delivery-boy.php\"}]', 'Manage delivery boy', '2025-04-23 00:27:00', '2025-04-23 00:27:00'),
+(11, 'coupon-code.php', 'Manage coupon code', NULL, NULL, NULL, NULL, NULL, NULL, '[{\"title\":\"Home\",\"link\":\"index.php\"},{\"title\":\"Manage coupon code\",\"link\":\"coupon-code.php\"}]', 'Manage coupon code', '2025-04-23 00:27:00', '2025-04-23 00:27:00'),
+(12, 'dish.php', 'Manage dish', NULL, NULL, NULL, NULL, NULL, NULL, '[{\"title\":\"Home\",\"link\":\"index.php\"},{\"title\":\"Manage dish\",\"link\":\"dish.php\"}]', 'Manage dish', '2025-04-23 00:27:00', '2025-04-23 00:27:00'),
+(13, 'dishDetails.php', 'Manage dish', NULL, NULL, NULL, NULL, NULL, NULL, '[{\"title\":\"Home\",\"link\":\"index.php\"},{\"title\":\"Manage dish\",\"link\":\"dish.php\"}]', 'Manage dish', '2025-04-23 00:27:00', '2025-04-23 00:27:00');
 
 -- --------------------------------------------------------
 
