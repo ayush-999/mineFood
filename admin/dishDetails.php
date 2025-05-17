@@ -243,7 +243,7 @@ if ($displayImgFilename && $displayCategory) {
 
                         <div class="row mb-3">
                             <div class="col-md-12 form-group mb-0">
-                                <label for="dishName">Dish Name</label>
+                                <label for="dishName">Dish Name <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="dishName" name="dishName"
                                     placeholder="Enter Dish name"
                                     value="<?php echo htmlspecialchars($dishDetails['dish_name'] ?? ''); ?>" required>
@@ -251,7 +251,7 @@ if ($displayImgFilename && $displayCategory) {
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6 form-group mb-0">
-                                <label for="dishCategory">Category</label>
+                                <label for="dishCategory">Category <span class="text-danger">*</span></label>
                                 <select class="form-control" name="dishCategory" id="dishCategory">
                                     <option value="">Select Category</option>
                                     <?php
@@ -265,7 +265,7 @@ if ($displayImgFilename && $displayCategory) {
                                 </select>
                             </div>
                             <div class="col-md-3 form-group mb-0">
-                                <label for="dishStatus">Status</label>
+                                <label for="dishStatus">Status <span class="text-danger">*</span></label>
                                 <select class="form-control" name="dishStatus" id="dishStatus">
                                     <option value="">Select Status</option>
                                     <option value="0" <?php echo (isset($dishDetails['status']) && $dishDetails['status'] == 0) ? 'selected' : ''; ?>>
@@ -277,7 +277,7 @@ if ($displayImgFilename && $displayCategory) {
                                 </select>
                             </div>
                             <div class="col-md-3 form-group mb-0">
-                                <label for="dishType">Type</label>
+                                <label for="dishType">Type <span class="text-danger">*</span></label>
                                 <select class="form-control" name="dishType" id="dishType">
                                     <option value="">Select Type</option>
                                     <option value="veg" <?php echo (isset($dishDetails['type']) && $dishDetails['type'] == 'veg') ? 'selected' : ''; ?>>

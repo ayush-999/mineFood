@@ -38,33 +38,33 @@
                     </div>
                     <div class="row mb-2">
                         <div class="col-md-12 form-group mb-0">
-                            <label for="bannerHeading">Heading</label>
+                            <label for="bannerHeading">Heading <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="bannerHeading" name="bannerHeading"
                                 placeholder="Enter banner heading" value="" required>
                         </div>
                     </div>
                     <div class="row mb-2">
                         <div class="col-md-12 form-group mb-0">
-                            <label for="bannerSubHeading">Sub Heading</label>
+                            <label for="bannerSubHeading">Sub Heading <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="bannerSubHeading" name="bannerSubHeading"
                                 placeholder="Enter banner sub heading" value="" required>
                         </div>
                     </div>
                     <div class="row mb-2">
                         <div class="col-md-6 form-group mb-0">
-                            <label for="bannerLink">Link</label>
+                            <label for="bannerLink">Link <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="bannerLink" name="bannerLink"
                                 placeholder="Enter link" value="" required>
                         </div>
                         <div class="col-md-6 form-group mb-0">
-                            <label for="bannerLinkText">Link Text</label>
+                            <label for="bannerLinkText">Link Text <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="bannerLinkText" name="bannerLinkText"
                                 placeholder="Enter link text" value="" required>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6 form-group mb-0">
-                            <label for="bannerStatus">Status</label>
+                            <label for="bannerStatus">Status <span class="text-danger">*</span></label>
                             <select class="form-control" name="bannerStatus" id="bannerStatus">
                                 <option value="">Select Status</option>
                                 <option value="0">Inactive</option>
@@ -72,7 +72,7 @@
                             </select>
                         </div>
                         <div class="col-md-6 form-group mb-0">
-                            <label for="bannerOrderNumber">Order Number</label>
+                            <label for="bannerOrderNumber">Order Number <span class="text-danger">*</span></label>
                             <input type="number" class="form-control" id="bannerOrderNumber" name="bannerOrderNumber"
                                 placeholder="Enter order number" value="" required>
                         </div>

@@ -73,13 +73,43 @@ $(document).ready(function () {
             couponCodeStatus: {
                 required: true,
             },
+            couponCodeCartValue: {
+                required: true,
+            },
+            couponCodeMinCartValue: {
+                required: true,
+            },
+            couponCodeType: {
+                required: true,
+            },
+            couponCodeStartDate: {
+                required: true,
+            },
+            couponCodeEndDate: {
+                required: true,
+            },
         },
         messages: {
             couponCodeName: {
-                required: 'Please coupon name',
+                required: 'Please enter coupon name',
             },
             couponCodeStatus: {
                 required: 'Please select status',
+            },
+            couponCodeCartValue: {
+                required: 'Please enter cart value',
+            },
+            couponCodeMinCartValue: {
+                required: 'Please enter Minimum cart value',
+            },
+            couponCodeType: {
+                required: 'Please select type',
+            },
+            couponCodeStartDate: {
+                required: 'Please select start date',
+            },
+            couponCodeEndDate: {
+                required: 'Please select end date',
             },
         },
         errorElement: 'span',

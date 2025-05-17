@@ -2,9 +2,7 @@
 
 class Admin
 {
-    public function __construct(protected PDO $db)
-    {
-    }
+    public function __construct(protected PDO $db) {}
 
     /****************** Category function start *****************/
     /**
@@ -181,10 +179,28 @@ class Admin
      * @throws Exception If there's a general update error
      * @throws PDOException If there's a database error during update
      */
-    public function updateAdmin(int $profileId, string $profileName, string $profileUsername, string $profileEmail, string $profilePassword, string $profileAddress, string $profileMobile, string $added_on, string $area, string $city, string $district, int $pincode, string $state, string $country, string $profileImg, string $contactEmail, string $contactNumber): bool|string
-    {
+    public function updateAdmin(
+        int $profileId,
+        string $profileName,
+        string $profileUsername,
+        string $profileEmail,
+        string $profilePassword,
+        string $profileAddress,
+        string $profileMobile,
+        string $added_on,
+        string $area,
+        string $city,
+        string $district,
+        int $pincode,
+        string $state,
+        string $country,
+        string $profileImg,
+        string $contactEmail,
+        string $contactNumber,
+        string $openingHours = ''
+    ): bool|string {
         try {
-            $strQuery = "CALL sp_updateAdmin(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $strQuery = "CALL sp_updateAdmin(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $this->db->prepare($strQuery);
             $stmt->bindParam(1, $profileId, PDO::PARAM_INT);
             $stmt->bindParam(2, $profileName, PDO::PARAM_STR);
@@ -203,6 +219,7 @@ class Admin
             $stmt->bindParam(15, $profileImg, PDO::PARAM_STR);
             $stmt->bindParam(16, $contactEmail, PDO::PARAM_STR);
             $stmt->bindParam(17, $contactNumber, PDO::PARAM_STR);
+            $stmt->bindParam(18, $openingHours, PDO::PARAM_STR);
             $stmt->execute();
             $result = $stmt->rowCount();
             if ($result > 0) {
@@ -1054,25 +1071,25 @@ class Admin
     }
 
     public function getPageSettings(): bool|string
-{
-    try {
-        $strQuery = "SELECT page_name, page_title, sub_title, breadcrumbs FROM seo_settings";
-        $stmt = $this->db->prepare($strQuery);
-        $stmt->execute();
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
-        $pageSettings = [];
-        foreach ($result as $row) {
-            $pageSettings[$row['page_name']] = [
-                'title' => $row['page_title'],
-                'sub_title' => $row['sub_title'],
-                'breadcrumbs' => !empty($row['breadcrumbs']) ? json_decode((string) $row['breadcrumbs'], true) : []
-            ];
+    {
+        try {
+            $strQuery = "SELECT page_name, page_title, sub_title, breadcrumbs FROM seo_settings";
+            $stmt = $this->db->prepare($strQuery);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            $pageSettings = [];
+            foreach ($result as $row) {
+                $pageSettings[$row['page_name']] = [
+                    'title' => $row['page_title'],
+                    'sub_title' => $row['sub_title'],
+                    'breadcrumbs' => !empty($row['breadcrumbs']) ? json_decode((string) $row['breadcrumbs'], true) : []
+                ];
+            }
+
+            return json_encode($pageSettings);
+        } catch (PDOException $e) {
+            throw new Exception("Database error: " . $e->getMessage());
         }
-        
-        return json_encode($pageSettings);
-    } catch (PDOException $e) {
-        throw new Exception("Database error: " . $e->getMessage());
     }
-}
 }

@@ -21,7 +21,7 @@
     </div>
     <div class="col-md-4">
         <div class="d-flex justify-content-end mt-4">
-            <button class="btn btn-outline-info btn-sm" type="button" id="addPageBtn">
+            <button class="btn btn-outline-info btn-sm rounded-pill" type="button" id="addPageBtn">
                 <i class="fas fa-plus"></i> Add Page
             </button>
         </div>
@@ -76,7 +76,7 @@
         <div class="col-md-12">
             <div class="d-flex justify-content-between align-items-center">
                 <h6 class="text-bold mb-0">Breadcrumbs</h6>
-                <button type="button" id="addBreadcrumbBtn" class="btn btn-sm btn-outline-secondary">
+                <button type="button" id="addBreadcrumbBtn" class="btn btn-sm btn-outline-secondary rounded-pill">
                     <i class="fas fa-plus"></i> Add Breadcrumb
                 </button>
             </div>

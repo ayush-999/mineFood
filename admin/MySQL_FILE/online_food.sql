@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: May 03, 2025 at 06:25 AM
+-- Generation Time: May 05, 2025 at 07:27 AM
 -- Server version: 9.1.0
 -- PHP Version: 8.3.14
 
@@ -416,7 +416,7 @@ CREATE TABLE IF NOT EXISTS `admin` (
 --
 
 INSERT INTO `admin` (`id`, `name`, `username`, `password`, `email`, `mobile_no`, `added_on`, `area`, `state`, `district`, `pincode`, `city`, `country`, `address`, `admin_img`, `contact_email`, `contact_phone`) VALUES
-(1, 'Ayush Chaturvedi', 'admin', '$2y$10$SM.wQXVe7AIewwp3kDkjU.uVOb8ntq2X9hDoh1owHRZmvD6sF6h2C', 'admin@gmail.com', '+919993832158', '2025-04-23 01:33:02', 'Flat 1, 4th Floor, Krishna Reddy Building', 'CHHATTISGARH', 'Gaurella Pendra Marwahi', 495119, 'Patgawan', 'India', 'Flat 1, 4th Floor, Krishna Reddy Building, Patgawan, Gaurella Pendra Marwahi, 495119, CHHATTISGARH, India', 'M-Avata.jpg', 'contact@minefood.com', '+919876543210');
+(1, 'Ayush Chaturvedi', 'admin', '$2y$10$SM.wQXVe7AIewwp3kDkjU.uVOb8ntq2X9hDoh1owHRZmvD6sF6h2C', 'admin@gmail.com', '+919993832158', '2025-05-03 09:52:39', 'Flat 1, 4th Floor, Krishna Reddy Building', 'CHHATTISGARH', 'Gaurella Pendra Marwahi', 495119, 'Patgawan', 'India', 'Flat 1, 4th Floor, Krishna Reddy Building, Patgawan, Gaurella Pendra Marwahi, 495119, CHHATTISGARH, India', 'M-Avata.jpg', 'contact@minefood.com', '+919876543210');
 
 -- --------------------------------------------------------
 
@@ -443,7 +443,7 @@ CREATE TABLE IF NOT EXISTS `banner` (
 --
 
 INSERT INTO `banner` (`id`, `image`, `heading`, `sub_heading`, `link`, `link_txt`, `order_number`, `added_on`, `status`) VALUES
-(4, 'banner_1744377881.jpg', 'Drink & Heathy Food', 'Fresh Heathy and Organic.', 'index', 'Order Now', 1, '2025-04-21 04:31:03', 0),
+(4, 'banner_1744377881.jpg', 'Drink & Heathy Food', 'Fresh Heathy and Organic.', 'index', 'Order Now', 1, '2025-05-03 09:52:49', 1),
 (6, 'banner_1744378098.jpg', 'Drink & Heathy Food', 'Fresh Heathy and Organic.', 'index', 'Order Now', 2, '2025-04-12 07:56:57', 1),
 (8, 'banner_1744378642.jpg', 'Drink & Heathy Food', 'Fresh Heathy and Organic.', 'index', 'Order Now', 3, '2025-04-12 07:57:04', 1);
 

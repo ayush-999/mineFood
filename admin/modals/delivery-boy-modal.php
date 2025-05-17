@@ -12,23 +12,23 @@
                     <input type="hidden" id="deliveryBoyId" name="deliveryBoyId" value="">
                     <input type="hidden" id="submitAction" name="submitAction" value="">
                     <div class="form-group">
-                        <label for="deliveryBoyName">Full Name</label>
+                        <label for="deliveryBoyName">Full Name <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="deliveryBoyName" name="deliveryBoyName"
                                placeholder="Enter delivery boy full name" value="" required>
                     </div>
                     <div class="form-group tel-wrapper">
                         <!-- TODO Delivery Boy initialCountry not working properly need to look -->
-                        <label for="deliveryBoyMobile">Mobile</label>
+                        <label for="deliveryBoyMobile">Mobile <span class="text-danger">*</span></label>
                         <input type="tel" class="form-control" id="deliveryBoyMobile" name="deliveryBoyMobile"
                                placeholder="Enter delivery boy mobile number" value="" required>
                     </div>
                     <div class="form-group">
-                        <label for="deliveryBoyEmail">Email</label>
+                        <label for="deliveryBoyEmail">Email <span class="text-danger">*</span></label>
                         <input type="tel" class="form-control" id="deliveryBoyEmail" name="deliveryBoyEmail"
                                placeholder="Enter delivery boy email" value="" required>
                     </div>
                     <div class="form-group">
-                        <label for="deliveryBoyStatus">Status</label>
+                        <label for="deliveryBoyStatus">Status <span class="text-danger">*</span></label>
                         <select class="form-control" name="deliveryBoyStatus" id="deliveryBoyStatus">
                             <option value="">Select Status</option>
                             <option value="0">Inactive</option>
