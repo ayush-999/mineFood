@@ -4,9 +4,10 @@
             <div class="row">
                 <div class="col-lg-4 col-md-6 col-sm-6">
                     <div class="footer-about mb-40">
-                        <div class="footer-logo">
-                            <a href="index.html">
-                                <img src="assets/img/logo/footer-logo.png" alt="" />
+                        <div class="footer-logo d-flex-md">
+                            <a href="index.php" class="d-flex align-items-center justify-content-md-start justify-content-lg-start justify-content-center">
+                                <img src="assets/img/logo/logo-icon.png" class="img-fluid footer-logo-img" alt="" />
+                                <h2 class="ml-1 mb-0 text-white"><b>mine</b>food.</h2>
                             </a>
                         </div>
                         <p>
@@ -50,7 +51,7 @@
                                 <li><a href="wishlist.html">Wish List</a></li>
                                 <li><a href="#">Newsletter</a></li>
                                 <li><a href="#">Order History</a></li>
-                                <li><a href="#">International Orders</a></li>
+                                <li><a href="../admin/index.php">Admin</a></li>
                             </ul>
                         </div>
                     </div>
@@ -62,9 +63,9 @@
                         </div>
                         <div class="footer-contact">
                             <ul>
-                                <li>Address: 123 Main Your address goes here.</li>
-                                <li>Telephone Enquiry: (012) 800 456 789-987</li>
-                                <li>Email: <a href="#">Info@example.com</a></li>
+                                <li><b>Address:</b> <?php echo $getAdminDetails['address']; ?></li>
+                                <li><b>Telephone Enquiry:</b> <?php echo $getAdminDetails['contact_phone']; ?></li>
+                                <li><b>Email:</b> <a href="#"><?php echo $getAdminDetails['contact_email']; ?></a></li>
                             </ul>
                         </div>
                         <div class="mt-35 footer-title mb-22">
@@ -89,9 +90,13 @@
                 <div class="col-lg-6 col-md-6 col-sm-7">
                     <div class="copyright">
                         <p>
-                            &copy; 2022 <strong> Billy </strong> Made with
-                            <i class="fa fa-heart text-danger"></i> by
-                            <a href="https://hasthemes.com/" target="_blank"><strong>HasThemes</strong></a>
+                            Copyright &copy;
+                            <script type="text/javascript">
+                                let year = new Date();
+                                document.write(year.getFullYear());
+                            </script>
+                            <a href="https://github.com/ayush-999">mineFood</a>.
+                            All rights reserved.
                         </p>
                     </div>
                 </div>

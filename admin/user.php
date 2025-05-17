@@ -4,7 +4,7 @@ include_once('header.php');
 $msg = '';
 if (!empty($admin)) {
     try {
-        $get_users = json_decode($admin->get_all_users(), true);
+        $get_users = json_decode((string) $admin->get_all_users(), true);
     } catch (Exception $e) {
         error_log($e->getMessage());
     }
@@ -80,10 +80,10 @@ if (isset($_SESSION['message'])) {
                                 <tr>
                                     <td><?php echo $index + 1; ?></td>
                                     <td>
-                                        <?php echo htmlspecialchars($users['name']); ?>
+                                        <?php echo htmlspecialchars((string) $users['name']); ?>
                                     </td>
-                                    <td><?php echo htmlspecialchars($users['mobile']); ?></td>
-                                    <td><?php echo htmlspecialchars($users['email']); ?></td>
+                                    <td><?php echo htmlspecialchars((string) $users['mobile']); ?></td>
+                                    <td><?php echo htmlspecialchars((string) $users['email']); ?></td>
                                     <td class="text-center">
                                         <span
                                             class="<?php echo $users['email_verify'] == 0 ? 'pending-badge' : 'verified-badge'; ?>">
@@ -108,9 +108,9 @@ if (isset($_SESSION['message'])) {
                                         <button class="btn bg-gradient-success btn-sm rounded-circle mr-1 edit-btn"
                                             type="button" data-toggle="modal" data-target="#user-modal"
                                             data-id="<?php echo $users['id']; ?>"
-                                            data-name="<?php echo htmlspecialchars($users['name']); ?>"
-                                            data-email="<?php echo htmlspecialchars($users['email']); ?>"
-                                            data-mobile="<?php echo htmlspecialchars($users['mobile']); ?>"
+                                            data-name="<?php echo htmlspecialchars((string) $users['name']); ?>"
+                                            data-email="<?php echo htmlspecialchars((string) $users['email']); ?>"
+                                            data-mobile="<?php echo htmlspecialchars((string) $users['mobile']); ?>"
                                             data-status="<?php echo $users['status']; ?>">
                                             <i class="fa-regular fa-pen-to-square"></i>
                                         </button>

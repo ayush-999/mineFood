@@ -1,3 +1,7 @@
-/* .single-slider {
-  height: 100vh;
-} */
+.main-logo {
+  height: 40px;
+}
+
+.footer-logo-img {
+  height: 50px !important;
+}

@@ -7,32 +7,32 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" id="couponCodeForm">
+            <form method="POST" action="<?php echo htmlspecialchars((string) $_SERVER["PHP_SELF"]); ?>" id="couponCodeForm">
                 <div class="modal-body">
                     <input type="hidden" id="couponCodeId" name="couponCodeId" value="">
                     <input type="hidden" id="submitAction" name="submitAction" value="">
                     <div class="row mb-3">
                         <div class="col-md-12 form-group mb-0">
-                            <label for="couponCodeName">Coupon Code</label>
+                            <label for="couponCodeName">Coupon Code <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="couponCodeName" name="couponCodeName"
                                    placeholder="Enter coupon code" value="">
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6 form-group mb-0">
-                            <label for="couponCodeCartValue">Cart Value</label>
+                            <label for="couponCodeCartValue">Cart Value <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="couponCodeCartValue" name="couponCodeCartValue"
                                    placeholder="Enter cart value" value="">
                         </div>
                         <div class="col-md-6 form-group mb-0">
-                            <label for="couponCodeMinCartValue">Minimum Cart Value</label>
+                            <label for="couponCodeMinCartValue">Minimum Cart Value <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="couponCodeMinCartValue"
                                    name="couponCodeMinCartValue" placeholder="Enter min cart value" value="">
                         </div>
                     </div> 
                     <div class="row mb-3">
                         <div class="col-md-6 form-group mb-0">
-                            <label for="couponCodeStatus">Status</label>
+                            <label for="couponCodeStatus">Status <span class="text-danger">*</span></label>
                             <select class="form-control" name="couponCodeStatus" id="couponCodeStatus">
                                 <option value="">Select Status</option>
                                 <option value="0">Inactive</option>
@@ -40,7 +40,7 @@
                             </select>
                         </div>
                         <div class="col-md-6 form-group mb-0">
-                            <label for="couponCodeType">Coupon Type</label>
+                            <label for="couponCodeType">Coupon Type <span class="text-danger">*</span></label>
                             <select class="form-control" name="couponCodeType" id="couponCodeType">
                                 <option value="">Select Type</option>
                                 <option value="P">Percentage</option>
@@ -74,12 +74,12 @@
                     <!-- Date Picker -->
                     <div class="row mb-3">
                         <div class="col-md-6 form-group mb-0">
-                            <label for="couponCodeStartDate">Start Date</label>
+                            <label for="couponCodeStartDate">Start Date <span class="text-danger">*</span></label>
                             <input type="date" class="form-control" id="couponCodeStartDate" name="couponCodeStartDate"
                                    value="">
                         </div>
                         <div class="col-md-6 form-group mb-0">
-                            <label for="couponCodeEndDate">End Date</label>
+                            <label for="couponCodeEndDate">End Date <span class="text-danger">*</span></label>
                             <input type="date" class="form-control" id="couponCodeEndDate" name="couponCodeEndDate"
                                    value="">
                         </div>

@@ -4,7 +4,7 @@ include_once('header.php');
 $msg = '';
 if (!empty($admin)) {
     try {
-        $get_banner = json_decode($admin->get_banner(), true);
+        $get_banner = json_decode((string) $admin->get_banner(), true);
     } catch (Exception $e) {
         error_log($e->getMessage());
     }
@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submitAction'])) {
         }
 
         // Get file info
-        $fileName = basename($_FILES['bannerImage']['name']);
+        $fileName = basename((string) $_FILES['bannerImage']['name']);
         $fileType = pathinfo($fileName, PATHINFO_EXTENSION);
 
         // Generate unique filename
@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submitAction'])) {
         $targetFilePath = $uploadDir . $imageName;
 
         // Check if image file is valid
-        $allowTypes = array('jpg', 'png', 'jpeg', 'gif');
+        $allowTypes = ['jpg', 'png', 'jpeg', 'gif'];
         if (in_array($fileType, $allowTypes)) {
             // If updating, delete the old image first
             if ($_POST['submitAction'] == 'update' && !empty($bannerId)) {
@@ -223,7 +223,7 @@ if (isset($_SESSION['message'])) {
                         <?php if (!empty($get_banner)): ?>
                             <?php foreach ($get_banner as $index => $banner) : ?>
                                 <tr>
-                                    <td class="text-center"><?php echo htmlspecialchars($banner['order_number']); ?></td>
+                                    <td class="text-center"><?php echo htmlspecialchars((string) $banner['order_number']); ?></td>
                                     <td class="text-center">
                                         <?php
                                         $imagePath = '';
@@ -237,15 +237,15 @@ if (isset($_SESSION['message'])) {
                                         }
                                         ?>
                                         <img src="<?php echo htmlspecialchars($imagePath); ?>" class="banner-img view-img"
-                                            alt="<?php echo htmlspecialchars($banner['heading']); ?>">
+                                            alt="<?php echo htmlspecialchars((string) $banner['heading']); ?>">
                                     </td>
                                     <td><?php echo truncateText($banner['heading'], 2); ?></td>
                                     <td><?php echo truncateText($banner['sub_heading'], 2); ?></td>
                                     <td class="text-center">
-                                        <?php echo htmlspecialchars($banner['link']); ?>
+                                        <?php echo htmlspecialchars((string) $banner['link']); ?>
                                     </td>
                                     <td class="text-center">
-                                        <?php echo htmlspecialchars($banner['link_txt']); ?>
+                                        <?php echo htmlspecialchars((string) $banner['link_txt']); ?>
                                     </td>
                                     <td class="text-center">
                                         <?php
@@ -265,9 +265,9 @@ if (isset($_SESSION['message'])) {
                                         <button class="btn bg-gradient-success btn-sm rounded-circle mr-1 edit-btn"
                                             data-toggle="modal" data-target="#banner-modal"
                                             data-id="<?php echo $banner['id']; ?>"
-                                            data-image="<?php echo htmlspecialchars($banner['image']); ?>"
-                                            data-heading="<?php echo htmlspecialchars($banner['heading']); ?>"
-                                            data-subheading="<?php echo htmlspecialchars($banner['sub_heading']); ?>"
+                                            data-image="<?php echo htmlspecialchars((string) $banner['image']); ?>"
+                                            data-heading="<?php echo htmlspecialchars((string) $banner['heading']); ?>"
+                                            data-subheading="<?php echo htmlspecialchars((string) $banner['sub_heading']); ?>"
                                             data-link="<?php echo $banner['link']; ?>"
                                             data-linktxt="<?php echo $banner['link_txt']; ?>"
                                             data-ordernumber="<?php echo $banner['order_number']; ?>"

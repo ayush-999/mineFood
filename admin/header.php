@@ -3,7 +3,6 @@ ob_start();
 session_start();
 include_once('config/database.php');
 include_once('function.php');
-include_once('default-setup.php');
 include_once('classes/Admin.php');
 
 if (!isset($_SESSION['IS_LOGIN'])) {
@@ -14,38 +13,74 @@ if (!empty($conn)) {
     $admin = new Admin($conn);
 }
 
-if (!empty($currentScript)) {
-    if (isset($pageSettings[$currentScript])) {
-        $pageTitle = $pageSettings[$currentScript]['title'];
-        $pageSubTitle = $pageSettings[$currentScript]['sub-title'];
-        $breadcrumbs = $pageSettings[$currentScript]['breadcrumbs'];
-    } else {
-        $pageTitle = "mine food";
-        $breadcrumbs = [];
-    }
-}
+$currentScript = basename((string) $_SERVER['PHP_SELF']);
 
 try {
-    $adminDetails = json_decode($admin->getAdminDetails(), true);
+    $adminDetails = json_decode((string) $admin->getAdminDetails(), true);
+    $seoData = json_decode((string) $admin->getSeoSettingByPage($currentScript), true);
+    $seoData = is_array($seoData) ? $seoData : [];
 } catch (Exception $e) {
     error_log($e->getMessage());
+    $seoData = [];
 }
 
 $profileImg = $adminDetails['admin_img'] ?? '';
 $imagePath = $profileImg ? 'uploads/admin/profile-pic/' . $profileImg : 'assets/img/no-img.png';
+
+try {
+    $seoData = json_decode((string) $admin->getSeoSettingByPage($currentScript), true);
+    $seoData = is_array($seoData) ? $seoData : [];
+} catch (Exception $e) {
+    error_log($e->getMessage());
+    $seoData = [];
+}
+
+$pageTitle = $seoData['page_title'] ?? 'mine food';
+$pageSubTitle = $seoData['sub_title'] ?? '';
+$breadcrumbs = isset($seoData['breadcrumbs']) && is_array($seoData['breadcrumbs'])
+    ? $seoData['breadcrumbs']
+    : [];
+$metaDescription = $seoData['meta_description'] ?? '';
+$metaKeywords = $seoData['meta_keywords'] ?? '';
+$canonicalUrl = $seoData['canonical_url'] ?? '';
+$ogTitle = $seoData['og_title'] ?? $pageTitle;
+$ogDescription = $seoData['og_description'] ?? $metaDescription;
+$ogImage = $seoData['og_image'] ?? '';
 
 ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="keywords" content="">
-    <meta name="author" content="Ayush">
-    <meta name="robots" content="index, follow">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title><?php echo $pageTitle; ?></title>
+    <title><?php echo htmlspecialchars((string) $pageTitle); ?></title>
+    <meta name="description" content="<?php echo htmlspecialchars($metaDescription); ?>">
+    <meta name="keywords" content="<?php echo htmlspecialchars($metaKeywords); ?>">
+    <?php if (!empty($canonicalUrl)): ?>
+        <link rel="canonical" href="<?php echo htmlspecialchars((string) $canonicalUrl); ?>">
+    <?php endif; ?>
+
+    <!-- OpenGraph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="<?php echo (isset($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>">
+    <meta property="og:title" content="<?php echo htmlspecialchars($ogTitle); ?>">
+    <meta property="og:description" content="<?php echo htmlspecialchars($ogDescription); ?>">
+    <?php if (!empty($ogImage)): ?>
+        <meta property="og:image" content="<?php echo htmlspecialchars((string) $ogImage); ?>">
+    <?php endif; ?>
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="<?php echo (isset($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>">
+    <meta property="twitter:title" content="<?php echo htmlspecialchars($ogTitle); ?>">
+    <meta property="twitter:description" content="<?php echo htmlspecialchars($ogDescription); ?>">
+    <?php if (!empty($ogImage)): ?>
+        <meta property="twitter:image" content="<?php echo htmlspecialchars((string) $ogImage); ?>">
+    <?php endif; ?>
+    <meta property="twitter:site" content="@your_twitter_handle">
+    <meta property="twitter:creator" content="@your_twitter_handle">
+
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -102,6 +137,7 @@ $imagePath = $profileImg ? 'uploads/admin/profile-pic/' . $profileImg : 'assets/
     <script src="assets/js/pages/couponCode.js"></script>
     <script src="assets/js/pages/dish.js"></script>
     <script src="assets/js/pages/banner.js"></script>
+    <script src="assets/js/pages/setting.js"></script>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -114,6 +150,9 @@ $imagePath = $profileImg ? 'uploads/admin/profile-pic/' . $profileImg : 'assets/
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a href="../user/index.php" class="btn btn-block btn-outline-secondary rounded-pill">Go to site</a>
+                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link" data-toggle="dropdown" href="#">
                         <i class="far fa-bell"></i>
@@ -167,33 +206,34 @@ $imagePath = $profileImg ? 'uploads/admin/profile-pic/' . $profileImg : 'assets/
             <section class="content-header">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-sm-6">
-
-                        </div>
+                        <div class="col-sm-6"></div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <?php
-                                $totalBreadcrumbs = count($breadcrumbs);
-                                foreach ($breadcrumbs as $index => $breadcrumb):
-                                    $isActive = ($index == $totalBreadcrumbs - 1); // Check if it is the last breadcrumb
+                                if (!empty($breadcrumbs)) {
+                                    $totalBreadcrumbs = count($breadcrumbs);
+                                    foreach ($breadcrumbs as $index => $breadcrumb):
+                                        // Ensure the breadcrumb has the required keys
+                                        $breadcrumbTitle = $breadcrumb['title'] ?? '';
+                                        $breadcrumbLink = $breadcrumb['link'] ?? '';
+                                        $isActive = ($index == $totalBreadcrumbs - 1);
                                 ?>
-                                    <li class="breadcrumb-item <?php if ($isActive)
-                                                                    echo 'active'; ?>" aria-current="page">
-                                        <?php if (!$isActive): ?>
-                                            <a href="<?php echo $breadcrumb['link']; ?>">
-                                                <?php echo $breadcrumb['title']; ?>
-                                            </a>
-                                        <?php else: ?>
-                                            <?php echo $breadcrumb['title']; // No link for active breadcrumb 
-                                            ?>
-                                        <?php endif; ?>
-                                    </li>
-                                <?php endforeach; ?>
+                                        <li class="breadcrumb-item <?php if ($isActive) echo 'active'; ?>" aria-current="page">
+                                            <?php if (!$isActive && !empty($breadcrumbLink)): ?>
+                                                <a href="<?php echo htmlspecialchars((string) $breadcrumbLink); ?>">
+                                                    <?php echo htmlspecialchars((string) $breadcrumbTitle); ?>
+                                                </a>
+                                            <?php else: ?>
+                                                <?php echo htmlspecialchars((string) $breadcrumbTitle); ?>
+                                            <?php endif; ?>
+                                        </li>
+                                <?php endforeach;
+                                }
+                                ?>
                             </ol>
                         </div>
                     </div>
                 </div>
-                <!-- /.container-fluid -->
             </section>
 
             <!-- Main content -->

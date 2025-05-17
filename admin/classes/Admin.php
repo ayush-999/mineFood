@@ -2,12 +2,7 @@
 
 class Admin
 {
-    protected PDO $db;
-
-    public function __construct(PDO $dbConnection)
-    {
-        $this->db = $dbConnection;
-    }
+    public function __construct(protected PDO $db) {}
 
     /****************** Category function start *****************/
     /**
@@ -184,10 +179,28 @@ class Admin
      * @throws Exception If there's a general update error
      * @throws PDOException If there's a database error during update
      */
-    public function updateAdmin(int $profileId, string $profileName, string $profileUsername, string $profileEmail, string $profilePassword, string $profileAddress, string $profileMobile, string $added_on, string $profileImg): bool|string
-    {
+    public function updateAdmin(
+        int $profileId,
+        string $profileName,
+        string $profileUsername,
+        string $profileEmail,
+        string $profilePassword,
+        string $profileAddress,
+        string $profileMobile,
+        string $added_on,
+        string $area,
+        string $city,
+        string $district,
+        int $pincode,
+        string $state,
+        string $country,
+        string $profileImg,
+        string $contactEmail,
+        string $contactNumber,
+        string $openingHours = ''
+    ): bool|string {
         try {
-            $strQuery = "CALL sp_updateAdmin(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $strQuery = "CALL sp_updateAdmin(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $this->db->prepare($strQuery);
             $stmt->bindParam(1, $profileId, PDO::PARAM_INT);
             $stmt->bindParam(2, $profileName, PDO::PARAM_STR);
@@ -196,8 +209,17 @@ class Admin
             $stmt->bindParam(5, $profileEmail, PDO::PARAM_STR);
             $stmt->bindParam(6, $profileMobile, PDO::PARAM_STR);
             $stmt->bindParam(7, $added_on, PDO::PARAM_STR);
-            $stmt->bindParam(8, $profileAddress, PDO::PARAM_STR);
-            $stmt->bindParam(9, $profileImg, PDO::PARAM_STR);
+            $stmt->bindParam(8, $area, PDO::PARAM_STR);
+            $stmt->bindParam(9, $state, PDO::PARAM_STR);
+            $stmt->bindParam(10, $district, PDO::PARAM_STR);
+            $stmt->bindParam(11, $pincode, PDO::PARAM_INT);
+            $stmt->bindParam(12, $city, PDO::PARAM_STR);
+            $stmt->bindParam(13, $country, PDO::PARAM_STR);
+            $stmt->bindParam(14, $profileAddress, PDO::PARAM_STR);
+            $stmt->bindParam(15, $profileImg, PDO::PARAM_STR);
+            $stmt->bindParam(16, $contactEmail, PDO::PARAM_STR);
+            $stmt->bindParam(17, $contactNumber, PDO::PARAM_STR);
+            $stmt->bindParam(18, $openingHours, PDO::PARAM_STR);
             $stmt->execute();
             $result = $stmt->rowCount();
             if ($result > 0) {
@@ -905,6 +927,168 @@ class Admin
             if ($e->errorInfo[0] === '45000') {
                 return $e->errorInfo[2]; // Custom error message from stored procedure
             }
+            throw new Exception("Database error: " . $e->getMessage());
+        }
+    }
+
+    /****************** Setting function start *****************/
+    /**
+     * Retrieves all settings from the database
+     * @return bool|string JSON encoded list of all settings
+     * @throws Exception If there's a general retrieval error
+     * @throws PDOException If there's a database error during retrieval
+     */
+    public function getSettingDetails(): bool|string
+    {
+        try {
+            $strQuery = "CALL sp_getSettings()";
+            $stmt = $this->db->prepare($strQuery);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return json_encode($result);
+        } catch (PDOException $e) {
+            throw new Exception("Database error: " . $e->getMessage());
+        } catch (Exception $e) {
+            throw new Exception("Error: " . $e->getMessage());
+        }
+    }
+
+    public function getSeoSettings(): bool|string
+    {
+        try {
+            $strQuery = "SELECT * FROM seo_settings";
+            $stmt = $this->db->prepare($strQuery);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            foreach ($result as &$row) {
+                if (!empty($row['breadcrumbs'])) {
+                    $row['breadcrumbs'] = json_decode((string) $row['breadcrumbs'], true);
+                } else {
+                    $row['breadcrumbs'] = [];
+                }
+            }
+
+            return json_encode($result);
+        } catch (PDOException $e) {
+            throw new Exception("Database error: " . $e->getMessage());
+        }
+    }
+
+    public function getSeoSettingByPage(string $pageName): bool|string
+    {
+        try {
+            $strQuery = "SELECT * FROM seo_settings WHERE page_name = :page_name LIMIT 1";
+            $stmt = $this->db->prepare($strQuery);
+            $stmt->bindParam(':page_name', $pageName);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($result) {
+                if (!empty($result['breadcrumbs'])) {
+                    $decoded = json_decode((string) $result['breadcrumbs'], true);
+                    $result['breadcrumbs'] = is_array($decoded) ? $decoded : [];
+                } else {
+                    $result['breadcrumbs'] = [];
+                }
+            } else {
+                $result = [];
+            }
+
+            return json_encode($result);
+        } catch (PDOException $e) {
+            error_log("Database error in getSeoSettingByPage: " . $e->getMessage());
+            return json_encode([]);
+        }
+    }
+
+    public function saveSeoSettings(array $data): bool|string
+    {
+        try {
+            $breadcrumbs = isset($data['breadcrumbs']) ? json_encode($data['breadcrumbs']) : '[]';
+
+            if (empty($data['id'])) {
+                $strQuery = "INSERT INTO seo_settings (
+                page_name, page_title, meta_description, meta_keywords, 
+                canonical_url, og_title, og_description, og_image, 
+                breadcrumbs, sub_title
+            ) VALUES (
+                :page_name, :page_title, :meta_description, :meta_keywords, 
+                :canonical_url, :og_title, :og_description, :og_image, 
+                :breadcrumbs, :sub_title
+            )";
+            } else {
+                $strQuery = "UPDATE seo_settings SET 
+                page_title = :page_title,
+                meta_description = :meta_description,
+                meta_keywords = :meta_keywords,
+                canonical_url = :canonical_url,
+                og_title = :og_title,
+                og_description = :og_description,
+                og_image = :og_image,
+                breadcrumbs = :breadcrumbs,
+                sub_title = :sub_title
+                WHERE id = :id";
+            }
+
+            $stmt = $this->db->prepare($strQuery);
+
+            if (!empty($data['id'])) {
+                $stmt->bindParam(':id', $data['id']);
+            } else {
+                $stmt->bindParam(':page_name', $data['page_name']);
+            }
+
+            $stmt->bindParam(':page_title', $data['page_title']);
+            $stmt->bindParam(':meta_description', $data['meta_description']);
+            $stmt->bindParam(':meta_keywords', $data['meta_keywords']);
+            $stmt->bindParam(':canonical_url', $data['canonical_url']);
+            $stmt->bindParam(':og_title', $data['og_title']);
+            $stmt->bindParam(':og_description', $data['og_description']);
+            $stmt->bindParam(':og_image', $data['og_image']);
+            $stmt->bindParam(':breadcrumbs', $breadcrumbs);
+            $stmt->bindParam(':sub_title', $data['sub_title']);
+
+            $stmt->execute();
+
+            return json_encode(['success' => true, 'message' => 'SEO settings saved successfully']);
+        } catch (PDOException $e) {
+            throw new Exception("Database error: " . $e->getMessage());
+        }
+    }
+
+    public function getAllPageNames(): bool|string
+    {
+        try {
+            $strQuery = "SELECT DISTINCT page_name FROM seo_settings";
+            $stmt = $this->db->prepare($strQuery);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_COLUMN);
+            return json_encode($result);
+        } catch (PDOException $e) {
+            throw new Exception("Database error: " . $e->getMessage());
+        }
+    }
+
+    public function getPageSettings(): bool|string
+    {
+        try {
+            $strQuery = "SELECT page_name, page_title, sub_title, breadcrumbs FROM seo_settings";
+            $stmt = $this->db->prepare($strQuery);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            $pageSettings = [];
+            foreach ($result as $row) {
+                $pageSettings[$row['page_name']] = [
+                    'title' => $row['page_title'],
+                    'sub_title' => $row['sub_title'],
+                    'breadcrumbs' => !empty($row['breadcrumbs']) ? json_decode((string) $row['breadcrumbs'], true) : []
+                ];
+            }
+
+            return json_encode($pageSettings);
+        } catch (PDOException $e) {
             throw new Exception("Database error: " . $e->getMessage());
         }
     }

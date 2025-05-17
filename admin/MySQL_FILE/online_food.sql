@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Apr 02, 2025 at 12:36 PM
+-- Generation Time: May 05, 2025 at 07:27 AM
 -- Server version: 9.1.0
 -- PHP Version: 8.3.14
 
@@ -25,6 +25,35 @@ DELIMITER $$
 --
 -- Procedures
 --
+DROP PROCEDURE IF EXISTS `sp_addBanner`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_addBanner` (IN `bannerImageName` VARCHAR(100), IN `bannerHeading` VARCHAR(500), IN `bannerSubHeading` VARCHAR(500), IN `bannerLink` VARCHAR(100), IN `bannerLinkText` VARCHAR(100), IN `bannerOrderNumber` INT, IN `bannerAddedOn` DATETIME, IN `bannerStatus` INT)   BEGIN
+    -- Check for existing banner with the same order number
+    IF (SELECT COUNT(*) FROM banner WHERE order_number = bannerOrderNumber) > 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Banner with this order number already exists';
+    ELSE
+        -- Insert new banner
+        INSERT INTO banner (
+            image,
+            heading, 
+            sub_heading, 
+            link, 
+            link_txt, 
+            order_number, 
+            added_on,
+            status
+        ) VALUES (
+            bannerImageName,
+            bannerHeading, 
+            bannerSubHeading, 
+            bannerLink, 
+            bannerLinkText, 
+            bannerOrderNumber, 
+            bannerAddedOn, 
+            bannerStatus
+        );
+    END IF;
+END$$
+
 DROP PROCEDURE IF EXISTS `sp_addCategory`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_addCategory` (IN `categoryName` VARCHAR(255), IN `orderNumber` INT, IN `status` INT, IN `addedOn` DATETIME)   BEGIN
 	INSERT INTO category (category_name, order_number, status, added_on)
@@ -93,6 +122,12 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_checkCategoryExists` (IN `catego
 	 SELECT COUNT(*) FROM category WHERE category_name = categoryName;
 END$$
 
+DROP PROCEDURE IF EXISTS `sp_deleteBanner`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_deleteBanner` (IN `bannerId` INT)   BEGIN
+	DELETE FROM banner
+    WHERE id = bannerId;
+END$$
+
 DROP PROCEDURE IF EXISTS `sp_deleteCategory`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_deleteCategory` (IN `categoryId` INT)   BEGIN
 	DELETE FROM category
@@ -136,6 +171,11 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_getAdminDetails` ()   BEGIN
     ORDER BY username;
 END$$
 
+DROP PROCEDURE IF EXISTS `sp_getAllBanner`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_getAllBanner` ()   BEGIN
+	SELECT * FROM banner order by order_number asc;
+END$$
+
 DROP PROCEDURE IF EXISTS `sp_getAllCategories`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_getAllCategories` ()   BEGIN
 	SELECT * FROM category
@@ -167,6 +207,11 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_getAllUsers` ()   BEGIN
 	SELECT * FROM user;
 END$$
 
+DROP PROCEDURE IF EXISTS `sp_getBanner`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_getBanner` ()   BEGIN
+	SELECT * FROM banner order by order_number asc;
+END$$
+
 DROP PROCEDURE IF EXISTS `sp_getDishById`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_getDishById` (IN `dishId` INT)   BEGIN
     -- Fetch main dish details
@@ -190,19 +235,55 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_getDishById` (IN `dishId` INT)  
         dish.id = dishId;
 END$$
 
+DROP PROCEDURE IF EXISTS `sp_getSettings`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_getSettings` ()   BEGIN
+	SELECT * FROM setting;
+END$$
+
 DROP PROCEDURE IF EXISTS `sp_updateAdmin`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_updateAdmin` (IN `p_adminId` INT, IN `p_name` VARCHAR(255), IN `p_username` VARCHAR(255), IN `p_password` VARCHAR(255), IN `p_email` VARCHAR(255), IN `p_mobile` VARCHAR(15), IN `addedOn` DATETIME, IN `p_address` VARCHAR(255), IN `p_profileImg` VARCHAR(255))   BEGIN
-	UPDATE admin
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_updateAdmin` (IN `p_adminId` INT, IN `p_name` VARCHAR(50), IN `p_username` VARCHAR(50), IN `p_password` VARCHAR(255), IN `p_email` VARCHAR(50), IN `p_mobile` VARCHAR(15), IN `addedOn` DATETIME, IN `p_area` VARCHAR(255), IN `p_state` VARCHAR(100), IN `p_district` VARCHAR(100), IN `p_pincode` INT, IN `p_city` VARCHAR(100), IN `p_country` VARCHAR(100), IN `p_address` VARCHAR(255), IN `p_profileImg` VARCHAR(255), IN `p_contactEmail` VARCHAR(50), IN `p_contactPhone` VARCHAR(15))   BEGIN
+    UPDATE admin
     SET 
-    name = p_name, 
-    username = p_username, 
-    password = p_password, 
-    email = p_email, 
-    mobile_no = p_mobile,
-    added_on = addedOn,
-    address = p_address,
-    admin_img = p_profileImg
+        name = p_name, 
+        username = p_username, 
+        password = p_password,  -- Stores the pre-hashed password
+        email = p_email, 
+        mobile_no = p_mobile,
+        added_on = addedOn,
+        area = p_area,
+        state = p_state,
+        district = p_district,
+        pincode = p_pincode,
+        city = p_city,
+        country = p_country,
+        address = p_address,
+        admin_img = p_profileImg,
+        contact_email = p_contactEmail,
+        contact_phone = p_contactPhone
     WHERE id = p_adminId;
+    
+    SELECT ROW_COUNT() AS rows_affected;
+END$$
+
+DROP PROCEDURE IF EXISTS `sp_updateBanner`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_updateBanner` (IN `bannerId` INT, IN `bannerImageName` VARCHAR(100), IN `bannerHeading` VARCHAR(500), IN `bannerSubHeading` VARCHAR(500), IN `bannerLink` VARCHAR(100), IN `bannerLinkText` VARCHAR(100), IN `bannerOrderNumber` INT, IN `bannerAddedOn` DATETIME, IN `bannerStatus` INT)   BEGIN
+    -- Check for existing banner with the same order number, excluding current record
+    IF (SELECT COUNT(*) FROM banner WHERE order_number = bannerOrderNumber AND id != bannerId) > 0 THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Banner with this order number already exists';
+    ELSE
+        -- Update banner
+        UPDATE banner
+        SET 
+            image = bannerImageName,
+            heading = bannerHeading,
+            sub_heading = bannerSubHeading,
+            link = bannerLink,
+            link_txt = bannerLinkText,
+            order_number = bannerOrderNumber,
+            added_on = bannerAddedOn,
+            status = bannerStatus
+        WHERE id = bannerId;
+    END IF;
 END$$
 
 DROP PROCEDURE IF EXISTS `sp_updateCategory`$$
@@ -285,10 +366,19 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_updateUser` (IN `userId` INT, IN
 END$$
 
 DROP PROCEDURE IF EXISTS `sp_userLogin`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_userLogin` (IN `p_username` VARCHAR(255), IN `p_password` VARCHAR(255))   BEGIN
-    SELECT username, password 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_userLogin` (IN `p_username` VARCHAR(255))   BEGIN
+    SELECT 
+        id,
+        name,
+        username,
+        password,  -- This is the hashed password
+        email,
+        mobile_no,
+        address,
+        admin_img,
+        added_on
     FROM admin 
-    WHERE username = p_username AND password = p_password;
+    WHERE username = p_username;
 END$$
 
 DELIMITER ;
@@ -302,14 +392,22 @@ DELIMITER ;
 DROP TABLE IF EXISTS `admin`;
 CREATE TABLE IF NOT EXISTS `admin` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) NOT NULL,
-  `username` varchar(50) NOT NULL,
-  `password` varchar(50) NOT NULL,
-  `email` varchar(50) NOT NULL,
-  `mobile_no` varchar(15) NOT NULL,
-  `added_on` datetime NOT NULL,
-  `address` varchar(255) NOT NULL,
-  `admin_img` varchar(255) NOT NULL,
+  `name` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `username` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `password` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `email` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `mobile_no` varchar(15) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `added_on` datetime DEFAULT NULL,
+  `area` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `state` varchar(100) DEFAULT NULL,
+  `district` varchar(100) DEFAULT NULL,
+  `pincode` int DEFAULT NULL,
+  `city` varchar(100) DEFAULT NULL,
+  `country` varchar(100) DEFAULT NULL,
+  `address` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `admin_img` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `contact_email` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `contact_phone` varchar(15) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
@@ -317,8 +415,8 @@ CREATE TABLE IF NOT EXISTS `admin` (
 -- Dumping data for table `admin`
 --
 
-INSERT INTO `admin` (`id`, `name`, `username`, `password`, `email`, `mobile_no`, `added_on`, `address`, `admin_img`) VALUES
-(1, 'Ayush', 'admin', 'Ayush@123', 'admin@gmail.com', '+919993832158', '2024-07-10 03:04:37', 'Pendra, Bilaspur, Chhattisgarh, 495119', '05.jpg');
+INSERT INTO `admin` (`id`, `name`, `username`, `password`, `email`, `mobile_no`, `added_on`, `area`, `state`, `district`, `pincode`, `city`, `country`, `address`, `admin_img`, `contact_email`, `contact_phone`) VALUES
+(1, 'Ayush Chaturvedi', 'admin', '$2y$10$SM.wQXVe7AIewwp3kDkjU.uVOb8ntq2X9hDoh1owHRZmvD6sF6h2C', 'admin@gmail.com', '+919993832158', '2025-05-03 09:52:39', 'Flat 1, 4th Floor, Krishna Reddy Building', 'CHHATTISGARH', 'Gaurella Pendra Marwahi', 495119, 'Patgawan', 'India', 'Flat 1, 4th Floor, Krishna Reddy Building, Patgawan, Gaurella Pendra Marwahi, 495119, CHHATTISGARH, India', 'M-Avata.jpg', 'contact@minefood.com', '+919876543210');
 
 -- --------------------------------------------------------
 
@@ -338,15 +436,16 @@ CREATE TABLE IF NOT EXISTS `banner` (
   `added_on` datetime NOT NULL,
   `status` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `banner`
 --
 
 INSERT INTO `banner` (`id`, `image`, `heading`, `sub_heading`, `link`, `link_txt`, `order_number`, `added_on`, `status`) VALUES
-(1, '533799913_banner-4.jpg', 'Drink & Heathy Food', 'Fresh Heathy and Organic', 'shop', 'Order Now', 1, '2020-06-23 03:00:05', 1),
-(2, '546847873_banner-4.jpg', 'Drink & Heathy Food', 'Fresh Heathy and Organic', 'shop', 'Order Now', 1, '2020-06-23 03:06:53', 1);
+(4, 'banner_1744377881.jpg', 'Drink & Heathy Food', 'Fresh Heathy and Organic.', 'index', 'Order Now', 1, '2025-05-03 09:52:49', 1),
+(6, 'banner_1744378098.jpg', 'Drink & Heathy Food', 'Fresh Heathy and Organic.', 'index', 'Order Now', 2, '2025-04-12 07:56:57', 1),
+(8, 'banner_1744378642.jpg', 'Drink & Heathy Food', 'Fresh Heathy and Organic.', 'index', 'Order Now', 3, '2025-04-12 07:57:04', 1);
 
 -- --------------------------------------------------------
 
@@ -369,8 +468,8 @@ CREATE TABLE IF NOT EXISTS `category` (
 --
 
 INSERT INTO `category` (`id`, `category_name`, `order_number`, `status`, `added_on`) VALUES
-(1, 'Chaat & Snacks', 2, 0, '2024-07-05 03:26:19'),
-(5, 'Murg', 1, 1, '2024-07-05 04:22:57'),
+(1, 'Chaat & Snacks', 2, 1, '2025-04-07 06:30:16'),
+(5, 'Murg', 1, 1, '2025-04-07 06:30:22'),
 (6, 'Sweets', 3, 1, '2025-03-20 05:40:28'),
 (7, 'Chinese', 4, 1, '2024-07-10 06:34:55');
 
@@ -453,8 +552,7 @@ CREATE TABLE IF NOT EXISTS `delivery_boy` (
 --
 
 INSERT INTO `delivery_boy` (`id`, `name`, `mobile`, `email`, `password`, `status`, `email_verify`, `added_on`) VALUES
-(14, 'L1dpV005TkJIZVBOUnNYUUtGZ25Tdz09OjpTSk/Wj+tIbTEDrMS3VfRK', '+911234567890', 'R05yaDFGN1BmTUp1MTFDeUpyMmlEZz09OjqPtoVVIvR+JzZMskdn5Wo8', '', 1, 0, '2024-06-30 06:53:42'),
-(15, 'SzA4UFBvOFhZQUgxU0NKU1pVc3krQT09OjpoxYdAFkr5X7o/2P2YhZpl', '+919993832158', 'WVZLTGZpNHZ5R1dUQ2lUUnBnNHZlS2gxRjlSWXZPUDlQa3Z6UUlSekc4WT06OogFWoiUArjg4zGQwV8PgGs=', '', 1, 0, '2024-07-10 03:04:07');
+(14, 'L1dpV005TkJIZVBOUnNYUUtGZ25Tdz09OjpTSk/Wj+tIbTEDrMS3VfRK', '+911234567890', 'R05yaDFGN1BmTUp1MTFDeUpyMmlEZz09OjqPtoVVIvR+JzZMskdn5Wo8', '', 1, 0, '2024-06-30 06:53:42');
 
 -- --------------------------------------------------------
 
@@ -473,14 +571,15 @@ CREATE TABLE IF NOT EXISTS `dish` (
   `status` int NOT NULL,
   `added_on` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `dish`
 --
 
 INSERT INTO `dish` (`id`, `category_id`, `dish_name`, `dish_detail`, `image`, `type`, `status`, `added_on`) VALUES
-(29, 6, 'Gulab Jamun', '<p>test</p>', 'Gulab-Jamun-335x300.jpg', 'veg', 1, '2025-03-21 04:41:23');
+(30, 6, 'Gulab Jamun', '<p><strong>Lorem Ipsum</strong> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum</p>', 'Gulab-Jamun-335x300.jpg', 'veg', 1, '2025-04-17 06:40:15'),
+(31, 7, 'Chow mein', '<p><strong>test </strong>text</p>', 'chicken-chow-mein-recipe.jpg', 'veg', 1, '2025-04-23 01:31:49');
 
 -- --------------------------------------------------------
 
@@ -519,14 +618,17 @@ CREATE TABLE IF NOT EXISTS `dish_details` (
   `price` int NOT NULL,
   `added_on` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `dish_details`
 --
 
 INSERT INTO `dish_details` (`id`, `dish_id`, `attribute`, `price`, `added_on`) VALUES
-(56, 29, 'full', 100, '2025-03-21 04:41:23');
+(71, 30, 'full', 100, '2025-04-17 06:40:15'),
+(72, 30, 'full', 60, '2025-04-17 06:40:15'),
+(75, 31, 'full', 80, '2025-04-23 01:31:49'),
+(76, 31, 'half', 50, '2025-04-23 01:31:49');
 
 -- --------------------------------------------------------
 
@@ -642,6 +744,48 @@ INSERT INTO `rating` (`id`, `user_id`, `order_id`, `dish_detail_id`, `rating`) V
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `seo_settings`
+--
+
+DROP TABLE IF EXISTS `seo_settings`;
+CREATE TABLE IF NOT EXISTS `seo_settings` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `page_name` varchar(255) NOT NULL,
+  `page_title` varchar(255) NOT NULL,
+  `meta_description` text,
+  `meta_keywords` text,
+  `canonical_url` varchar(255) DEFAULT NULL,
+  `og_title` varchar(255) DEFAULT NULL,
+  `og_description` text,
+  `og_image` varchar(255) DEFAULT NULL,
+  `breadcrumbs` text COMMENT 'JSON encoded breadcrumbs',
+  `sub_title` varchar(255) DEFAULT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `page_name` (`page_name`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `seo_settings`
+--
+
+INSERT INTO `seo_settings` (`id`, `page_name`, `page_title`, `meta_description`, `meta_keywords`, `canonical_url`, `og_title`, `og_description`, `og_image`, `breadcrumbs`, `sub_title`, `created_at`, `updated_at`) VALUES
+(3, 'login.php', 'Login', NULL, NULL, NULL, NULL, NULL, NULL, '[]', 'Login page', '2025-04-23 00:27:00', '2025-04-23 00:27:00'),
+(4, 'index.php', 'Home', NULL, NULL, NULL, NULL, NULL, NULL, '[{\"title\":\"Home\",\"link\":\"index.php\"},{\"title\":\"Dashboard\",\"link\":\"index.php\"}]', 'Dashboard page', '2025-04-23 00:27:00', '2025-04-23 00:27:00'),
+(5, 'category.php', 'Manage category', NULL, NULL, NULL, NULL, NULL, NULL, '[{\"title\":\"Home\",\"link\":\"index.php\"},{\"title\":\"Manage category\",\"link\":\"category.php\"}]', 'Manage category', '2025-04-23 00:27:00', '2025-04-23 00:27:00'),
+(6, 'user.php', 'Manage users', NULL, NULL, NULL, NULL, NULL, NULL, '[{\"title\":\"Home\",\"link\":\"index.php\"},{\"title\":\"Manage users\",\"link\":\"user.php\"}]', 'Manage users', '2025-04-23 00:27:00', '2025-04-23 00:27:00'),
+(7, 'settings.php', 'Manage details', NULL, NULL, NULL, NULL, NULL, NULL, '[{\"title\":\"Home\",\"link\":\"index.php\"},{\"title\":\"Manage details\",\"link\":\"settings.php\"}]', 'Manage details', '2025-04-23 00:27:00', '2025-04-23 00:27:00'),
+(8, 'banner.php', 'Manage banner', NULL, NULL, NULL, NULL, NULL, NULL, '[{\"title\":\"Home\",\"link\":\"index.php\"},{\"title\":\"Manage banner\",\"link\":\"banner.php\"}]', 'Manage banner', '2025-04-23 00:27:00', '2025-04-23 00:27:00'),
+(9, 'profile.php', 'Manage profile', NULL, NULL, NULL, NULL, NULL, NULL, '[{\"title\":\"Home\",\"link\":\"index.php\"},{\"title\":\"Manage profile\",\"link\":\"profile.php\"}]', 'Manage profile', '2025-04-23 00:27:00', '2025-04-23 00:27:00'),
+(10, 'delivery-boy.php', 'Manage delivery boy', NULL, NULL, NULL, NULL, NULL, NULL, '[{\"title\":\"Home\",\"link\":\"index.php\"},{\"title\":\"Manage delivery boy\",\"link\":\"delivery-boy.php\"}]', 'Manage delivery boy', '2025-04-23 00:27:00', '2025-04-23 00:27:00'),
+(11, 'coupon-code.php', 'Manage coupon code', NULL, NULL, NULL, NULL, NULL, NULL, '[{\"title\":\"Home\",\"link\":\"index.php\"},{\"title\":\"Manage coupon code\",\"link\":\"coupon-code.php\"}]', 'Manage coupon code', '2025-04-23 00:27:00', '2025-04-23 00:27:00'),
+(12, 'dish.php', 'Manage dish', NULL, NULL, NULL, NULL, NULL, NULL, '[{\"title\":\"Home\",\"link\":\"index.php\"},{\"title\":\"Manage dish\",\"link\":\"dish.php\"}]', 'Manage dish', '2025-04-23 00:27:00', '2025-04-23 00:27:00'),
+(13, 'dishDetails.php', 'Manage dish', NULL, NULL, NULL, NULL, NULL, NULL, '[{\"title\":\"Home\",\"link\":\"index.php\"},{\"title\":\"Manage dish\",\"link\":\"dish.php\"}]', 'Manage dish', '2025-04-23 00:27:00', '2025-04-23 00:27:00');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `setting`
 --
 
@@ -691,7 +835,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 --
 
 INSERT INTO `user` (`id`, `name`, `email`, `mobile`, `password`, `status`, `email_verify`, `rand_str`, `referral_code`, `from_referral_code`, `added_on`) VALUES
-(16, 'V21Vb1hwb2cybnJwWlpKTitObXNjUT09Ojp2QN20fkmGuEwsR2jvZymo', 'VVZQVEZMK1pTNkd2SVpLY3YwSzU1czljWVloY285U2xDd2lyRnpMY1EwND06OtVauJw9Cj5LF7uTI38gbHM=', '+919876543210', '', 0, 0, '', '', '', '2024-06-30 06:54:18');
+(16, 'WDV0cFNjQnpBeDV2Z21vZ1QwT2l5QT09OjqO6Z/Auii39n8MVniRuekF', 'UFpYZnRPa2J3SEs0RGRVNEdESWZUS1krK2dnaXp3MGFRRlhSY3dhdll5WT06Olx+UVA+AMawlriAtI5sIpA=', '+919876543210', '', 1, 0, '', '', '', '2025-04-07 06:30:36');
 
 -- --------------------------------------------------------
 

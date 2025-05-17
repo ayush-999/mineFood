@@ -13,7 +13,7 @@
             </div>
             <div class="info">
                 <a href="profile.php"
-                   class="d-block <?= basename($_SERVER['PHP_SELF']) == 'profile.php' ? 'active' : '' ?>">
+                   class="d-block <?= basename((string) $_SERVER['PHP_SELF']) == 'profile.php' ? 'active' : '' ?>">
                     <?php if (!empty($adminDetails)) {
                         echo $adminDetails['name'];
                     } ?>
@@ -25,7 +25,7 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-item">
                     <a href="index.php"
-                       class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'index.php' ? 'active' : '' ?>">
+                       class="nav-link <?= basename((string) $_SERVER['PHP_SELF']) == 'index.php' ? 'active' : '' ?>">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                             Dashboard
@@ -34,7 +34,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="banner.php"
-                       class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'banner.php' ? 'active' : '' ?>">
+                       class="nav-link <?= basename((string) $_SERVER['PHP_SELF']) == 'banner.php' ? 'active' : '' ?>">
                         <i class="nav-icon fa-solid fa-images"></i>
                         <p>
                             Banner
@@ -43,7 +43,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="category.php"
-                       class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'category.php' ? 'active' : '' ?>">
+                       class="nav-link <?= basename((string) $_SERVER['PHP_SELF']) == 'category.php' ? 'active' : '' ?>">
                         <i class="nav-icon fa-solid fa-layer-group"></i>
                         <p>
                             Category
@@ -52,7 +52,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="user.php"
-                       class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'user.php' ? 'active' : '' ?>">
+                       class="nav-link <?= basename((string) $_SERVER['PHP_SELF']) == 'user.php' ? 'active' : '' ?>">
                         <i class="nav-icon fas fa-users"></i>
                         <p>
                             Users
@@ -61,7 +61,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="delivery-boy.php"
-                       class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'delivery-boy.php' ? 'active' : '' ?>">
+                       class="nav-link <?= basename((string) $_SERVER['PHP_SELF']) == 'delivery-boy.php' ? 'active' : '' ?>">
                         <i class="nav-icon fa-solid fa-person-carry-box"></i>
                         <p>
                             Delivery Boy
@@ -70,7 +70,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="coupon-code.php"
-                       class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'coupon-code.php' ? 'active' : '' ?>">
+                       class="nav-link <?= basename((string) $_SERVER['PHP_SELF']) == 'coupon-code.php' ? 'active' : '' ?>">
                         <i class="nav-icon fa-solid fa-badge-percent"></i>
                         <p>
                             Coupon Code
@@ -79,7 +79,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="dish.php"
-                       class="nav-link <?= (basename($_SERVER['PHP_SELF']) == 'dish.php') || (basename($_SERVER['PHP_SELF']) == 'dishDetails.php') ? 'active' : ''?>">
+                       class="nav-link <?= (basename((string) $_SERVER['PHP_SELF']) == 'dish.php') || (basename((string) $_SERVER['PHP_SELF']) == 'dishDetails.php') ? 'active' : ''?>">
                         <i class="nav-icon fa-solid fa-utensils"></i>
                         <p>
                             Dish
@@ -88,10 +88,10 @@
                 </li>
                 <li class="nav-item">
                     <a href="settings.php"
-                       class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'settings.php' ? 'active' : '' ?>">
+                       class="nav-link <?= basename((string) $_SERVER['PHP_SELF']) == 'settings.php' ? 'active' : '' ?>">
                         <i class="nav-icon fas fa-cogs"></i>
                         <p>
-                            Settings
+                            Site Settings
                         </p>
                     </a>
                 </li>

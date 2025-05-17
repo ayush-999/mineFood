@@ -4,7 +4,7 @@ include_once('header.php');
 $msg = '';
 if (!empty($admin)) {
     try {
-        $get_couponCode = json_decode($admin->get_all_couponList(), true);
+        $get_couponCode = json_decode((string) $admin->get_all_couponList(), true);
     } catch (Exception $e) {
         error_log($e->getMessage());
     }
@@ -25,7 +25,7 @@ if (isset($_POST['submitAction'])) {
     try {
         if ($action == 'add') {
             $result = $admin->add_couponCode(
-                strtoupper($couponCodeName),
+                strtoupper((string) $couponCodeName),
                 $status,
                 $couponCodeBgColor,
                 $couponCodeTxtColor,
@@ -41,7 +41,7 @@ if (isset($_POST['submitAction'])) {
             $couponCodeId = $_POST['couponCodeId'];
             $result = $admin->update_couponCode(
                 $couponCodeId,
-                strtoupper($couponCodeName),
+                strtoupper((string) $couponCodeName),
                 $status,
                 $couponCodeBgColor,
                 $couponCodeTxtColor,
@@ -129,14 +129,14 @@ if (isset($_SESSION['message'])) {
                                     <span class="coupon-inner" style="
                                             color:  <?php echo $couponCode['txt_color']; ?>;
                                             ">
-                                        <?php echo htmlspecialchars($couponCode['coupon_name']); ?>
+                                        <?php echo htmlspecialchars((string) $couponCode['coupon_name']); ?>
                                     </span>
                                         </div>
                                     </td>
-                                    <td class="text-center"><?php echo htmlspecialchars($couponCode['coupon_type']); ?></td>
-                                    <td class="text-center"><?php echo htmlspecialchars($couponCode['coupon_value']); ?></td>
+                                    <td class="text-center"><?php echo htmlspecialchars((string) $couponCode['coupon_type']); ?></td>
+                                    <td class="text-center"><?php echo htmlspecialchars((string) $couponCode['coupon_value']); ?></td>
                                     <td class="text-center">
-                                        <?php echo htmlspecialchars($couponCode['cart_min_value']); ?>
+                                        <?php echo htmlspecialchars((string) $couponCode['cart_min_value']); ?>
                                     </td>
                                     <td class="text-center">
                                         <?php
@@ -160,12 +160,12 @@ if (isset($_SESSION['message'])) {
                                         <button class="btn bg-gradient-success btn-sm rounded-circle mr-1 edit-btn"
                                                 type="button" data-toggle="modal" data-target="#couponCode-modal"
                                                 data-id="<?php echo $couponCode['id']; ?>"
-                                                data-name="<?php echo htmlspecialchars($couponCode['coupon_name']); ?>"
+                                                data-name="<?php echo htmlspecialchars((string) $couponCode['coupon_name']); ?>"
                                                 data-type="<?php echo $couponCode['coupon_type']; ?>"
                                                 data-cart="<?php echo $couponCode['coupon_value']; ?>"
                                                 data-min="<?php echo $couponCode['cart_min_value']; ?>"
-                                                data-start="<?php echo htmlspecialchars($couponCode['started_on']); ?>"
-                                                data-end="<?php echo htmlspecialchars($couponCode['expired_on']); ?>"
+                                                data-start="<?php echo htmlspecialchars((string) $couponCode['started_on']); ?>"
+                                                data-end="<?php echo htmlspecialchars((string) $couponCode['expired_on']); ?>"
                                                 data-status="<?php echo $couponCode['status']; ?>"
                                                 data-bgcolor="<?php echo $couponCode['bg_color']; ?>"
                                                 data-txtcolor="<?php echo $couponCode['txt_color']; ?>">

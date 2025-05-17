@@ -14,4 +14,4 @@ $pageSettings = [
 ];
 
 // Determine current script name
-$currentScript = basename($_SERVER['PHP_SELF']);
+$currentScript = basename((string) $_SERVER['PHP_SELF']);

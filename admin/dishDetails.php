@@ -7,9 +7,9 @@ $dishDetails = [];
 $dishId = $_GET['id'] ?? null;
 if (!empty($admin)) {
     try {
-        $get_categories = json_decode($admin->get_all_categories(), true);
+        $get_categories = json_decode((string) $admin->get_all_categories(), true);
         if ($dishId) {
-            $dishData = json_decode($admin->get_dish($dishId), true);
+            $dishData = json_decode((string) $admin->get_dish($dishId), true);
             if (isset($dishData['dish'][0])) {
                 $dishDetails = $dishData['dish'][0];
             } else {
@@ -44,11 +44,27 @@ if (isset($_POST['submit'])) {
         $imagePath = $dishDetails['image'];
     }
 
-    $newImageUploaded = false;
-
-    if (isset($_FILES['dishImg']) && $_FILES['dishImg']['error'] == UPLOAD_ERR_OK && $_FILES['dishImg']['size'] > 0) {
-        $newImageName = basename($_FILES['dishImg']['name']);
+    // Handle image removal
+    if (isset($_POST['removeImage']) && $_POST['removeImage'] == '1') {
+        if ($dishId && !empty($dishDetails['image'])) {
+            // Delete the old image from both possible locations
+            $oldCategoryDir = $dishDetails['category_id'] ?? 'temp';
+            $oldImagePathFull = 'uploads/admin/dish/' . $oldCategoryDir . '/' . $dishDetails['image'];
+            if (file_exists($oldImagePathFull)) {
+                @unlink($oldImagePathFull);
+            }
+            $oldTempPath = 'uploads/admin/dish/temp/' . $dishDetails['image'];
+            if (file_exists($oldTempPath)) {
+                @unlink($oldTempPath);
+            }
+            $imagePath = ''; // Set to empty to remove from database
+        }
+    }
+    // Handle new image upload
+    elseif (isset($_FILES['dishImg']) && $_FILES['dishImg']['error'] == UPLOAD_ERR_OK && $_FILES['dishImg']['size'] > 0) {
+        $newImageName = basename((string) $_FILES['dishImg']['name']);
         $uploadDir = 'uploads/admin/dish/';
+
         if ($dishCategory) {
             $uploadDir .= $dishCategory . '/';
         } else {
@@ -65,17 +81,24 @@ if (isset($_POST['submit'])) {
                 exit;
             }
         }
+
         $uploadFile = $uploadDir . $newImageName;
-        if ($dishId && $imagePath && $imagePath !== $newImageName) {
+
+        // Delete old image if exists
+        if ($dishId && !empty($dishDetails['image'])) {
             $oldCategoryDir = $dishDetails['category_id'] ?? 'temp';
-            $oldImagePathFull = 'uploads/admin/dish/' . $oldCategoryDir . '/' . $imagePath;
+            $oldImagePathFull = 'uploads/admin/dish/' . $oldCategoryDir . '/' . $dishDetails['image'];
             if (file_exists($oldImagePathFull)) {
                 @unlink($oldImagePathFull);
             }
+            $oldTempPath = 'uploads/admin/dish/temp/' . $dishDetails['image'];
+            if (file_exists($oldTempPath)) {
+                @unlink($oldTempPath);
+            }
         }
+
         if (move_uploaded_file($_FILES['dishImg']['tmp_name'], $uploadFile)) {
             $imagePath = $newImageName;
-            $newImageUploaded = true;
         } else {
             $_SESSION['message'] = "Image upload failed. Check permissions or disk space.";
             header("Location: dishDetails.php" . ($dishId ? "?id=$dishId" : ""));
@@ -164,7 +187,37 @@ if ($displayImgFilename && $displayCategory) {
 }
 ?>
 <div class="row">
-    <div class="col-12">
+    <div class="col-4">
+        <div class="card" style="height: 20rem;">
+            <div class="card-body">
+                <div class="dish-uploader">
+                    <div class="dish-upload-area" id="dishUploadArea">
+                        <?php if (!empty($displayImagePath) && $displayImagePath !== 'assets/img/no-img.png'): ?>
+                            <img src="<?php echo htmlspecialchars($displayImagePath); ?>" alt="Dish Image">
+                        <?php else: ?>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-photo-up">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M15 8h.01" />
+                                <path d="M12.5 21h-6.5a3 3 0 0 1 -3 -3v-12a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v6.5" />
+                                <path d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l3.5 3.5" />
+                                <path d="M14 14l1 -1c.679 -.653 1.473 -.829 2.214 -.526" />
+                                <path d="M19 22v-6" />
+                                <path d="M22 19l-3 -3l-3 3" />
+                            </svg>
+                            <p>Drag and drop or click here to upload image</p>
+                        <?php endif; ?>
+                    </div>
+                    <div class="remove-btn-container" style="<?php echo (!empty($displayImagePath) && $displayImagePath !== 'assets/img/no-img.png') ? 'display: block;' : 'display: none;' ?>">
+                        <button type="button" class="btn bg-gradient-danger btn-sm rounded-circle remove-image-btn">
+                            <i class="fa fa-close"></i>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-8">
         <div class="card">
             <div class="card-header">
                 <div class="d-flex justify-content-between align-items-center">
@@ -179,47 +232,40 @@ if ($displayImgFilename && $displayCategory) {
             </div>
             <div class="card-body">
                 <?php if (!empty($msg)): ?>
-                    <div class="alert alert-info"><?php echo htmlspecialchars($msg); ?></div>
+                    <div class="alert alert-info"><?php echo htmlspecialchars((string) $msg); ?></div>
                 <?php endif; ?>
-                <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . ($dishId ? '?id=' . $dishId : ''); ?>" id="dishForm"
+                <form method="POST" action="<?php echo htmlspecialchars((string) $_SERVER["PHP_SELF"]) . ($dishId ? '?id=' . $dishId : ''); ?>" id="dishForm"
                     enctype="multipart/form-data">
                     <div class="form-body">
                         <input type="hidden" id="dishId" name="dishId" value="<?php echo htmlspecialchars($dishId ?? ''); ?>">
+                        <input type="file" id="dishImg" name="dishImg" accept="image/*" style="display: none;">
+                        <input type="hidden" id="removeImageFlag" name="removeImage" value="0">
+
                         <div class="row mb-3">
-                            <div class="col-md-10 form-group mb-0">
-                                <label for="dishName">Dish Name</label>
+                            <div class="col-md-12 form-group mb-0">
+                                <label for="dishName">Dish Name <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="dishName" name="dishName"
                                     placeholder="Enter Dish name"
                                     value="<?php echo htmlspecialchars($dishDetails['dish_name'] ?? ''); ?>" required>
                             </div>
-                            <div class="col-md-2 form-group mb-0 d-flex justify-content-end">
-                                <div class="dishImgWrap imgWrapper">
-                                    <label class="-label" for="dishImg">
-                                        <span>Change Image</span>
-                                    </label>
-                                    <input type="file" class="form-control" id="dishImg" name="dishImg"
-                                        accept="image/*">
-                                    <img src="<?php echo htmlspecialchars($displayImagePath); ?>" class="img-circle" alt="Dish Image" id="image-preview">
-                                </div>
-                            </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6 form-group mb-0">
-                                <label for="dishCategory">Category</label>
+                                <label for="dishCategory">Category <span class="text-danger">*</span></label>
                                 <select class="form-control" name="dishCategory" id="dishCategory">
                                     <option value="">Select Category</option>
                                     <?php
                                     if (!empty($get_categories)) {
                                         foreach ($get_categories as $category) {
                                             $selected = (isset($dishDetails['category_id']) && $category['id'] == $dishDetails['category_id']) ? 'selected' : '';
-                                            echo '<option value="' . htmlspecialchars($category['id']) . '" ' . $selected . '>' . htmlspecialchars($category['category_name']) . '</option>';
+                                            echo '<option value="' . htmlspecialchars((string) $category['id']) . '" ' . $selected . '>' . htmlspecialchars((string) $category['category_name']) . '</option>';
                                         }
                                     }
                                     ?>
                                 </select>
                             </div>
                             <div class="col-md-3 form-group mb-0">
-                                <label for="dishStatus">Status</label>
+                                <label for="dishStatus">Status <span class="text-danger">*</span></label>
                                 <select class="form-control" name="dishStatus" id="dishStatus">
                                     <option value="">Select Status</option>
                                     <option value="0" <?php echo (isset($dishDetails['status']) && $dishDetails['status'] == 0) ? 'selected' : ''; ?>>
@@ -231,7 +277,7 @@ if ($displayImgFilename && $displayCategory) {
                                 </select>
                             </div>
                             <div class="col-md-3 form-group mb-0">
-                                <label for="dishType">Type</label>
+                                <label for="dishType">Type <span class="text-danger">*</span></label>
                                 <select class="form-control" name="dishType" id="dishType">
                                     <option value="">Select Type</option>
                                     <option value="veg" <?php echo (isset($dishDetails['type']) && $dishDetails['type'] == 'veg') ? 'selected' : ''; ?>>
@@ -431,10 +477,6 @@ if ($displayImgFilename && $displayCategory) {
             );
         }
 
-        $('#dishImg').imoViewer({
-            'preview': '#image-preview',
-        });
-
         let attributeCount = <?php echo !empty($dishDetails['attributes']) ? count($dishDetails['attributes']) : 1; ?>;
         $('#addMoreAttributes').on('click', function() {
             attributeCount++;
@@ -450,6 +492,66 @@ if ($displayImgFilename && $displayCategory) {
             theme: 'bootstrap4',
             minimumResultsForSearch: -1
         });
+
+        const dishUploadArea = document.getElementById("dishUploadArea");
+        const dishFileInput = document.getElementById("dishImg");
+        const dishRemoveBtnContainer = document.querySelector(".remove-btn-container");
+        const dishRemoveImageBtn = document.querySelector(".remove-image-btn");
+        const dishRemoveImageFlag = document.getElementById("removeImageFlag");
+
+        dishUploadArea.addEventListener("dragover", (e) => {
+            e.preventDefault();
+            dishUploadArea.classList.add("dragover");
+        });
+
+        dishUploadArea.addEventListener("dragleave", () => {
+            dishUploadArea.classList.remove("dragover");
+        });
+
+        dishUploadArea.addEventListener("drop", (e) => {
+            e.preventDefault();
+            dishUploadArea.classList.remove("dragover");
+
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.match("image.*")) {
+                handleDishImageUpload(file);
+            }
+        });
+
+        dishUploadArea.addEventListener("click", () => {
+            dishFileInput.click();
+        });
+
+        dishFileInput.addEventListener("change", () => {
+            const file = dishFileInput.files[0];
+            if (file && file.type.match("image.*")) {
+                handleDishImageUpload(file);
+            }
+        });
+
+        function handleDishImageUpload(file) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                dishUploadArea.innerHTML = "";
+                const img = document.createElement("img");
+                img.src = event.target.result;
+                dishUploadArea.appendChild(img);
+                dishRemoveBtnContainer.style.display = "block";
+                dishRemoveImageFlag.value = "0";
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                dishFileInput.files = dataTransfer.files;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        dishRemoveImageBtn.addEventListener("click", function() {
+            dishUploadArea.innerHTML = `<svg class="icon icon-tabler icon-tabler-photo-up icons-tabler-outline"fill=none height=24 stroke=currentColor stroke-linecap=round stroke-linejoin=round stroke-width=2 viewBox="0 0 24 24"width=24 xmlns=http://www.w3.org/2000/svg><path d="M0 0h24v24H0z"fill=none stroke=none /><path d="M15 8h.01"/><path d="M12.5 21h-6.5a3 3 0 0 1 -3 -3v-12a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v6.5"/><path d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l3.5 3.5"/><path d="M14 14l1 -1c.679 -.653 1.473 -.829 2.214 -.526"/><path d="M19 22v-6"/><path d="M22 19l-3 -3l-3 3"/></svg><p>Drag and drop or click here to upload image</p>`;
+            dishRemoveBtnContainer.style.display = "none";
+            dishFileInput.value = "";
+            dishRemoveImageFlag.value = "1"; // This is important for telling the server to remove the image
+        });
+
     });
 </script>
 <?php include_once('footer.php'); ?>
