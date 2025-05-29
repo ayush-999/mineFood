@@ -94,8 +94,10 @@ $ogImage = $seoData['og_image'] ?? '';
 
     <!-- jQuery -->
     <script src="assets/plugins/jquery/jquery.min.js"></script>
-    <!-- Font Awesome -->
+    <!-- Icon -->
     <link rel="stylesheet" href="assets/plugins/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="assets/plugins/simple-line/simple-line-icons.css">
+    <link rel="stylesheet" href="assets/plugins/ionicons/ionicons.min.css">
     <!-- icheck bootstrap -->
     <link rel="stylesheet" href="assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
     <!-- DataTables -->

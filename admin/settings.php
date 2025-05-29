@@ -30,14 +30,16 @@ if (isset($_POST['submit'])) {
     $admin_img = $getAdminDetails['admin_img'];
 
     // Collect opening hours data
-    $openingHours = [];
+    $openingHours = [
+        'opening' => $_POST['opening_time'] ?? '09:00',
+        'closing' => $_POST['closing_time'] ?? '17:00'
+    ];
+
     $days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     foreach ($days as $day) {
         if (isset($_POST[$day])) {
             $openingHours[$day] = [
-                'status' => $_POST[$day]['status'] ?? '0',
-                'opening' => $_POST[$day]['opening'] ?? '09:00',
-                'closing' => $_POST[$day]['closing'] ?? '17:00'
+                'status' => $_POST[$day]['status'] ?? '0'
             ];
         }
     }
@@ -148,6 +150,37 @@ if (isset($_SESSION['message'])) {
                                 $openingHours = json_decode($getAdminDetails['opening_hours'], true);
                             }
 
+                            $openingTime = $openingHours['opening'] ?? '09:00';
+                            $closingTime = $openingHours['closing'] ?? '17:00';
+                            ?>
+
+                            <!-- Common time fields -->
+                            <div class="form-group mb-4">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Open</span>
+                                            </div>
+                                            <input type="time" class="form-control" id="commonOpeningTime"
+                                                name="opening_time" value="<?php echo $openingTime; ?>"
+                                                disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Close</span>
+                                            </div>
+                                            <input type="time" class="form-control" id="commonClosingTime"
+                                                name="closing_time" value="<?php echo $closingTime; ?>"
+                                                disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <?php
                             $days = [
                                 'Sun' => 'Sunday',
                                 'Mon' => 'Monday',
@@ -159,46 +192,18 @@ if (isset($_SESSION['message'])) {
                             ];
 
                             foreach ($days as $short => $long):
-                                $dayData = $openingHours[$short] ?? [
-                                    'status' => '0',
-                                    'opening' => '09:00',
-                                    'closing' => '17:00'
-                                ];
+                                $dayStatus = $openingHours[$short]['status'] ?? '0';
                             ?>
-                                <div class="form-group mb-3">
+                                <div class="form-group mb-2">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <label class=""><?php echo $long; ?></label>
                                         <label class="switch">
                                             <input type="checkbox" class="day-status" name="<?php echo $short; ?>[status]"
-                                                value="1" <?php echo $dayData['status'] == '1' ? 'checked' : ''; ?>>
+                                                value="1" <?php echo $dayStatus == '1' ? 'checked' : ''; ?>>
                                             <span class="slider round"></span>
                                         </label>
                                         <input type="hidden" name="<?php echo $short; ?>[status]"
-                                            value="<?php echo $dayData['status']; ?>" class="status-value">
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-sm-6">
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">Open</span>
-                                                </div>
-                                                <input type="time" class="form-control opening-time"
-                                                    name="<?php echo $short; ?>[opening]"
-                                                    value="<?php echo $dayData['opening']; ?>"
-                                                    <?php echo $dayData['status'] == '0' ? 'disabled' : ''; ?>>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">Close</span>
-                                                </div>
-                                                <input type="time" class="form-control closing-time"
-                                                    name="<?php echo $short; ?>[closing]"
-                                                    value="<?php echo $dayData['closing']; ?>"
-                                                    <?php echo $dayData['status'] == '0' ? 'disabled' : ''; ?>>
-                                            </div>
-                                        </div>
+                                            value="<?php echo $dayStatus; ?>" class="status-value">
                                     </div>
                                 </div>
                             <?php endforeach; ?>
@@ -225,8 +230,8 @@ if (isset($_SESSION['message'])) {
                     <a class="nav-item nav-link active mr-1" id="seo-details-tab" data-toggle="pill" href="#seo-details" role="tab" aria-controls="seo-details" aria-selected="true">
                         SEO Details
                     </a>
-                    <a class="nav-item nav-link ml-1" id="event-calendar-tab" data-toggle="pill" href="#event-calendar" role="tab" aria-controls="event-calendar" aria-selected="false">
-                        Event Calendar <!-- TODO Need to work on this module -->
+                    <a class="nav-item nav-link ml-1" id="social-media-tab" data-toggle="pill" href="#social-media" role="tab" aria-controls="social-media" aria-selected="false">
+                        Social Media
                     </a>
                 </div>
             </div>
@@ -235,8 +240,8 @@ if (isset($_SESSION['message'])) {
                     <div class="tab-pane fade show active" id="seo-details" role="tabpanel" aria-labelledby="seo-details-tab">
                         <?php include_once('tab-content/settings/seo-details.php'); ?>
                     </div>
-                    <div class="tab-pane fade" id="event-calendar" role="tabpanel" aria-labelledby="event-calendar-tab">
-                        <?php include_once('tab-content/settings/event-calendar.php'); ?>
+                    <div class="tab-pane fade" id="social-media" role="tabpanel" aria-labelledby="social-media-tab">
+                        <?php include_once('tab-content/settings/social-media.php'); ?>
                     </div>
                 </div>
             </div>
@@ -244,11 +249,10 @@ if (isset($_SESSION['message'])) {
     </div>
 </div>
 <?php include_once('modals/addPage-modal.php'); ?>
-<?php include_once('modals/event-modal.php'); ?>
+<?php include_once('modals/addSocialMedia-modal.php'); ?>
 <script type="text/javascript">
     $(document).ready(function() {
         // ========================= Common JS code start here ========================= //
-
         $('#seoPageSelect').select2({
             theme: 'bootstrap4'
         });
@@ -311,15 +315,8 @@ if (isset($_SESSION['message'])) {
 
         // Edit button click handler
         $('#editHoursBtn').click(function() {
-            // Enable only the toggle switches
-            $('.day-status').prop('disabled', false);
-
-            // Keep time inputs disabled/enabled based on current toggle status
-            $('.day-status').each(function() {
-                const dayRow = $(this).closest('.form-group');
-                const isChecked = $(this).is(':checked');
-                dayRow.find('.opening-time, .closing-time').prop('disabled', !isChecked);
-            });
+            // Enable the toggle switches and time inputs
+            $('.day-status, #commonOpeningTime, #commonClosingTime').prop('disabled', false);
 
             // Show update and cancel buttons, hide edit button
             $('#updateHoursBtn, #cancelHoursBtn').show();
@@ -329,24 +326,20 @@ if (isset($_SESSION['message'])) {
         // Cancel button click handler
         $('#cancelHoursBtn').click(function() {
             // Disable all elements
-            $('.day-status, .opening-time, .closing-time').prop('disabled', true);
+            $('.day-status, #commonOpeningTime, #commonClosingTime').prop('disabled', true);
 
             // Show edit button, hide update and cancel buttons
             $('#editHoursBtn').show();
             $('#updateHoursBtn, #cancelHoursBtn').hide();
         });
 
-        // Toggle switch change handler (keep this as is)
+        // Toggle switch change handler
         $('.day-status').change(function() {
-            const dayRow = $(this).closest('.form-group');
             const isChecked = $(this).is(':checked');
-            const statusValue = dayRow.find('.status-value');
+            const statusValue = $(this).siblings('.status-value');
 
             // Update hidden input value
             statusValue.val(isChecked ? '1' : '0');
-
-            // Enable/disable time inputs
-            dayRow.find('.opening-time, .closing-time').prop('disabled', !isChecked);
         });
 
         toastr.options = {
@@ -402,11 +395,17 @@ if (isset($_SESSION['message'])) {
             const formData = $(this).serializeArray();
             const breadcrumbs = [];
 
-            $('.breadcrumb-item').each(function() {
-                breadcrumbs.push({
-                    title: $(this).find('.breadcrumb-title').val(),
-                    link: $(this).find('.breadcrumb-link').val()
-                });
+            // Correct selector to match your HTML structure
+            $('.breadcrumb-field').each(function() {
+                const title = $(this).find('input[name*="[title]"]').val();
+                const link = $(this).find('input[name*="[link]"]').val();
+
+                if (title || link) { // Only add if either field has value
+                    breadcrumbs.push({
+                        title: title,
+                        link: link
+                    });
+                }
             });
 
             // Add breadcrumbs to form data
@@ -425,6 +424,10 @@ if (isset($_SESSION['message'])) {
                         toastr.success(response.message);
                         // Reload the data
                         loadSeoData($('#seoPageName').val());
+                        // Refresh page
+                        setTimeout(() => {
+                            location.reload();
+                        }, 1000);
                     } else {
                         toastr.error(response.message);
                     }
@@ -505,6 +508,11 @@ if (isset($_SESSION['message'])) {
             $('#addPageModal').modal('show');
         });
 
+        // Add Page button click handler
+        $('#addSocialBtn').click(function() {
+            $('#addSocialModal').modal('show');
+        });
+
         // Save new page handler
         $('#saveNewPageBtn').click(function() {
             const pageName = $('#newPageName').val();
@@ -550,159 +558,6 @@ if (isset($_SESSION['message'])) {
         function ucfirst(str) {
             return str.charAt(0).toUpperCase() + str.slice(1);
         }
-
-        // ========================= Shift JS code start here ========================= //
-        let currentDate = new Date();
-        let events = [];
-
-        // Initialize calendar
-        renderCalendar();
-
-        // Event listeners
-        $('#today').click(function() {
-            currentDate = new Date();
-            renderCalendar();
-        });
-
-        $('#prev-month').click(function() {
-            currentDate.setMonth(currentDate.getMonth() - 1);
-            renderCalendar();
-        });
-
-        $('#next-month').click(function() {
-            currentDate.setMonth(currentDate.getMonth() + 1);
-            renderCalendar();
-        });
-
-        $('#new-event-btn').click(function() {
-            $('#eventModal').modal('show');
-            // Set default date/time to today
-            const now = new Date();
-            $('#event-date').val(now.toISOString().split('T')[0]);
-            $('#start-time').val('09:00');
-            $('#end-time').val('10:00');
-        });
-
-        $('#save-event').click(function() {
-            if ($('#event-form')[0].checkValidity()) {
-                const event = {
-                    id: Date.now(),
-                    title: $('#event-title').val(),
-                    date: $('#event-date').val(),
-                    startTime: $('#start-time').val(),
-                    endTime: $('#end-time').val(),
-                    description: $('#event-description').val()
-                };
-                events.push(event);
-                $('#eventModal').modal('hide');
-                $('#event-form')[0].reset();
-                renderCalendar();
-            } else {
-                $('#event-form')[0].reportValidity();
-            }
-        });
-
-        function renderCalendar() {
-            updateMonthDisplay();
-            renderMonthView();
-        }
-
-        function updateMonthDisplay() {
-            const options = {
-                month: 'long',
-                year: 'numeric'
-            };
-            $('#date-range').text(currentDate.toLocaleDateString(undefined, options));
-        }
-
-        function renderMonthView() {
-            const year = currentDate.getFullYear();
-            const month = currentDate.getMonth();
-
-            // Get first day of month and last day of month
-            const firstDay = new Date(year, month, 1);
-            const lastDay = new Date(year, month + 1, 0);
-
-            // Get days from previous month to show
-            const startDay = getStartOfWeek(firstDay);
-
-            // Get days from next month to show
-            const endDay = new Date(getStartOfWeek(lastDay));
-            endDay.setDate(endDay.getDate() + 6);
-
-            let html = '<div class="month-view">';
-
-            // Weekday headers
-            const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-            weekdays.forEach(day => {
-                html += `<div class="month-day-header">${day}</div>`;
-            });
-
-            // Calendar days
-            const currentDay = new Date(startDay);
-            while (currentDay <= endDay) {
-                const isCurrentMonth = currentDay.getMonth() === month;
-                const isToday = isSameDay(currentDay, new Date());
-                const dateStr = formatDate(currentDay);
-
-                const dayEvents = events.filter(event => event.date === dateStr);
-
-                html += `<div class="month-day ${isToday ? 'today' : ''} ${!isCurrentMonth ? 'other-month' : ''}" data-date="${dateStr}">`;
-                html += `<div class="date">${currentDay.getDate()}</div>`;
-
-                dayEvents.forEach(event => {
-                    html += `<div class="event" data-id="${event.id}" title="${event.title} (${formatTime(event.startTime)} - ${formatTime(event.endTime)})">`;
-                    html += `${event.title}`;
-                    html += '</div>';
-                });
-
-                html += '</div>';
-
-                currentDay.setDate(currentDay.getDate() + 1);
-            }
-
-            html += '</div>'; // Close month-view
-
-            $('#calendar-view').html(html);
-
-            // Add click event to days for adding new events
-            $('.month-day').click(function() {
-                const date = $(this).data('date');
-                $('#eventModal').modal('show');
-                $('#event-date').val(date);
-                $('#start-time').val('09:00');
-                $('#end-time').val('10:00');
-            });
-        }
-
-        // Helper functions
-        function getStartOfWeek(date) {
-            const day = date.getDay();
-            const diff = date.getDate() - day;
-            return new Date(date.setDate(diff));
-        }
-
-        function isSameDay(date1, date2) {
-            return date1.getFullYear() === date2.getFullYear() &&
-                date1.getMonth() === date2.getMonth() &&
-                date1.getDate() === date2.getDate();
-        }
-
-        function formatDate(date) {
-            const year = date.getFullYear();
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const day = String(date.getDate()).padStart(2, '0');
-            return `${year}-${month}-${day}`;
-        }
-
-        function formatTime(timeStr) {
-            const [hours, minutes] = timeStr.split(':');
-            const hour = parseInt(hours);
-            const ampm = hour >= 12 ? 'PM' : 'AM';
-            const hour12 = hour % 12 || 12;
-            return `${hour12}:${minutes} ${ampm}`;
-        }
-
     });
 </script>
 <?php include_once('footer.php') ?>

@@ -175,6 +175,9 @@ class Admin
      * @param string $profileMobile Mobile number
      * @param string $added_on Update timestamp
      * @param string $profileImg Profile image path
+     * @param string $contactEmail Contact email
+     * @param string $contactNumber Contact number
+     * @param string $openingHours Opening hours
      * @return bool|string JSON encoded success/error message
      * @throws Exception If there's a general update error
      * @throws PDOException If there's a database error during update
@@ -1005,7 +1008,22 @@ class Admin
     public function saveSeoSettings(array $data): bool|string
     {
         try {
-            $breadcrumbs = isset($data['breadcrumbs']) ? json_encode($data['breadcrumbs']) : '[]';
+            $breadcrumbs = [];
+            if (isset($data['breadcrumbs'])) {
+                if (is_string($data['breadcrumbs'])) {
+                    $decoded = json_decode($data['breadcrumbs'], true);
+                    $breadcrumbs = is_array($decoded) ? $decoded : [];
+                } elseif (is_array($data['breadcrumbs'])) {
+                    $breadcrumbs = $data['breadcrumbs'];
+                }
+            }
+
+            // Filter out empty breadcrumbs
+            $breadcrumbs = array_filter($breadcrumbs, function ($item) {
+                return !empty($item['title']) || !empty($item['link']);
+            });
+
+            $breadcrumbsJson = !empty($breadcrumbs) ? json_encode($breadcrumbs) : '[]';
 
             if (empty($data['id'])) {
                 $strQuery = "INSERT INTO seo_settings (
@@ -1046,7 +1064,7 @@ class Admin
             $stmt->bindParam(':og_title', $data['og_title']);
             $stmt->bindParam(':og_description', $data['og_description']);
             $stmt->bindParam(':og_image', $data['og_image']);
-            $stmt->bindParam(':breadcrumbs', $breadcrumbs);
+            $stmt->bindParam(':breadcrumbs', $breadcrumbsJson);
             $stmt->bindParam(':sub_title', $data['sub_title']);
 
             $stmt->execute();
@@ -1088,6 +1106,77 @@ class Admin
             }
 
             return json_encode($pageSettings);
+        } catch (PDOException $e) {
+            throw new Exception("Database error: " . $e->getMessage());
+        }
+    }
+    public function getSocialMedia(): bool|string
+    {
+        try {
+            $strQuery = "SELECT * FROM social_media ORDER BY id ASC";
+            $stmt = $this->db->prepare($strQuery);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return json_encode($result);
+        } catch (PDOException $e) {
+            throw new Exception("Database error: " . $e->getMessage());
+        }
+    }
+
+    public function saveSocialMedia(array $data): bool|string
+    {
+        try {
+            // Validate required fields
+            $requiredFields = ['title', 'url', 'icon'];
+            foreach ($requiredFields as $field) {
+                if (empty($data[$field])) {
+                    throw new Exception("Missing required field: $field");
+                }
+            }
+
+            // Sanitize and validate URL
+            $url = filter_var($data['url'], FILTER_SANITIZE_URL);
+            if (!filter_var($url, FILTER_VALIDATE_URL)) {
+                throw new Exception("Invalid URL format");
+            }
+
+            // Prepare SQL
+            if (empty($data['id'])) {
+                $strQuery = "INSERT INTO social_media (title, url, icon) VALUES (:title, :url, :icon)";
+            } else {
+                $strQuery = "UPDATE social_media SET title = :title, url = :url, icon = :icon WHERE id = :id";
+            }
+
+            $stmt = $this->db->prepare($strQuery);
+            $stmt->bindParam(':title', $data['title']);
+            $stmt->bindParam(':url', $url);
+            $stmt->bindParam(':icon', $data['icon']);
+
+            if (!empty($data['id'])) {
+                $stmt->bindParam(':id', $data['id'], PDO::PARAM_INT);
+            }
+
+            $stmt->execute();
+
+            return json_encode(['success' => true, 'message' => 'Social media link saved successfully']);
+        } catch (PDOException $e) {
+            throw new Exception("Database error: " . $e->getMessage());
+        }
+    }
+
+    public function deleteSocialMedia(int $id): bool|string
+    {
+        try {
+            $strQuery = "DELETE FROM social_media WHERE id = :id";
+            $stmt = $this->db->prepare($strQuery);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+
+            if ($stmt->rowCount() > 0) {
+                return json_encode(['success' => true, 'message' => 'Social media link deleted successfully']);
+            } else {
+                return json_encode(['success' => false, 'message' => 'No record found to delete']);
+            }
         } catch (PDOException $e) {
             throw new Exception("Database error: " . $e->getMessage());
         }
