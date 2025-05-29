@@ -1005,7 +1005,22 @@ class Admin
     public function saveSeoSettings(array $data): bool|string
     {
         try {
-            $breadcrumbs = isset($data['breadcrumbs']) ? json_encode($data['breadcrumbs']) : '[]';
+            $breadcrumbs = [];
+            if (isset($data['breadcrumbs'])) {
+                if (is_string($data['breadcrumbs'])) {
+                    $decoded = json_decode($data['breadcrumbs'], true);
+                    $breadcrumbs = is_array($decoded) ? $decoded : [];
+                } elseif (is_array($data['breadcrumbs'])) {
+                    $breadcrumbs = $data['breadcrumbs'];
+                }
+            }
+
+            // Filter out empty breadcrumbs
+            $breadcrumbs = array_filter($breadcrumbs, function ($item) {
+                return !empty($item['title']) || !empty($item['link']);
+            });
+
+            $breadcrumbsJson = !empty($breadcrumbs) ? json_encode($breadcrumbs) : '[]';
 
             if (empty($data['id'])) {
                 $strQuery = "INSERT INTO seo_settings (
@@ -1046,7 +1061,7 @@ class Admin
             $stmt->bindParam(':og_title', $data['og_title']);
             $stmt->bindParam(':og_description', $data['og_description']);
             $stmt->bindParam(':og_image', $data['og_image']);
-            $stmt->bindParam(':breadcrumbs', $breadcrumbs);
+            $stmt->bindParam(':breadcrumbs', $breadcrumbsJson);
             $stmt->bindParam(':sub_title', $data['sub_title']);
 
             $stmt->execute();

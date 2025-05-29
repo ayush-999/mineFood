@@ -30,14 +30,16 @@ if (isset($_POST['submit'])) {
     $admin_img = $getAdminDetails['admin_img'];
 
     // Collect opening hours data
-    $openingHours = [];
+    $openingHours = [
+        'opening' => $_POST['opening_time'] ?? '09:00',
+        'closing' => $_POST['closing_time'] ?? '17:00'
+    ];
+
     $days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     foreach ($days as $day) {
         if (isset($_POST[$day])) {
             $openingHours[$day] = [
-                'status' => $_POST[$day]['status'] ?? '0',
-                'opening' => $_POST[$day]['opening'] ?? '09:00',
-                'closing' => $_POST[$day]['closing'] ?? '17:00'
+                'status' => $_POST[$day]['status'] ?? '0'
             ];
         }
     }
@@ -148,6 +150,37 @@ if (isset($_SESSION['message'])) {
                                 $openingHours = json_decode($getAdminDetails['opening_hours'], true);
                             }
 
+                            $openingTime = $openingHours['opening'] ?? '09:00';
+                            $closingTime = $openingHours['closing'] ?? '17:00';
+                            ?>
+
+                            <!-- Common time fields -->
+                            <div class="form-group mb-4">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Open</span>
+                                            </div>
+                                            <input type="time" class="form-control" id="commonOpeningTime"
+                                                name="opening_time" value="<?php echo $openingTime; ?>"
+                                                disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Close</span>
+                                            </div>
+                                            <input type="time" class="form-control" id="commonClosingTime"
+                                                name="closing_time" value="<?php echo $closingTime; ?>"
+                                                disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <?php
                             $days = [
                                 'Sun' => 'Sunday',
                                 'Mon' => 'Monday',
@@ -159,46 +192,18 @@ if (isset($_SESSION['message'])) {
                             ];
 
                             foreach ($days as $short => $long):
-                                $dayData = $openingHours[$short] ?? [
-                                    'status' => '0',
-                                    'opening' => '09:00',
-                                    'closing' => '17:00'
-                                ];
+                                $dayStatus = $openingHours[$short]['status'] ?? '0';
                             ?>
-                                <div class="form-group mb-3">
+                                <div class="form-group mb-2">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <label class=""><?php echo $long; ?></label>
                                         <label class="switch">
                                             <input type="checkbox" class="day-status" name="<?php echo $short; ?>[status]"
-                                                value="1" <?php echo $dayData['status'] == '1' ? 'checked' : ''; ?>>
+                                                value="1" <?php echo $dayStatus == '1' ? 'checked' : ''; ?>>
                                             <span class="slider round"></span>
                                         </label>
                                         <input type="hidden" name="<?php echo $short; ?>[status]"
-                                            value="<?php echo $dayData['status']; ?>" class="status-value">
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-sm-6">
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">Open</span>
-                                                </div>
-                                                <input type="time" class="form-control opening-time"
-                                                    name="<?php echo $short; ?>[opening]"
-                                                    value="<?php echo $dayData['opening']; ?>"
-                                                    <?php echo $dayData['status'] == '0' ? 'disabled' : ''; ?>>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">Close</span>
-                                                </div>
-                                                <input type="time" class="form-control closing-time"
-                                                    name="<?php echo $short; ?>[closing]"
-                                                    value="<?php echo $dayData['closing']; ?>"
-                                                    <?php echo $dayData['status'] == '0' ? 'disabled' : ''; ?>>
-                                            </div>
-                                        </div>
+                                            value="<?php echo $dayStatus; ?>" class="status-value">
                                     </div>
                                 </div>
                             <?php endforeach; ?>
@@ -311,15 +316,8 @@ if (isset($_SESSION['message'])) {
 
         // Edit button click handler
         $('#editHoursBtn').click(function() {
-            // Enable only the toggle switches
-            $('.day-status').prop('disabled', false);
-
-            // Keep time inputs disabled/enabled based on current toggle status
-            $('.day-status').each(function() {
-                const dayRow = $(this).closest('.form-group');
-                const isChecked = $(this).is(':checked');
-                dayRow.find('.opening-time, .closing-time').prop('disabled', !isChecked);
-            });
+            // Enable the toggle switches and time inputs
+            $('.day-status, #commonOpeningTime, #commonClosingTime').prop('disabled', false);
 
             // Show update and cancel buttons, hide edit button
             $('#updateHoursBtn, #cancelHoursBtn').show();
@@ -329,24 +327,20 @@ if (isset($_SESSION['message'])) {
         // Cancel button click handler
         $('#cancelHoursBtn').click(function() {
             // Disable all elements
-            $('.day-status, .opening-time, .closing-time').prop('disabled', true);
+            $('.day-status, #commonOpeningTime, #commonClosingTime').prop('disabled', true);
 
             // Show edit button, hide update and cancel buttons
             $('#editHoursBtn').show();
             $('#updateHoursBtn, #cancelHoursBtn').hide();
         });
 
-        // Toggle switch change handler (keep this as is)
+        // Toggle switch change handler
         $('.day-status').change(function() {
-            const dayRow = $(this).closest('.form-group');
             const isChecked = $(this).is(':checked');
-            const statusValue = dayRow.find('.status-value');
+            const statusValue = $(this).siblings('.status-value');
 
             // Update hidden input value
             statusValue.val(isChecked ? '1' : '0');
-
-            // Enable/disable time inputs
-            dayRow.find('.opening-time, .closing-time').prop('disabled', !isChecked);
         });
 
         toastr.options = {
@@ -402,11 +396,17 @@ if (isset($_SESSION['message'])) {
             const formData = $(this).serializeArray();
             const breadcrumbs = [];
 
-            $('.breadcrumb-item').each(function() {
-                breadcrumbs.push({
-                    title: $(this).find('.breadcrumb-title').val(),
-                    link: $(this).find('.breadcrumb-link').val()
-                });
+            // Correct selector to match your HTML structure
+            $('.breadcrumb-field').each(function() {
+                const title = $(this).find('input[name*="[title]"]').val();
+                const link = $(this).find('input[name*="[link]"]').val();
+
+                if (title || link) { // Only add if either field has value
+                    breadcrumbs.push({
+                        title: title,
+                        link: link
+                    });
+                }
             });
 
             // Add breadcrumbs to form data
