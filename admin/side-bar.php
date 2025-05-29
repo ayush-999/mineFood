@@ -87,6 +87,15 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="event-calendar.php"
+                       class="nav-link <?= (basename((string) $_SERVER['PHP_SELF']) == 'event-calendar.php') ? 'active' : ''?>">
+                        <i class="nav-icon fa-solid fa-calendar-days"></i>
+                        <p>
+                            Event Calendar
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="settings.php"
                        class="nav-link <?= basename((string) $_SERVER['PHP_SELF']) == 'settings.php' ? 'active' : '' ?>">
                         <i class="nav-icon fas fa-cogs"></i>

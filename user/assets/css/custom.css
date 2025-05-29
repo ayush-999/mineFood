@@ -5,3 +5,7 @@
 .footer-logo-img {
   height: 50px !important;
 }
+
+ul li{
+  list-style: none;
+}

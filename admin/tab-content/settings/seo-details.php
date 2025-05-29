@@ -1,5 +1,5 @@
 <div class="row align-items-center">
-    <div class="col-md-8">
+    <div class="col-md-10">
         <div class="form-group">
             <label for="seoPageSelect">Select Page</label>
             <div class="input-group">
@@ -19,8 +19,8 @@
             </div>
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="d-flex justify-content-end mt-4">
+    <div class="col-md-2">
+        <div class="d-flex justify-content-end mt-3">
             <button class="btn btn-outline-info btn-sm rounded-pill" type="button" id="addPageBtn">
                 <i class="fas fa-plus"></i> Add Page
             </button>
@@ -87,7 +87,7 @@
     </div>
     <div class="row mt-4">
         <div class="col-md-12 text-left">
-            <button type="submit" class="btn bg-gradient-success">Save SEO Settings</button>
+            <button type="submit" class="btn bg-gradient-success btn-block">Save</button>
         </div>
     </div>
 </form>

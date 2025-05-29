@@ -230,8 +230,8 @@ if (isset($_SESSION['message'])) {
                     <a class="nav-item nav-link active mr-1" id="seo-details-tab" data-toggle="pill" href="#seo-details" role="tab" aria-controls="seo-details" aria-selected="true">
                         SEO Details
                     </a>
-                    <a class="nav-item nav-link ml-1" id="event-calendar-tab" data-toggle="pill" href="#event-calendar" role="tab" aria-controls="event-calendar" aria-selected="false">
-                        Event Calendar <!-- TODO Need to work on this module -->
+                    <a class="nav-item nav-link ml-1" id="social-media-tab" data-toggle="pill" href="#social-media" role="tab" aria-controls="social-media" aria-selected="false">
+                        Social Media
                     </a>
                 </div>
             </div>
@@ -240,8 +240,8 @@ if (isset($_SESSION['message'])) {
                     <div class="tab-pane fade show active" id="seo-details" role="tabpanel" aria-labelledby="seo-details-tab">
                         <?php include_once('tab-content/settings/seo-details.php'); ?>
                     </div>
-                    <div class="tab-pane fade" id="event-calendar" role="tabpanel" aria-labelledby="event-calendar-tab">
-                        <?php include_once('tab-content/settings/event-calendar.php'); ?>
+                    <div class="tab-pane fade" id="social-media" role="tabpanel" aria-labelledby="social-media-tab">
+                        <?php include_once('tab-content/settings/social-media.php'); ?>
                     </div>
                 </div>
             </div>
@@ -249,11 +249,10 @@ if (isset($_SESSION['message'])) {
     </div>
 </div>
 <?php include_once('modals/addPage-modal.php'); ?>
-<?php include_once('modals/event-modal.php'); ?>
+<?php include_once('modals/addSocialMedia-modal.php'); ?>
 <script type="text/javascript">
     $(document).ready(function() {
         // ========================= Common JS code start here ========================= //
-
         $('#seoPageSelect').select2({
             theme: 'bootstrap4'
         });
@@ -425,6 +424,10 @@ if (isset($_SESSION['message'])) {
                         toastr.success(response.message);
                         // Reload the data
                         loadSeoData($('#seoPageName').val());
+                        // Refresh page
+                        setTimeout(() => {
+                            location.reload();
+                        }, 1000);
                     } else {
                         toastr.error(response.message);
                     }
@@ -505,6 +508,11 @@ if (isset($_SESSION['message'])) {
             $('#addPageModal').modal('show');
         });
 
+        // Add Page button click handler
+        $('#addSocialBtn').click(function() {
+            $('#addSocialModal').modal('show');
+        });
+
         // Save new page handler
         $('#saveNewPageBtn').click(function() {
             const pageName = $('#newPageName').val();
@@ -550,159 +558,6 @@ if (isset($_SESSION['message'])) {
         function ucfirst(str) {
             return str.charAt(0).toUpperCase() + str.slice(1);
         }
-
-        // ========================= Shift JS code start here ========================= //
-        let currentDate = new Date();
-        let events = [];
-
-        // Initialize calendar
-        renderCalendar();
-
-        // Event listeners
-        $('#today').click(function() {
-            currentDate = new Date();
-            renderCalendar();
-        });
-
-        $('#prev-month').click(function() {
-            currentDate.setMonth(currentDate.getMonth() - 1);
-            renderCalendar();
-        });
-
-        $('#next-month').click(function() {
-            currentDate.setMonth(currentDate.getMonth() + 1);
-            renderCalendar();
-        });
-
-        $('#new-event-btn').click(function() {
-            $('#eventModal').modal('show');
-            // Set default date/time to today
-            const now = new Date();
-            $('#event-date').val(now.toISOString().split('T')[0]);
-            $('#start-time').val('09:00');
-            $('#end-time').val('10:00');
-        });
-
-        $('#save-event').click(function() {
-            if ($('#event-form')[0].checkValidity()) {
-                const event = {
-                    id: Date.now(),
-                    title: $('#event-title').val(),
-                    date: $('#event-date').val(),
-                    startTime: $('#start-time').val(),
-                    endTime: $('#end-time').val(),
-                    description: $('#event-description').val()
-                };
-                events.push(event);
-                $('#eventModal').modal('hide');
-                $('#event-form')[0].reset();
-                renderCalendar();
-            } else {
-                $('#event-form')[0].reportValidity();
-            }
-        });
-
-        function renderCalendar() {
-            updateMonthDisplay();
-            renderMonthView();
-        }
-
-        function updateMonthDisplay() {
-            const options = {
-                month: 'long',
-                year: 'numeric'
-            };
-            $('#date-range').text(currentDate.toLocaleDateString(undefined, options));
-        }
-
-        function renderMonthView() {
-            const year = currentDate.getFullYear();
-            const month = currentDate.getMonth();
-
-            // Get first day of month and last day of month
-            const firstDay = new Date(year, month, 1);
-            const lastDay = new Date(year, month + 1, 0);
-
-            // Get days from previous month to show
-            const startDay = getStartOfWeek(firstDay);
-
-            // Get days from next month to show
-            const endDay = new Date(getStartOfWeek(lastDay));
-            endDay.setDate(endDay.getDate() + 6);
-
-            let html = '<div class="month-view">';
-
-            // Weekday headers
-            const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-            weekdays.forEach(day => {
-                html += `<div class="month-day-header">${day}</div>`;
-            });
-
-            // Calendar days
-            const currentDay = new Date(startDay);
-            while (currentDay <= endDay) {
-                const isCurrentMonth = currentDay.getMonth() === month;
-                const isToday = isSameDay(currentDay, new Date());
-                const dateStr = formatDate(currentDay);
-
-                const dayEvents = events.filter(event => event.date === dateStr);
-
-                html += `<div class="month-day ${isToday ? 'today' : ''} ${!isCurrentMonth ? 'other-month' : ''}" data-date="${dateStr}">`;
-                html += `<div class="date">${currentDay.getDate()}</div>`;
-
-                dayEvents.forEach(event => {
-                    html += `<div class="event" data-id="${event.id}" title="${event.title} (${formatTime(event.startTime)} - ${formatTime(event.endTime)})">`;
-                    html += `${event.title}`;
-                    html += '</div>';
-                });
-
-                html += '</div>';
-
-                currentDay.setDate(currentDay.getDate() + 1);
-            }
-
-            html += '</div>'; // Close month-view
-
-            $('#calendar-view').html(html);
-
-            // Add click event to days for adding new events
-            $('.month-day').click(function() {
-                const date = $(this).data('date');
-                $('#eventModal').modal('show');
-                $('#event-date').val(date);
-                $('#start-time').val('09:00');
-                $('#end-time').val('10:00');
-            });
-        }
-
-        // Helper functions
-        function getStartOfWeek(date) {
-            const day = date.getDay();
-            const diff = date.getDate() - day;
-            return new Date(date.setDate(diff));
-        }
-
-        function isSameDay(date1, date2) {
-            return date1.getFullYear() === date2.getFullYear() &&
-                date1.getMonth() === date2.getMonth() &&
-                date1.getDate() === date2.getDate();
-        }
-
-        function formatDate(date) {
-            const year = date.getFullYear();
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const day = String(date.getDate()).padStart(2, '0');
-            return `${year}-${month}-${day}`;
-        }
-
-        function formatTime(timeStr) {
-            const [hours, minutes] = timeStr.split(':');
-            const hour = parseInt(hours);
-            const ampm = hour >= 12 ? 'PM' : 'AM';
-            const hour12 = hour % 12 || 12;
-            return `${hour12}:${minutes} ${ampm}`;
-        }
-
     });
 </script>
 <?php include_once('footer.php') ?>

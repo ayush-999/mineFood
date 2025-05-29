@@ -69,14 +69,50 @@
                             </ul>
                         </div>
                         <div class="mt-35 footer-title mb-22">
-                            <h4>Get in touch</h4>
+                            <h4>Opening & Closing</h4>
                         </div>
                         <div class="footer-time">
                             <ul>
-                                <li>
-                                    Open: <span>8:00 AM</span> - Close: <span>18:00 PM</span>
-                                </li>
-                                <li>Saturday - Sunday: <span>Close</span></li>
+                                <?php
+                                if (!empty($getAdminDetails['opening_hours'])) {
+                                    $openingHours = json_decode($getAdminDetails['opening_hours'], true);
+                                    $days = [
+                                        'Sun' => 'Sunday',
+                                        'Mon' => 'Monday',
+                                        'Tue' => 'Tuesday',
+                                        'Wed' => 'Wednesday',
+                                        'Thu' => 'Thursday',
+                                        'Fri' => 'Friday',
+                                        'Sat' => 'Saturday'
+                                    ];
+
+                                    $openDays = [];
+                                    $closedDays = [];
+
+                                    foreach ($days as $shortDay => $fullDay) {
+                                        $status = isset($openingHours[$shortDay]['status']) ? $openingHours[$shortDay]['status'] : '0';
+                                        if ($status == '1') {
+                                            $openDays[] = $fullDay;
+                                        } else {
+                                            $closedDays[] = $fullDay;
+                                        }
+                                    }
+
+                                    // Display open hours
+                                    if (!empty($openDays)) {
+                                        echo '<li>Open: <span>' . $openingHours['opening'] . '</span> - Close: <span>' . $openingHours['closing'] . '</span></li>';
+                                    }
+
+                                    // Display closed days
+                                    if (!empty($closedDays)) {
+                                        echo '<li>' . implode(', ', $closedDays) . ': <span>Close</span></li>';
+                                    }
+                                } else {
+                                    // Default fallback
+                                    echo '<li>Open: <span>8:00 AM</span> - Close: <span>6:00 PM</span></li>';
+                                    echo '<li>Saturday - Sunday: <span>Close</span></li>';
+                                }
+                                ?>
                             </ul>
                         </div>
                     </div>
