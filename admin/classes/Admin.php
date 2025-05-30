@@ -11,8 +11,6 @@ class Admin
      * @throws Exception If there's a database error during the operation
      * @throws PDOException If there's a specific PDO database error
      */
-
-    // TODO: JSON conversion needs work across categories functions
     public function get_all_categories(): bool|string
     {
         try {
@@ -1123,7 +1121,7 @@ class Admin
         }
     }
 
-    public function saveSocialMedia(array $data): bool|string
+    public function saveSocialMedia(array $data, int $adminId): bool|string
     {
         try {
             // Validate required fields
@@ -1142,15 +1140,20 @@ class Admin
 
             // Prepare SQL
             if (empty($data['id'])) {
-                $strQuery = "INSERT INTO social_media (title, url, icon) VALUES (:title, :url, :icon)";
+                $strQuery = "INSERT INTO social_media 
+                        (title, url, icon, admin_id) 
+                        VALUES (:title, :url, :icon, :admin_id)";
             } else {
-                $strQuery = "UPDATE social_media SET title = :title, url = :url, icon = :icon WHERE id = :id";
+                $strQuery = "UPDATE social_media 
+                        SET title = :title, url = :url, icon = :icon 
+                        WHERE id = :id AND admin_id = :admin_id";
             }
 
             $stmt = $this->db->prepare($strQuery);
             $stmt->bindParam(':title', $data['title']);
             $stmt->bindParam(':url', $url);
             $stmt->bindParam(':icon', $data['icon']);
+            $stmt->bindParam(':admin_id', $adminId, PDO::PARAM_INT);
 
             if (!empty($data['id'])) {
                 $stmt->bindParam(':id', $data['id'], PDO::PARAM_INT);
@@ -1158,24 +1161,35 @@ class Admin
 
             $stmt->execute();
 
-            return json_encode(['success' => true, 'message' => 'Social media link saved successfully']);
+            return json_encode([
+                'success' => true,
+                'message' => 'Social media link saved successfully'
+            ]);
         } catch (PDOException $e) {
             throw new Exception("Database error: " . $e->getMessage());
         }
     }
 
-    public function deleteSocialMedia(int $id): bool|string
+    public function deleteSocialMedia(int $id, int $adminId): bool|string
     {
         try {
-            $strQuery = "DELETE FROM social_media WHERE id = :id";
+            $strQuery = "DELETE FROM social_media 
+                    WHERE id = :id AND admin_id = :admin_id";
             $stmt = $this->db->prepare($strQuery);
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->bindParam(':admin_id', $adminId, PDO::PARAM_INT);
             $stmt->execute();
 
             if ($stmt->rowCount() > 0) {
-                return json_encode(['success' => true, 'message' => 'Social media link deleted successfully']);
+                return json_encode([
+                    'success' => true,
+                    'message' => 'Social media link deleted successfully'
+                ]);
             } else {
-                return json_encode(['success' => false, 'message' => 'No record found to delete']);
+                return json_encode([
+                    'success' => false,
+                    'message' => 'No record found to delete'
+                ]);
             }
         } catch (PDOException $e) {
             throw new Exception("Database error: " . $e->getMessage());

@@ -22,7 +22,7 @@
                     <div class="form-group">
                         <label for="socialIcon">Icon Class</label>
                         <input type="text" class="form-control" id="socialIcon" name="icon" required>
-                        <small class="form-text text-muted">Font Awesome icon class (e.g. "fa-brands fa-facebook-f")</small>
+                        <small class="form-text text-muted">Ionicons icon class (e.g. "ion-social-facebook")</small>
                     </div>
                 </form>
             </div>
@@ -36,7 +36,6 @@
 
 <script>
 $(document).ready(function() {
-    // Handle form submission from modal
     $('#saveSocialBtn').click(function() {
         const formData = {
             action: 'save',
@@ -55,7 +54,6 @@ $(document).ready(function() {
                 toastr.success(response.message);
                 $('#addSocialModal').modal('hide');
                 $('#addSocialForm')[0].reset();
-                // Refresh the social media list
                 setTimeout(() => {
                     location.reload();
                 }, 1000);
@@ -67,7 +65,6 @@ $(document).ready(function() {
         });
     });
 
-    // Reset form when modal is closed
     $('#addSocialModal').on('hidden.bs.modal', function () {
         $('#addSocialForm')[0].reset();
     });
