@@ -139,24 +139,34 @@
                 <div class="col-lg-6 col-md-6 col-sm-5">
                     <div class="footer-social">
                         <ul>
-                            <li>
-                                <a href="#"><i class="ion-social-facebook"></i></a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="ion-social-twitter"></i></a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="ion-social-instagram-outline"></i></a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="ion-social-googleplus-outline"></i></a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="ion-social-rss"></i></a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="ion-social-dribbble-outline"></i></a>
-                            </li>
+                            <?php
+                            if (!empty($getAdminDetails['social_links'])) {
+                                $socialLinksJson = '[' . $getAdminDetails['social_links'] . ']';
+                                $socialLinks = json_decode($socialLinksJson, true);
+
+                                if (json_last_error() === JSON_ERROR_NONE && is_array($socialLinks)) {
+                                    foreach ($socialLinks as $link) {
+                                        if (isset($link['url']) && isset($link['icon'])) {
+                                            echo '<li><a href="' . htmlspecialchars($link['url']) . '" target="_blank"><i class="' . htmlspecialchars($link['icon']) . '"></i></a></li>';
+                                        }
+                                    }
+                                } else {
+                                    // Fallback to default social links if there's an error in decoding
+                            ?>
+                                    <li><a href="#"><i class="ion-social-facebook"></i></a></li>
+                                    <li><a href="#"><i class="ion-social-twitter"></i></a></li>
+                                    <li><a href="#"><i class="ion-social-instagram-outline"></i></a></li>
+                                <?php
+                                }
+                            } else {
+                                // Fallback to default social links if empty
+                                ?>
+                                <li><a href="#"><i class="ion-social-facebook"></i></a></li>
+                                <li><a href="#"><i class="ion-social-twitter"></i></a></li>
+                                <li><a href="#"><i class="ion-social-instagram-outline"></i></a></li>
+                            <?php
+                            }
+                            ?>
                         </ul>
                     </div>
                 </div>

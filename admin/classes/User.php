@@ -33,10 +33,10 @@ class User
      * @throws Exception If there's a general retrieval error
      * @throws PDOException If there's a database error during retrieval
      */
-    public function getAdminDetails(): bool|string
+    public function getAdminDetailsForUser(): bool|string
     {
         try {
-            $strQuery = "CALL sp_getAdminDetails()";
+            $strQuery = "CALL sp_getAdminDetailsForUser()"; 
             $stmt = $this->db->prepare($strQuery);
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);

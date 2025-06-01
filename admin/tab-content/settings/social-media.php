@@ -6,7 +6,7 @@ try {
     error_log($e->getMessage());
 }
 ?>
-
+<!-- TODO need to work on this page bugs -->
 <div class="row align-items-center">
     <div class="col-md-12">
         <div class="d-flex justify-content-end">
@@ -48,14 +48,13 @@ try {
                     </div>
                 </div>
                 <hr>
-            <?php endforeach; ?>
+                <?php endforeach; ?>
         </div>
     </div>
 </form>
 
 <script>
     $(document).ready(function() {
-        // Handle delete
         $(document).on('click', '.delete-social', function() {
             const id = $(this).data('id');
             if (!confirm('Are you sure you want to delete this social media link?')) return;
@@ -71,8 +70,10 @@ try {
             }).done(function(response) {
                 if (response.success) {
                     toastr.success(response.message);
-                    // Remove the row
                     $('.social-media-row[data-id="' + id + '"]').remove();
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
                 } else {
                     toastr.error(response.message);
                 }

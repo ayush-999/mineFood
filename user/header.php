@@ -20,7 +20,7 @@ if (!empty($conn)) {
 
 if (!empty($user)) {
     try {
-        $getAdminDetails = json_decode((string) $user->getAdminDetails(), true);
+        $getAdminDetails = json_decode((string) $user->getAdminDetailsForUser(), true);
     } catch (Exception $e) {
         error_log($e->getMessage());
     }
