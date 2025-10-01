@@ -7,15 +7,15 @@ class User
     }
 
     /**
-     * Retrieves all Banners from the database
+     * Retrieves all Sliders from the database
      * @return bool|string JSON encoded list of all users
      * @throws Exception If there's a general retrieval error
      * @throws PDOException If there's a database error during retrieval
      */
-    public function get_banner(): bool|string
+    public function get_slider(): bool|string
     {
         try {
-            $strQuery = "CALL sp_getAllBanner()";
+            $strQuery = "CALL sp_getAllSlider()";
             $stmt = $this->db->prepare($strQuery);
             $stmt->execute();
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);

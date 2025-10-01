@@ -33,11 +33,11 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="banner.php"
-                       class="nav-link <?= basename((string) $_SERVER['PHP_SELF']) == 'banner.php' ? 'active' : '' ?>">
+                    <a href="slider.php"
+                       class="nav-link <?= basename((string) $_SERVER['PHP_SELF']) == 'slider.php' ? 'active' : '' ?>">
                         <i class="nav-icon fa-solid fa-images"></i>
                         <p>
-                            Banner
+                            Slider
                         </p>
                     </a>
                 </li>

@@ -562,7 +562,7 @@ Dish
 Banner
 ********************************/
 
-.banner-img {
+.slider-img {
   width: 30px;
   height: 30px;
   border-radius: 50%;
@@ -572,12 +572,12 @@ Banner
   transition: all 0.2s ease-in-out;
 }
 
-.banner-img:hover {
+.slider-img:hover {
   opacity: 0.7;
   cursor: pointer;
 }
 
-.banner-type-img {
+.slider-type-img {
   width: 24px;
   height: 24px;
 }
