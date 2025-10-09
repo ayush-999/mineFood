@@ -42,12 +42,12 @@ $pageSettings = [
             ['title' => 'Manage details', 'link' => 'settings.php'],
         ]
     ],
-    'banner.php' => [
-        'title' => 'Manage banner',
-        'sub-title' => 'Manage banner',
+    'slider.php' => [
+        'title' => 'Manage slider',
+        'sub-title' => 'Manage slider',
         'breadcrumbs' => [
             ['title' => 'Home', 'link' => 'index.php'],
-            ['title' => 'Manage banner', 'link' => 'banner.php'],
+            ['title' => 'Manage slider', 'link' => 'slider.php'],
         ]
     ],
     'profile.php' => [

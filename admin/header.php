@@ -138,7 +138,7 @@ $ogImage = $seoData['og_image'] ?? '';
     <script src="assets/js/pages/deliveryBoy.js"></script>
     <script src="assets/js/pages/couponCode.js"></script>
     <script src="assets/js/pages/dish.js"></script>
-    <script src="assets/js/pages/banner.js"></script>
+    <script src="assets/js/pages/slider.js"></script>
     <script src="assets/js/pages/setting.js"></script>
 </head>
 

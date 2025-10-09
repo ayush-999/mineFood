@@ -1526,9 +1526,10 @@ textarea:focus {
 --------------------------*/
 
 /* header top */
-.welcome-area > p {
+.welcome-area {
     color: #fff;
     margin: 9px 0 0;
+    font-size: 14px;
 }
 .account-curr-lang-wrap ul li {
     display: inline-block;

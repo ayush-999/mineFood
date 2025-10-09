@@ -22,9 +22,14 @@
                         <input type="text" class="form-control" id="newSubTitle" name="sub_title">
                     </div>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn bg-gradient-success btn-block" id="saveNewPageBtn">Save Page</button>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <button type="button" class="btn btn-outline-secondary btn-block" data-dismiss="modal">Cancel</button>
+                    </div>
+                    <div class="col-md-6">
+                        <button type="button" class="btn bg-gradient-success btn-block" id="saveNewPageBtn">Save</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -107,13 +107,13 @@ if (isset($_SESSION['message'])) {
                         <form id="contactDetailsForm" method="POST" action="<?php echo htmlspecialchars((string) $_SERVER["PHP_SELF"]); ?>">
                             <input type="hidden" id="adminId" name="id" value="<?php echo $getAdminDetails['id']; ?>">
                             <div class="form-group mb-3">
-                                <label for="contactEmail">Contact Email</label>
+                                <label for="contactEmail">Contact Email<span class="text-danger">*</span></label>
                                 <input type="email" class="form-control" id="contactEmail" name="contactEmail"
                                     placeholder="Enter contact email"
                                     value="<?php echo $getAdminDetails['contact_email']; ?>" required disabled>
                             </div>
                             <div class="form-group mb-4 tel-wrapper">
-                                <label for="contactNumber">Contact number</label>
+                                <label for="contactNumber">Contact Number<span class="text-danger">*</span></label>
                                 <input type="tel" class="form-control" id="contactNumber" name="contactNumber"
                                     placeholder="Enter mobile number" value="<?php echo $getAdminDetails['contact_phone']; ?>" required disabled>
                             </div>
@@ -160,9 +160,9 @@ if (isset($_SESSION['message'])) {
                                     <div class="col-sm-6">
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text">Open</span>
+                                                <span class="input-group-text text-sm">Open</span>
                                             </div>
-                                            <input type="time" class="form-control" id="commonOpeningTime"
+                                            <input type="time" class="form-control text-sm" id="commonOpeningTime"
                                                 name="opening_time" value="<?php echo $openingTime; ?>"
                                                 disabled>
                                         </div>
@@ -170,44 +170,54 @@ if (isset($_SESSION['message'])) {
                                     <div class="col-sm-6">
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text">Close</span>
+                                                <span class="input-group-text text-sm">Close</span>
                                             </div>
-                                            <input type="time" class="form-control" id="commonClosingTime"
+                                            <input type="time" class="form-control text-sm" id="commonClosingTime"
                                                 name="closing_time" value="<?php echo $closingTime; ?>"
                                                 disabled>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <div id="customHours" class="mb-4">
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th class="p-2">Day</th>
+                                            <th class="text-center align-middle p-2">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        $days = [
+                                            'Sun' => 'Sunday',
+                                            'Mon' => 'Monday',
+                                            'Tue' => 'Tuesday',
+                                            'Wed' => 'Wednesday',
+                                            'Thu' => 'Thursday',
+                                            'Fri' => 'Friday',
+                                            'Sat' => 'Saturday'
+                                        ];
 
-                            <?php
-                            $days = [
-                                'Sun' => 'Sunday',
-                                'Mon' => 'Monday',
-                                'Tue' => 'Tuesday',
-                                'Wed' => 'Wednesday',
-                                'Thu' => 'Thursday',
-                                'Fri' => 'Friday',
-                                'Sat' => 'Saturday'
-                            ];
-
-                            foreach ($days as $short => $long):
-                                $dayStatus = $openingHours[$short]['status'] ?? '0';
-                            ?>
-                                <div class="form-group mb-2">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <label class=""><?php echo $long; ?></label>
-                                        <label class="switch">
-                                            <input type="checkbox" class="day-status" name="<?php echo $short; ?>[status]"
-                                                value="1" <?php echo $dayStatus == '1' ? 'checked' : ''; ?>>
-                                            <span class="slider round"></span>
-                                        </label>
-                                        <input type="hidden" name="<?php echo $short; ?>[status]"
-                                            value="<?php echo $dayStatus; ?>" class="status-value">
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
-
+                                        foreach ($days as $short => $long):
+                                            $dayStatus = $openingHours[$short]['status'] ?? '0';
+                                        ?>
+                                            <tr id="day-<?php echo $short; ?>">
+                                                <td class="p-2"><?php echo $long; ?></td>
+                                                <td class="p-2 text-center align-middle">
+                                                    <label class="switch mb-0">
+                                                        <input type="checkbox" class="day-status" name="<?php echo $short; ?>[status]"
+                                                            value="1" <?php echo $dayStatus == '1' ? 'checked' : ''; ?>>
+                                                        <span class="slider round"></span>
+                                                    </label>
+                                                    <input type="hidden" name="<?php echo $short; ?>[status]"
+                                                        value="<?php echo $dayStatus; ?>" class="status-value">
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            </div>
                             <button type="button" id="editHoursBtn" class="btn bg-gradient-secondary btn-block">Edit</button>
                             <div class="row">
                                 <div class="col-md-6">
@@ -227,29 +237,36 @@ if (isset($_SESSION['message'])) {
         <div class="card">
             <div class="card-header">
                 <div class="nav nav-pills" id="siteInfoTabs" role="tablist">
-                    <a class="nav-item nav-link active mr-1" id="seo-details-tab" data-toggle="pill" href="#seo-details" role="tab" aria-controls="seo-details" aria-selected="true">
-                        SEO Details
+                    <a class="nav-item nav-link active mr-1" id="home-page-config-tab" data-toggle="pill" href="#home-page-config" role="tab" aria-controls="home-page-config" aria-selected="true">
+                        Home Page Config
                     </a>
-                    <a class="nav-item nav-link ml-1" id="social-media-tab" data-toggle="pill" href="#social-media" role="tab" aria-controls="social-media" aria-selected="false">
-                        Social Media
+                    <a class="nav-item nav-link mr-1" id="seo-config-tab" data-toggle="pill" href="#seo-config" role="tab" aria-controls="seo-config" aria-selected="false">
+                        SEO Config
+                    </a>
+                    <a class="nav-item nav-link ml-1" id="social-media-config-tab" data-toggle="pill" href="#social-media-config" role="tab" aria-controls="social-media-config" aria-selected="false">
+                        Social Media Config
                     </a>
                 </div>
             </div>
             <div class="card-body">
                 <div class="tab-content" id="siteInfoTabsContent">
-                    <div class="tab-pane fade show active" id="seo-details" role="tabpanel" aria-labelledby="seo-details-tab">
-                        <?php include_once('tab-content/settings/seo-details.php'); ?>
+                    <div class="tab-pane fade show active" id="home-page-config" role="tabpanel" aria-labelledby="home-page-config-tab">
+                        <?php include_once('tab-content/settings/home-page-config.php'); ?>
                     </div>
-                    <div class="tab-pane fade" id="social-media" role="tabpanel" aria-labelledby="social-media-tab">
-                        <?php include_once('tab-content/settings/social-media.php'); ?>
+                    <div class="tab-pane fade" id="seo-config" role="tabpanel" aria-labelledby="seo-config-tab">
+                        <?php include_once('tab-content/settings/seo-config.php'); ?>
+                    </div>
+                    <div class="tab-pane fade" id="social-media-config" role="tabpanel" aria-labelledby="social-media-config-tab">
+                        <?php include_once('tab-content/settings/social-media-config.php'); ?>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<?php include_once('modals/addPage-modal.php'); ?>
-<?php include_once('modals/addSocialMedia-modal.php'); ?>
+<?php include_once('modals/add-page-modal.php'); ?>
+<?php include_once('modals/add-social-media-modal.php'); ?>
+<?php include_once('modals/welcome-message-modal.php'); ?>
 <script type="text/javascript">
     $(document).ready(function() {
         // ========================= Common JS code start here ========================= //
@@ -298,7 +315,7 @@ if (isset($_SESSION['message'])) {
 
         // Toggle switch change handler
         $('.day-status').change(function() {
-            const dayRow = $(this).closest('.form-group');
+            const dayRow = $(this).closest('tr');
             const isChecked = $(this).is(':checked');
             const statusValue = dayRow.find('.status-value');
 
@@ -506,6 +523,11 @@ if (isset($_SESSION['message'])) {
         // Add Page button click handler
         $('#addPageBtn').click(function() {
             $('#addPageModal').modal('show');
+        });
+
+        // Add Welcome Message button click handler
+        $('#addWelcomeMessageBtn').click(function() {
+            $('#addWelcomeMessageModal').modal('show');
         });
 
         // Add Page button click handler

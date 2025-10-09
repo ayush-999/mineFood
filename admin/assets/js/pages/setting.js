@@ -1,4 +1,5 @@
 $(document).ready(function () {
+  // Contact Details form validation
   $("#contactDetailsForm").validate({
     rules: {
       contactEmail: {
@@ -17,6 +18,32 @@ $(document).ready(function () {
       },
       contactNumber: {
         required: "Please enter contact mobile number",
+      },
+    },
+    errorElement: "span",
+    errorPlacement: function (error, element) {
+      error.addClass("invalid-feedback");
+      element.closest(".form-group").append(error);
+    },
+    highlight: function (element, errorClass, validClass) {
+      $(element).addClass("is-invalid");
+    },
+    unhighlight: function (element, errorClass, validClass) {
+      $(element).removeClass("is-invalid");
+    },
+  });
+
+  // Welcome Message form validation
+  $("#welcomeMessageForm").validate({
+    rules: {
+      welcome_message: {
+        required: true,
+        maxlength: 255,
+      },
+    },
+    messages: {
+      welcome_message: {
+        required: "Please enter welcome message",
       },
     },
     errorElement: "span",

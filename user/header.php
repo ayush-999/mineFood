@@ -21,6 +21,7 @@ if (!empty($conn)) {
 if (!empty($user)) {
     try {
         $getAdminDetails = json_decode((string) $user->getAdminDetailsForUser(), true);
+        $getSettings = json_decode((string) $user->getSettingForUser(), true);
     } catch (Exception $e) {
         error_log($e->getMessage());
     }
@@ -60,32 +61,20 @@ if (!empty($user)) {
         <div class="header-top black-bg">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-4 col-md-4 col-12 col-sm-4">
-                        <div class="welcome-area">
-                            <p>Default welcome msg!</p>
-                        </div>
+                    <div class="col-lg-11 col-md-11 col-12 col-sm-11">
+                        <h6 class="welcome-area">
+                            <?php
+                            if (!empty($getSettings) && is_array($getSettings)) {
+                                $user->renderWelcomeMessageForUser($getSettings);
+                            } else {
+                                echo 'Welcome to mine food !';
+                            }
+                            ?>
+                        </h6>
                     </div>
-                    <div class="col-lg-8 col-md-8 col-12 col-sm-8">
+                    <div class="col-lg-1 col-md-1 col-12 col-sm-1">
                         <div class="account-curr-lang-wrap f-right">
                             <ul>
-                                <li class="top-hover">
-                                    <a href="#">Language: (ENG) <i class="ion-chevron-down"></i></a>
-                                    <ul>
-                                        <li><a href="#">Bangla </a></li>
-                                        <li><a href="#">Arabic</a></li>
-                                        <li><a href="#">Hindi </a></li>
-                                        <li><a href="#">Spanish</a></li>
-                                    </ul>
-                                </li>
-                                <li class="top-hover">
-                                    <a href="#">Currency: (USD) <i class="ion-chevron-down"></i></a>
-                                    <ul>
-                                        <li><a href="#">Taka (BDT)</a></li>
-                                        <li><a href="#">Riyal (SAR)</a></li>
-                                        <li><a href="#">Rupee (INR)</a></li>
-                                        <li><a href="#">Dirham (AED)</a></li>
-                                    </ul>
-                                </li>
                                 <li class="top-hover">
                                     <a href="#">Setting <i class="ion-chevron-down"></i></a>
                                     <ul>

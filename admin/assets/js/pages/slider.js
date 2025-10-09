@@ -1,12 +1,12 @@
 $(document).ready(function () {
-  var table = $("#banner").DataTable({
+  var table = $("#slider").DataTable({
     responsive: true,
     lengthChange: false,
     autoWidth: true,
   });
-
-  $(".delete-banner").click(function () {
-    var bannerId = $(this).data("id");
+ 
+  $(".delete-slider").click(function () {
+    var sliderId = $(this).data("id");
 
     Swal.fire({
       title: "Are you sure?",
@@ -20,13 +20,13 @@ $(document).ready(function () {
     }).then((result) => {
       if (result.isConfirmed) {
         $.ajax({
-          url: "./ajax/delete_banner.php",
+          url: "./ajax/delete_slider.php",
           type: "POST",
-          data: { id: bannerId },
+          data: { id: sliderId },
           success: function (response) {
             Swal.fire(
               "Deleted!",
-              "The banner has been deleted.",
+              "The slider has been deleted.",
               "success"
             ).then(() => {
               location.reload();
@@ -35,7 +35,7 @@ $(document).ready(function () {
           error: function () {
             Swal.fire(
               "Failed!",
-              "There was a problem deleting the banner.",
+              "There was a problem deleting the slider.",
               "error"
             );
           },
@@ -44,45 +44,45 @@ $(document).ready(function () {
     });
   });
 
-  $("#bannerForm").validate({
+  $("#sliderForm").validate({
     rules: {
-      bannerHeading: {
+      sliderHeading: {
         required: true,
       },
-      bannerSubHeading: {
+      sliderSubHeading: {
         required: true,
       },
-      bannerLink: {
+      sliderLink: {
         required: true,
       },
-      bannerLinkText: {
+      sliderLinkText: {
         required: true,
       },
-      bannerStatus: {
+      sliderStatus: {
         required: true,
       },
-      bannerOrderNumber: {
+      sliderOrderNumber: {
         required: true,
         digits: true,
       },
     },
     messages: {
-      bannerHeading: {
+      sliderHeading: {
         required: "Please enter heading",
       },
-      bannerSubHeading: {
+      sliderSubHeading: {
         required: "Please enter sub heading",
       },
-      bannerLink: {
+      sliderLink: {
         required: "Please enter link",
       },
-      bannerLinkText: {
+      sliderLinkText: {
         required: "Please enter link name",
       },
-      bannerStatus: {
+      sliderStatus: {
         required: "Please select status",
       },
-      bannerOrderNumber: {
+      sliderOrderNumber: {
         required: "Please enter order number",
       },
     },

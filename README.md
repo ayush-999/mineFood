@@ -15,8 +15,8 @@ MineFood is an online food ordering and management system with both admin and us
   - Add, edit, or remove dishes.
   - Manage dish categories and details.
 
-- **Banner Management (`admin/banner.php`)**
-  - Add or update promotional banners.
+- **Slider Management (`admin/slider.php`)**
+  - Add or update promotional sliders.
 
 - **Category Management (`admin/category.php`)**
   - Manage food categories for better organization.

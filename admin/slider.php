@@ -4,24 +4,24 @@ include_once('header.php');
 $msg = '';
 if (!empty($admin)) {
     try {
-        $get_banner = json_decode((string) $admin->get_banner(), true);
+        $get_slider = json_decode((string) $admin->get_slider(), true);
     } catch (Exception $e) {
         error_log($e->getMessage());
     }
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submitAction'])) {
-    $targetDir = "uploads/admin/banner/";
+    $targetDir = "uploads/admin/slider/";
     $imageName = '';
 
     // Get form data
-    $bannerId = $_POST['bannerId'] ?? null;
-    $heading = $_POST['bannerHeading'] ?? '';
-    $subHeading = $_POST['bannerSubHeading'] ?? '';
-    $link = $_POST['bannerLink'] ?? '';
-    $linkText = $_POST['bannerLinkText'] ?? '';
-    $orderNumber = $_POST['bannerOrderNumber'] ?? '';
-    $status = $_POST['bannerStatus'] ?? 0;
+    $sliderId = $_POST['sliderId'] ?? null;
+    $heading = $_POST['sliderHeading'] ?? '';
+    $subHeading = $_POST['sliderSubHeading'] ?? '';
+    $link = $_POST['sliderLink'] ?? '';
+    $linkText = $_POST['sliderLinkText'] ?? '';
+    $orderNumber = $_POST['sliderOrderNumber'] ?? '';
+    $status = $_POST['sliderStatus'] ?? 0;
     $added_on = date('Y-m-d h:i:s');
 
     // Handle image upload
@@ -30,29 +30,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submitAction'])) {
         $imageName = '';
 
         // If updating, delete the old image
-        if ($_POST['submitAction'] == 'update' && !empty($bannerId)) {
-            // Find the banner to get its current image
-            $currentBanner = null;
-            foreach ($get_banner as $banner) {
-                if ($banner['id'] == $bannerId) {
-                    $currentBanner = $banner;
+        if ($_POST['submitAction'] == 'update' && !empty($sliderId)) {
+            // Find the slider to get its current image
+            $currentSlider = null;
+            foreach ($get_slider as $slider) {
+                if ($slider['id'] == $sliderId) {
+                    $currentSlider = $slider;
                     break;
                 }
             }
 
-            if ($currentBanner && !empty($currentBanner['image'])) {
-                $oldImagePath = $targetDir . $currentBanner['order_number'] . '/' . $currentBanner['image'];
+            if ($currentSlider && !empty($currentSlider['image'])) {
+                $oldImagePath = $targetDir . $currentSlider['order_number'] . '/' . $currentSlider['image'];
                 if (file_exists($oldImagePath)) {
                     unlink($oldImagePath);
                     // Remove directory if empty
-                    $dirPath = $targetDir . $currentBanner['order_number'];
+                    $dirPath = $targetDir . $currentSlider['order_number'];
                     if (is_dir($dirPath) && count(scandir($dirPath)) == 2) { // 2 for . and ..
                         rmdir($dirPath);
                     }
                 }
             }
         }
-    } elseif (!empty($_FILES['bannerImage']['name'])) {
+    } elseif (!empty($_FILES['sliderImage']['name'])) {
         // New image uploaded
         $uploadDir = $targetDir . $orderNumber . '/';
 
@@ -62,33 +62,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submitAction'])) {
         }
 
         // Get file info
-        $fileName = basename((string) $_FILES['bannerImage']['name']);
+        $fileName = basename((string) $_FILES['sliderImage']['name']);
         $fileType = pathinfo($fileName, PATHINFO_EXTENSION);
 
         // Generate unique filename
-        $imageName = "banner_" . time() . "." . $fileType;
+        $imageName = "slider_" . time() . "." . $fileType;
         $targetFilePath = $uploadDir . $imageName;
 
         // Check if image file is valid
         $allowTypes = ['jpg', 'png', 'jpeg', 'gif'];
         if (in_array($fileType, $allowTypes)) {
             // If updating, delete the old image first
-            if ($_POST['submitAction'] == 'update' && !empty($bannerId)) {
-                $currentBanner = null;
-                foreach ($get_banner as $banner) {
-                    if ($banner['id'] == $bannerId) {
-                        $currentBanner = $banner;
+            if ($_POST['submitAction'] == 'update' && !empty($sliderId)) {
+                $currentSlider = null;
+                foreach ($get_slider as $slider) {
+                    if ($slider['id'] == $sliderId) {
+                        $currentSlider = $slider;
                         break;
                     }
                 }
 
-                if ($currentBanner && !empty($currentBanner['image'])) {
-                    $oldImagePath = $targetDir . $currentBanner['order_number'] . '/' . $currentBanner['image'];
+                if ($currentSlider && !empty($currentSlider['image'])) {
+                    $oldImagePath = $targetDir . $currentSlider['order_number'] . '/' . $currentSlider['image'];
                     if (file_exists($oldImagePath)) {
                         unlink($oldImagePath);
                         // Remove old directory if it's different from new one and empty
-                        if ($currentBanner['order_number'] != $orderNumber) {
-                            $oldDirPath = $targetDir . $currentBanner['order_number'];
+                        if ($currentSlider['order_number'] != $orderNumber) {
+                            $oldDirPath = $targetDir . $currentSlider['order_number'];
                             if (is_dir($oldDirPath) && count(scandir($oldDirPath)) == 2) {
                                 rmdir($oldDirPath);
                             }
@@ -98,11 +98,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submitAction'])) {
             }
 
             // Upload new image
-            if (move_uploaded_file($_FILES['bannerImage']['tmp_name'], $targetFilePath)) {
+            if (move_uploaded_file($_FILES['sliderImage']['tmp_name'], $targetFilePath)) {
                 // Image uploaded successfully
             } else {
                 $_SESSION['message'] = "Sorry, there was an error uploading your file.";
-                header("Location: banner.php");
+                header("Location: slider.php");
                 exit;
             }
         } else {
@@ -112,20 +112,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submitAction'])) {
         }
     } elseif ($_POST['submitAction'] == 'update') {
         // No new image uploaded but updating, keep the existing image
-        $currentBanner = null;
-        foreach ($get_banner as $banner) {
-            if ($banner['id'] == $bannerId) {
-                $currentBanner = $banner;
+        $currentSlider = null;
+        foreach ($get_slider as $slider) {
+            if ($slider['id'] == $sliderId) {
+                $currentSlider = $slider;
                 break;
             }
         }
 
-        if ($currentBanner) {
-            $imageName = $currentBanner['image'];
+        if ($currentSlider) {
+            $imageName = $currentSlider['image'];
 
             // If order number changed, move the image to new directory
-            if ($currentBanner['order_number'] != $orderNumber) {
-                $oldPath = $targetDir . $currentBanner['order_number'] . '/' . $imageName;
+            if ($currentSlider['order_number'] != $orderNumber) {
+                $oldPath = $targetDir . $currentSlider['order_number'] . '/' . $imageName;
                 $newDir = $targetDir . $orderNumber . '/';
 
                 if (!is_dir($newDir)) {
@@ -136,7 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submitAction'])) {
                     $newPath = $newDir . $imageName;
                     if (rename($oldPath, $newPath)) {
                         // Remove old directory if empty
-                        $oldDir = $targetDir . $currentBanner['order_number'];
+                        $oldDir = $targetDir . $currentSlider['order_number'];
                         if (is_dir($oldDir) && count(scandir($oldDir)) == 2) {
                             rmdir($oldDir);
                         }
@@ -148,7 +148,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submitAction'])) {
 
     try {
         if ($_POST['submitAction'] == 'add') {
-            $result = $admin->add_banner(
+            $result = $admin->add_slider(
                 $heading,
                 $subHeading,
                 $link,
@@ -158,10 +158,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submitAction'])) {
                 $added_on,
                 $imageName
             );
-            $_SESSION['message'] = "Banner added successfully";
+            $_SESSION['message'] = "Slider added successfully";
         } else {
-            $result = $admin->update_banner(
-                $bannerId,
+            $result = $admin->update_slider(
+                $sliderId,
                 $heading,
                 $subHeading,
                 $link,
@@ -171,13 +171,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submitAction'])) {
                 $added_on,
                 $imageName
             );
-            $_SESSION['message'] = "Banner updated successfully";
+            $_SESSION['message'] = "Slider updated successfully";
         }
     } catch (Exception $e) {
         $_SESSION['message'] = $e->getMessage();
     }
 
-    header("Location: banner.php");
+    header("Location: slider.php");
     exit;
 }
 
@@ -196,39 +196,38 @@ if (isset($_SESSION['message'])) {
             <div class="card-header">
                 <div class="d-flex justify-content-between align-items-center">
                     <h5 class="card-title">
-                        <b><?= htmlspecialchars($pageSubTitle ?? 'Banner') ?></b>
+                        <b><?= htmlspecialchars($pageSubTitle ?? 'Slider') ?></b>
                     </h5>
                     <button class="btn bg-gradient-success btn-sm rounded-circle add-btn" type="button"
-                        data-toggle="modal" data-target="#banner-modal">
+                        data-toggle="modal" data-target="#slider-modal">
                         <i class="fa-regular fa-plus"></i>
                     </button>
                 </div>
             </div>
             <div class="card-body">
-                <table id="banner" class="table table-bordered table-hover text-nowrap">
+                <table id="slider" class="table table-bordered table-hover text-nowrap">
                     <thead>
                         <tr>
                             <th class="text-center">O.No.</th>
                             <th class="text-center">Image</th>
                             <th class="text-center">Heading</th>
                             <th class="text-center">Sub Heading</th>
-                            <th class="text-center">Link</th>
-                            <th class="text-center">Link Text</th>
+                            <th class="text-center">Button</th>
                             <th class="text-center">Added Date</th>
                             <th class="text-center">Status</th>
                             <th class="text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php if (!empty($get_banner)): ?>
-                            <?php foreach ($get_banner as $index => $banner) : ?>
+                        <?php if (!empty($get_slider)): ?>
+                            <?php foreach ($get_slider as $index => $slider) : ?>
                                 <tr>
-                                    <td class="text-center"><?php echo htmlspecialchars((string) $banner['order_number']); ?></td>
+                                    <td class="text-center"><?php echo htmlspecialchars((string) $slider['order_number']); ?></td>
                                     <td class="text-center">
                                         <?php
                                         $imagePath = '';
-                                        $specificImagePath = "uploads/admin/banner/" . $banner['order_number'] . '/' . $banner['image'];
-                                        if (!empty($banner['image']) && file_exists($specificImagePath)) {
+                                        $specificImagePath = "uploads/admin/slider/" . $slider['order_number'] . '/' . $slider['image'];
+                                        if (!empty($slider['image']) && file_exists($specificImagePath)) {
                                             $imagePath = $specificImagePath;
                                         }
                                         // Fallback to default no-img.png
@@ -236,46 +235,43 @@ if (isset($_SESSION['message'])) {
                                             $imagePath = 'assets/img/no-img.png';
                                         }
                                         ?>
-                                        <img src="<?php echo htmlspecialchars($imagePath); ?>" class="banner-img view-img"
-                                            alt="<?php echo htmlspecialchars((string) $banner['heading']); ?>">
+                                        <img src="<?php echo htmlspecialchars($imagePath); ?>" class="slider-img view-img"
+                                            alt="<?php echo htmlspecialchars((string) $slider['heading']); ?>">
                                     </td>
-                                    <td><?php echo truncateText($banner['heading'], 2); ?></td>
-                                    <td><?php echo truncateText($banner['sub_heading'], 2); ?></td>
+                                    <td><?php echo truncateText($slider['heading'], 2); ?></td>
+                                    <td><?php echo truncateText($slider['sub_heading'], 2); ?></td>
                                     <td class="text-center">
-                                        <?php echo htmlspecialchars((string) $banner['link']); ?>
-                                    </td>
-                                    <td class="text-center">
-                                        <?php echo htmlspecialchars((string) $banner['link_txt']); ?>
+                                        <a href="<?php echo htmlspecialchars((string) $slider['link']); ?>" class="btn btn-block btn-outline-primary rounded-pill btn-sm"><?php echo htmlspecialchars((string) $slider['link_txt']); ?></a>
                                     </td>
                                     <td class="text-center">
                                         <?php
-                                        $date = new DateTime($banner['added_on']);
+                                        $date = new DateTime($slider['added_on']);
                                         echo $date->format('d-m-Y');
                                         ?>
                                     </td>
                                     <td class="text-center">
                                         <span
-                                            class="<?php echo $banner['status'] == 0 ? 'inactive-badge' : ($banner['status'] == 1 ? 'active-badge' : 'blocked-badge'); ?>">
+                                            class="<?php echo $slider['status'] == 0 ? 'inactive-badge' : ($slider['status'] == 1 ? 'active-badge' : 'blocked-badge'); ?>">
                                             <?php
-                                            echo $banner['status'] == 0 ? 'Inactive' : ($banner['status'] == 1 ? 'Active' : 'Blocked');
+                                            echo $slider['status'] == 0 ? 'Inactive' : ($slider['status'] == 1 ? 'Active' : 'Blocked');
                                             ?>
                                         </span>
                                     </td>
                                     <td class="text-center">
                                         <button class="btn bg-gradient-success btn-sm rounded-circle mr-1 edit-btn"
-                                            data-toggle="modal" data-target="#banner-modal"
-                                            data-id="<?php echo $banner['id']; ?>"
-                                            data-image="<?php echo htmlspecialchars((string) $banner['image']); ?>"
-                                            data-heading="<?php echo htmlspecialchars((string) $banner['heading']); ?>"
-                                            data-subheading="<?php echo htmlspecialchars((string) $banner['sub_heading']); ?>"
-                                            data-link="<?php echo $banner['link']; ?>"
-                                            data-linktxt="<?php echo $banner['link_txt']; ?>"
-                                            data-ordernumber="<?php echo $banner['order_number']; ?>"
-                                            data-status="<?php echo $banner['status']; ?>">
+                                            data-toggle="modal" data-target="#slider-modal"
+                                            data-id="<?php echo $slider['id']; ?>"
+                                            data-image="<?php echo htmlspecialchars((string) $slider['image']); ?>"
+                                            data-heading="<?php echo htmlspecialchars((string) $slider['heading']); ?>"
+                                            data-subheading="<?php echo htmlspecialchars((string) $slider['sub_heading']); ?>"
+                                            data-link="<?php echo $slider['link']; ?>"
+                                            data-linktxt="<?php echo $slider['link_txt']; ?>"
+                                            data-ordernumber="<?php echo $slider['order_number']; ?>"
+                                            data-status="<?php echo $slider['status']; ?>">
                                             <i class="fa-regular fa-pen-to-square"></i>
                                         </button>
-                                        <button class="btn bg-gradient-danger btn-sm rounded-circle delete-banner"
-                                            data-id="<?php echo $banner['id']; ?>" type="button">
+                                        <button class="btn bg-gradient-danger btn-sm rounded-circle delete-slider"
+                                            data-id="<?php echo $slider['id']; ?>" type="button">
                                             <i class="fa-regular fa-trash"></i>
                                         </button>
                                     </td>
@@ -283,7 +279,7 @@ if (isset($_SESSION['message'])) {
                             <?php endforeach; ?>
                         <?php else : ?>
                             <tr>
-                                <td colspan="10" style="text-align:center;">No banner found</td>
+                                <td colspan="10" style="text-align:center;">No slider found</td>
                             </tr>
                         <?php endif; ?>
                     </tbody>
@@ -296,12 +292,12 @@ if (isset($_SESSION['message'])) {
     <span class="close"><i class="fa-solid fa-xmark"></i></span>
     <img class="image-modal-content" id="full-image">
 </div>
-<?php include_once('./modals/banner-modal.php') ?>
+<?php include_once('./modals/slider-modal.php') ?>
 <script type="text/javascript">
     $(document).ready(function() {
 
         const uploadArea = document.querySelector(".upload-area");
-        const fileInput = document.getElementById("bannerImage");
+        const fileInput = document.getElementById("sliderImage");
         const removeBtnContainer = document.querySelector(".remove-btn-container");
         const removeImageBtn = document.querySelector(".remove-image-btn");
         const removeImageFlag = document.getElementById("removeImageFlag");
@@ -369,57 +365,57 @@ if (isset($_SESSION['message'])) {
         })
 
         //Initialize Select2 Elements
-        $('#bannerStatus').select2({
+        $('#sliderStatus').select2({
             theme: 'bootstrap4',
             minimumResultsForSearch: -1
         });
 
         $('.add-btn').on('click', function() {
-            $('#banner-modal .modal-title').text('Add Banner');
-            $('#banner-modal .btn-block').text('Add');
+            $('#slider-modal .modal-title').text('Add Slider');
+            $('#slider-modal .btn-block').text('Add');
             $('#submitAction').val('add');
-            $('#bannerId').val('');
-            // $('#bannerImage').val('');
-            $('#bannerHeading').val('');
-            $('#bannerSubHeading').val('');
-            $('#bannerLink').val('');
-            $('#bannerLinkText').val('');
-            $('#bannerOrderNumber').val('');
-            $('#bannerStatus').val('').trigger('change');
+            $('#sliderId').val('');
+            // $('#sliderImage').val('');
+            $('#sliderHeading').val('');
+            $('#sliderSubHeading').val('');
+            $('#sliderLink').val('');
+            $('#sliderLinkText').val('');
+            $('#sliderOrderNumber').val('');
+            $('#sliderStatus').val('').trigger('change');
 
             uploadArea.innerHTML = `<svg class="icon icon-tabler icon-tabler-photo-up icons-tabler-outline"fill=none height=24 stroke=currentColor stroke-linecap=round stroke-linejoin=round stroke-width=2 viewBox="0 0 24 24"width=24 xmlns=http://www.w3.org/2000/svg><path d="M0 0h24v24H0z"fill=none stroke=none /><path d="M15 8h.01"/><path d="M12.5 21h-6.5a3 3 0 0 1 -3 -3v-12a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v6.5"/><path d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l3.5 3.5"/><path d="M14 14l1 -1c.679 -.653 1.473 -.829 2.214 -.526"/><path d="M19 22v-6"/><path d="M22 19l-3 -3l-3 3"/></svg><p>Drag and drop or click here to upload image</p>`;
             removeBtnContainer.style.display = "none";
             fileInput.value = "";
             removeImageFlag.value = "0";
 
-            $('#banner-modal').modal('show');
+            $('#slider-modal').modal('show');
         });
 
         $('.edit-btn').on('click', function() {
-            $('#banner-modal .modal-title').text('Edit Banner');
-            $('#banner-modal .btn-block').text('Update');
-            let bannerId = $(this).data('id');
-            let bannerHeading = $(this).data('heading');
-            let bannerSubHeading = $(this).data('subheading');
-            let bannerLink = $(this).data('link');
-            let bannerLinkText = $(this).data('linktxt');
-            let bannerOrderNumber = $(this).data('ordernumber');
+            $('#slider-modal .modal-title').text('Edit Slider');
+            $('#slider-modal .btn-block').text('Update');
+            let sliderId = $(this).data('id');
+            let sliderHeading = $(this).data('heading');
+            let sliderSubHeading = $(this).data('subheading');
+            let sliderLink = $(this).data('link');
+            let sliderLinkText = $(this).data('linktxt');
+            let sliderOrderNumber = $(this).data('ordernumber');
             let status = $(this).data('status');
-            let bannerImage = $(this).data('image');
+            let sliderImage = $(this).data('image');
             $('#submitAction').val('update');
-            $('#bannerId').val(bannerId);
-            // $('#bannerImage').val(bannerImage);
-            $('#bannerHeading').val(bannerHeading);
-            $('#bannerSubHeading').val(bannerSubHeading);
-            $('#bannerLink').val(bannerLink);
-            $('#bannerLinkText').val(bannerLinkText);
-            $('#bannerOrderNumber').val(bannerOrderNumber);
-            $('#bannerStatus').val(status).trigger('change');
-            $('#banner-modal').modal('show');
+            $('#sliderId').val(sliderId);
+            // $('#sliderImage').val(sliderImage);
+            $('#sliderHeading').val(sliderHeading);
+            $('#sliderSubHeading').val(sliderSubHeading);
+            $('#sliderLink').val(sliderLink);
+            $('#sliderLinkText').val(sliderLinkText);
+            $('#sliderOrderNumber').val(sliderOrderNumber);
+            $('#sliderStatus').val(status).trigger('change');
+            $('#slider-modal').modal('show');
 
-            if (bannerImage) {
-                // uploadArea.innerHTML = `<img src="uploads/admin/banner/${bannerImage}">`;
-                uploadArea.innerHTML = `<img src="uploads/admin/banner/${bannerOrderNumber}/${bannerImage}">`;
+            if (sliderImage) {
+                // uploadArea.innerHTML = `<img src="uploads/admin/slider/${sliderImage}">`;
+                uploadArea.innerHTML = `<img src="uploads/admin/slider/${sliderOrderNumber}/${sliderImage}">`;
                 removeBtnContainer.style.display = "block";
                 removeImageFlag.value = "0";
             } else {
@@ -429,10 +425,10 @@ if (isset($_SESSION['message'])) {
             }
         });
 
-        $('#banner-modal').on('hidden.bs.modal', function() {
+        $('#slider-modal').on('hidden.bs.modal', function() {
             // Reset the form when modal is closed
-            $('#bannerForm')[0].reset();
-            $('#bannerStatus').val('').trigger('change');
+            $('#sliderForm')[0].reset();
+            $('#sliderStatus').val('').trigger('change');
 
             // Reset the upload area
             uploadArea.innerHTML = `<svg class="icon icon-tabler icon-tabler-photo-up icons-tabler-outline"fill=none height=24 stroke=currentColor stroke-linecap=round stroke-linejoin=round stroke-width=2 viewBox="0 0 24 24"width=24 xmlns=http://www.w3.org/2000/svg><path d="M0 0h24v24H0z"fill=none stroke=none /><path d="M15 8h.01"/><path d="M12.5 21h-6.5a3 3 0 0 1 -3 -3v-12a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v6.5"/><path d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l3.5 3.5"/><path d="M14 14l1 -1c.679 -.653 1.473 -.829 2.214 -.526"/><path d="M19 22v-6"/><path d="M22 19l-3 -3l-3 3"/></svg><p>Drag and drop or click here to upload image</p>`;
@@ -460,9 +456,9 @@ if (isset($_SESSION['message'])) {
         };
         let message = <?php echo json_encode(value: $msg); ?>;
         if (message) {
-            if (message === "Banner already exists" || message === "Banner heading already exists") {
+            if (message === "Slider already exists" || message === "Slider heading already exists") {
                 toastr.error(message);
-            } else if (message === "Banner added successfully" || message === "Banner updated successfully") {
+            } else if (message === "Slider added successfully" || message === "Slider updated successfully") {
                 toastr.success(message);
             }
         }
