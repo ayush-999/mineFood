@@ -1195,4 +1195,73 @@ class Admin
             throw new Exception("Database error: " . $e->getMessage());
         }
     }
+
+    public function saveWelcomeMessage($data): bool|string
+    {
+        try {
+            // Validate required fields
+            $requiredFields = ['welcome_message'];
+            foreach ($requiredFields as $field) {
+                if (empty($data[$field])) {
+                    throw new Exception("Missing required field: $field");
+                }
+            }
+
+            // Prepare SQL
+            if (empty($data['id'])) {
+                $strQuery = "INSERT INTO setting 
+                        (welcome_message) 
+                        VALUES (:welcome_message)";
+            } else {
+                $strQuery = "UPDATE setting 
+                        SET welcome_message = :welcome_message 
+                        WHERE id = :id";
+            }
+
+
+            $stmt = $this->db->prepare($strQuery);
+            $stmt->bindParam(':welcome_message', $data['welcome_message']);
+
+            if (!empty($data['id'])) {
+                $stmt->bindParam(':id', $data['id'], PDO::PARAM_INT);
+            }
+
+            $stmt->execute();
+
+            return json_encode([
+                'success' => true,
+                'message' => 'Welcome message saved successfully'
+            ]);
+        } catch (PDOException $e) {
+            throw new Exception("Database error: " . $e->getMessage());
+        }
+    }
+
+    public function getSetting(): bool|string
+    {
+        try {
+            $strQuery = "SELECT * FROM setting LIMIT 1";
+            $stmt = $this->db->prepare($strQuery);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return json_encode($result);
+        } catch (PDOException $e) {
+            throw new Exception("Database error: " . $e->getMessage());
+        } catch (Exception $e) {
+            throw new Exception("Error: " . $e->getMessage());
+        }
+    }
+
+    public function renderWelcomeMessage(array $settings): void
+    {
+        // default empty output
+        if (!empty($settings) && isset($settings[0]) && is_array($settings[0])) {
+            $row = $settings[0];
+            $msg = $row['welcome_message'] ?? '';
+            $escaped = htmlspecialchars((string)$msg, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+            echo nl2br($escaped);
+            return;
+        }
+        echo '';
+    }
 }

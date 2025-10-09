@@ -57,7 +57,7 @@
                                 placeholder="Enter link" value="" required>
                         </div>
                         <div class="col-md-6 form-group mb-0">
-                            <label for="sliderLinkText">Link Text <span class="text-danger">*</span></label>
+                            <label for="sliderLinkText">Button Text <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="sliderLinkText" name="sliderLinkText"
                                 placeholder="Enter link text" value="" required>
                         </div>

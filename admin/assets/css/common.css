@@ -17,6 +17,9 @@ Template customize
 :focus-visible {
   outline: none;
 }
+.fs-10{
+  font-size: 10px;
+}
 
 .fs-12 {
   font-size: 12px;
@@ -24,6 +27,26 @@ Template customize
 
 .fs-14 {
   font-size: 14px;
+}
+
+.fs-16 {
+  font-size: 14px;
+}
+
+.fs-18 {
+  font-size: 18px;
+}
+
+.fs-20 {
+  font-size: 20px;
+}
+
+.fs-22 {
+  font-size: 22px;
+}
+
+.fs-24 {
+  font-size: 24px;
 }
 
 .vrLine {
@@ -673,6 +696,13 @@ Banner
 /********************************
 Settings
 ********************************/
+.welcomeMessageContainer {
+  border: 1px dashed #6c757d;
+  border-radius: 8px;
+  padding: 20px;
+  background-color: #f1f2f3;
+}
+
 .breadcrumbsContainer {
   padding: 20px;
   border: 1px dashed #6c757d;
@@ -733,7 +763,7 @@ Settings
 }
 
 .month-day:hover {
-  background-color: #F3F3F3;
+  background-color: #f3f3f3;
   cursor: pointer;
 }
 
@@ -812,7 +842,7 @@ Settings
   right: 0;
   bottom: 0;
   background-color: #ccc;
-  transition: .4s;
+  transition: 0.4s;
 }
 
 .slider:before {
@@ -823,15 +853,15 @@ Settings
   left: 4px;
   bottom: 4px;
   background-color: white;
-  transition: .4s;
+  transition: 0.4s;
 }
 
 input:checked + .slider {
-  background-color: #4CAF50;
+  background-color: #4caf50;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #4CAF50;
+  box-shadow: 0 0 1px #4caf50;
 }
 
 input:checked + .slider:before {

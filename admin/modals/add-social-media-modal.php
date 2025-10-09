@@ -25,48 +25,52 @@
                         <small class="form-text text-muted">Ionicons icon class (e.g. "ion-social-facebook")</small>
                     </div>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="saveSocialBtn">Save</button>
+                <div class="row">
+                    <div class="col-md-6">
+                        <button type="button" class="btn btn-outline-secondary btn-block" data-dismiss="modal">Cancel</button>
+                    </div>
+                    <div class="col-md-6">
+                        <button type="button" class="btn bg-gradient-success btn-block" id="saveSocialBtn">Save</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-$(document).ready(function() {
-    $('#saveSocialBtn').click(function() {
-        const formData = {
-            action: 'save',
-            title: $('#socialTitle').val(),
-            url: $('#socialUrl').val(),
-            icon: $('#socialIcon').val()
-        };
+    $(document).ready(function() {
+        $('#saveSocialBtn').click(function() {
+            const formData = {
+                action: 'save',
+                title: $('#socialTitle').val(),
+                url: $('#socialUrl').val(),
+                icon: $('#socialIcon').val()
+            };
 
-        $.ajax({
-            url: 'ajax/save-social-media.php',
-            type: 'POST',
-            data: formData,
-            dataType: 'json'
-        }).done(function(response) {
-            if (response.success) {
-                toastr.success(response.message);
-                $('#addSocialModal').modal('hide');
-                $('#addSocialForm')[0].reset();
-                setTimeout(() => {
-                    location.reload();
-                }, 1000);
-            } else {
-                toastr.error(response.message);
-            }
-        }).fail(function(xhr, status, error) {
-            toastr.error('An error occurred: ' + error);
+            $.ajax({
+                url: 'ajax/save-social-media.php',
+                type: 'POST',
+                data: formData,
+                dataType: 'json'
+            }).done(function(response) {
+                if (response.success) {
+                    toastr.success(response.message);
+                    $('#addSocialModal').modal('hide');
+                    $('#addSocialForm')[0].reset();
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+                } else {
+                    toastr.error(response.message);
+                }
+            }).fail(function(xhr, status, error) {
+                toastr.error('An error occurred: ' + error);
+            });
+        });
+
+        $('#addSocialModal').on('hidden.bs.modal', function() {
+            $('#addSocialForm')[0].reset();
         });
     });
-
-    $('#addSocialModal').on('hidden.bs.modal', function () {
-        $('#addSocialForm')[0].reset();
-    });
-});
 </script>

@@ -17,40 +17,39 @@ try {
     </div>
 </div>
 <form id="socialMediaForm" class="mt-4">
-    <div class="row">
-        <div class="col-md-12">
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th class="p-2">Title</th>
+                <th class="p-2">Icon</th>
+                <th class="p-2">URL</th>
+                <th class="p-2">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
             <?php foreach ($socialMedia as $social): ?>
-                <div class="row align-items-center mb-3 social-media-row" data-id="<?= $social['id'] ?>">
-                    <div class="col-sm-2">
-                        <div class="title-wrapper">
-                            <h6 class="mb-0"><?= htmlspecialchars($social['title']) ?></h6>
-                        </div>
-                    </div>
-                    <div class="col-sm-1">
-                        <div class="icon-wrapper">
-                            <i class="<?= htmlspecialchars($social['icon']) ?>"></i>
-                        </div>
-                    </div>
-                    <div class="col-sm-8 text-secondary">
-                        <div class="link-wrapper">
-                            <div class="input-group">
-                                <input type="url" class="form-control social-url"
-                                    value="<?= htmlspecialchars($social['url']) ?>"
-                                    data-original="<?= htmlspecialchars($social['url']) ?>">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-1">
-                        <button type="button" class="btn btn-danger btn-sm delete-social"
+                <tr class="social-media-row" data-id="<?= $social['id'] ?>">
+                    <td class="align-middle p-2">
+                        <h6 class="mb-0"><?= htmlspecialchars($social['title']) ?></h6>
+                    </td>
+                    <td class="align-middle text-center">
+                        <i class="<?= htmlspecialchars($social['icon']) ?> fs-24"></i>
+                    </td>
+                    <td class="align-middle text-center p-2">
+                        <input type="url" class="form-control social-url"
+                            value="<?= htmlspecialchars($social['url']) ?>"
+                            data-original="<?= htmlspecialchars($social['url']) ?>" disabled>
+                    </td>
+                    <td class="align-middle text-center p-2">
+                        <button type="button" class="btn bg-gradient-danger btn-sm rounded-circle delete-social"
                             data-id="<?= $social['id'] ?>">
-                            <i class="fas fa-trash"></i>
+                            <i class="fa-regular fa-trash"></i>
                         </button>
-                    </div>
-                </div>
-                <hr>
-                <?php endforeach; ?>
-        </div>
-    </div>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
 </form>
 
 <script>

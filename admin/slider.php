@@ -212,8 +212,7 @@ if (isset($_SESSION['message'])) {
                             <th class="text-center">Image</th>
                             <th class="text-center">Heading</th>
                             <th class="text-center">Sub Heading</th>
-                            <th class="text-center">Link</th>
-                            <th class="text-center">Link Text</th>
+                            <th class="text-center">Button</th>
                             <th class="text-center">Added Date</th>
                             <th class="text-center">Status</th>
                             <th class="text-center">Action</th>
@@ -242,10 +241,7 @@ if (isset($_SESSION['message'])) {
                                     <td><?php echo truncateText($slider['heading'], 2); ?></td>
                                     <td><?php echo truncateText($slider['sub_heading'], 2); ?></td>
                                     <td class="text-center">
-                                        <?php echo htmlspecialchars((string) $slider['link']); ?>
-                                    </td>
-                                    <td class="text-center">
-                                        <?php echo htmlspecialchars((string) $slider['link_txt']); ?>
+                                        <a href="<?php echo htmlspecialchars((string) $slider['link']); ?>" class="btn btn-block btn-outline-primary rounded-pill btn-sm"><?php echo htmlspecialchars((string) $slider['link_txt']); ?></a>
                                     </td>
                                     <td class="text-center">
                                         <?php
